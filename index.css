@@ -1,0 +1,139 @@
+:root {
+	--bg: #f5f7fb;
+	--panel: #ffffff;
+	--text: #172233;
+	--subtle: #4c5c74;
+	--border: #dce4ef;
+	--shadow: 0 8px 24px rgba(12, 32, 63, 0.08);
+	--tile-size: 26px;
+	--gap: 4px;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background: linear-gradient(180deg, #eef3fb 0%, var(--bg) 100%);
+	color: var(--text);
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+	width: min(1320px, 96vw);
+	margin: 0 auto;
+	padding: 20px 0 28px;
+}
+
+.page-header {
+	margin-bottom: 16px;
+}
+
+.page-header h1 {
+	margin: 0;
+	font-size: clamp(1.35rem, 2.4vw, 2rem);
+}
+
+.subtitle {
+	margin: 6px 0 0;
+	color: var(--subtle);
+}
+
+.status-card,
+.summary-panel,
+.map-panel {
+	background: var(--panel);
+	border: 1px solid var(--border);
+	border-radius: 14px;
+	box-shadow: var(--shadow);
+	padding: 14px 16px;
+	margin-bottom: 14px;
+}
+
+.status-card {
+	font-weight: 600;
+}
+
+.status-card.error {
+	border-color: #f2b5bc;
+	color: #871f2d;
+	background: #fff4f6;
+}
+
+.summary-panel h2,
+.map-panel h2 {
+	margin: 0 0 12px;
+	font-size: 1.05rem;
+}
+
+.party-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.party-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	border: 1px solid var(--border);
+	border-radius: 999px;
+	background: #f9fbff;
+	padding: 5px 10px;
+	font-size: 0.85rem;
+}
+
+.party-dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+}
+
+.tile-grid-map {
+	display: grid;
+	gap: var(--gap);
+	align-items: start;
+	width: max-content;
+	max-width: 100%;
+	overflow: auto;
+	padding-bottom: 6px;
+}
+
+.tile {
+	width: var(--tile-size);
+	height: var(--tile-size);
+	border: 1px solid rgba(8, 27, 53, 0.15);
+	border-radius: 6px;
+	color: #ffffff;
+	font-size: 0.58rem;
+	font-weight: 700;
+	line-height: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	letter-spacing: 0.1px;
+	cursor: default;
+	user-select: none;
+}
+
+.tile.empty {
+	visibility: hidden;
+}
+
+.tile.no-data {
+	color: #41526d;
+	border-style: dashed;
+	background: #edf2f9;
+}
+
+@media (max-width: 860px) {
+	:root {
+		--tile-size: 22px;
+		--gap: 3px;
+	}
+
+	.container {
+		width: min(1320px, 98vw);
+	}
+}

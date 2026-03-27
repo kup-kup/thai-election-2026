@@ -8,9 +8,26 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Thai Election 2026</h1>
-    </div>
+    <main class="container">
+        <header class="page-header">
+            <h1>Thailand Election Results (Tile Grid)</h1>
+            <p class="subtitle">Constituency winners visualized using <code>src/tile_grid.csv</code></p>
+        </header>
+
+        <section class="status-card" id="statusCard" aria-live="polite">
+            Loading election map data...
+        </section>
+
+        <section class="summary-panel" id="summaryPanel">
+            <h2>Party Summary</h2>
+            <div id="partyLegend" class="party-legend"></div>
+        </section>
+
+        <section class="map-panel">
+            <h2>Constituency Tile Grid</h2>
+            <div id="tileGridMap" class="tile-grid-map" role="img" aria-label="Thailand constituency tile grid map"></div>
+        </section>
+    </main>
 
     <script src="index.js"></script>
 </body>
