@@ -32,12 +32,17 @@
 	--subtle: #4c5c74;
 	--border: #dce4ef;
 	--shadow: 0 8px 24px rgba(12, 32, 63, 0.08);
-	--tile-size: 26px;
+	--tile-size: 25px;
 	--gap: 4px;
+	--section-pad: clamp(14px, 2vw, 28px);
 }
 
 * {
 	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
 }
 
 body {
@@ -47,35 +52,146 @@ body {
     font-family: "ElectionUI", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.container {
-	width: min(1320px, 96vw);
+.story-scroll {
+	height: 100vh;
+	overflow-y: auto;
+	scroll-snap-type: y mandatory;
+}
+
+.story-section {
+	height: 100vh;
+	min-height: 100vh;
+	scroll-snap-align: start;
+	padding: var(--section-pad);
+}
+
+.section-inner {
+	width: min(1400px, 98vw);
+	height: 100%;
 	margin: 0 auto;
-	padding: 20px 0 28px;
 }
 
-.page-header {
-	margin-bottom: 16px;
+.landing-section {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	background: radial-gradient(circle at 40% 30%, #ffffff 0%, #eaf1fb 42%, #dce8f6 100%);
 }
 
-.page-header h1 {
+
+.landing-inner {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 14px;
+}
+
+.landing-title {
 	margin: 0;
-	font-size: clamp(1.35rem, 2.4vw, 2rem);
+	font-size: clamp(2rem, 5vw, 4.2rem);
+	line-height: 1.12;
 }
 
-.subtitle {
-	margin: 6px 0 0;
+.landing-rotator {
+	min-height: 1.8em;
+	margin: 0;
+	font-size: clamp(1.05rem, 2vw, 1.8rem);
+	color: #003c8f;
+	font-weight: 700;
+}
+
+.scroll-hint {
+	margin-top: 10px;
+	text-decoration: none;
+	color: var(--subtle);
+	border: 1px solid var(--border);
+	padding: 8px 14px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.75);
+}
+
+.benford-section,
+.dashboard-section {
+	display: flex;
+	align-items: stretch;
+}
+
+.section-header {
+	margin-bottom: 10px;
+}
+
+.section-header h2,
+.section-header p {
+	margin: 0;
+}
+
+.section-header p {
+	margin-top: 5px;
 	color: var(--subtle);
 }
 
-.status-card,
-.summary-panel,
-.map-panel {
+.benford-toolbar {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 8px;
+}
+
+.benford-toolbar select,
+#regionFilter,
+#constituencySearch,
+#topNInput {
+	border: 1px solid var(--border);
+	background: #fff;
+	border-radius: 8px;
+	padding: 6px 8px;
+	font: inherit;
+}
+
+.benford-chart-wrap {
 	background: var(--panel);
 	border: 1px solid var(--border);
 	border-radius: 14px;
 	box-shadow: var(--shadow);
-	padding: 14px 16px;
-	margin-bottom: 14px;
+	padding: 10px 12px;
+	height: calc(100% - 90px);
+	min-height: 460px;
+}
+
+.benford-chart {
+	height: 100%;
+	width: 100%;
+}
+
+
+.dashboard-layout {
+	display: grid;
+	grid-template-columns: minmax(260px, 290px) minmax(540px, 1fr) minmax(260px, 320px);
+	gap: 12px;
+}
+
+.dashboard-left,
+.dashboard-right {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	overflow: hidden;
+}
+
+.panel {
+	background: var(--panel);
+	border: 1px solid var(--border);
+	border-radius: 14px;
+	box-shadow: var(--shadow);
+	padding: 10px 12px;
+}
+
+.panel h3 {
+	margin: 0 0 10px;
+	font-size: 1rem;
 }
 
 .status-card {
@@ -88,16 +204,31 @@ body {
 	background: #fff4f6;
 }
 
-.summary-panel h2,
-.map-panel h2 {
-	margin: 0 0 12px;
-	font-size: 1.05rem;
+.metric-selector {
+	display: grid;
+	gap: 8px;
+}
+
+.metric-option {
+	width: 100%;
+	text-align: left;
+	border: 1px solid var(--border);
+	padding: 8px;
+	border-radius: 8px;
+	background: #f8fbff;
+	cursor: pointer;
+}
+
+.metric-option.active {
+	border-color: #2b6ad6;
+	background: #e8f0ff;
 }
 
 .party-legend {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
+	margin-top: 10px;
 }
 
 .party-pill {
@@ -125,6 +256,7 @@ body {
 	max-width: 100%;
 	overflow: auto;
 	padding-bottom: 6px;
+	margin: 0 auto;
 }
 
 .tile {
@@ -140,7 +272,7 @@ body {
 	align-items: center;
 	justify-content: center;
 	letter-spacing: 0.1px;
-	cursor: default;
+	cursor: pointer;
 	user-select: none;
 }
 
@@ -148,10 +280,122 @@ body {
 	visibility: hidden;
 }
 
-.tile.no-data {
+.tile.no-data,
+.tile.missing {
 	color: #41526d;
 	border-style: dashed;
-	background: #edf2f9;
+	background: #d7dee7;
+}
+
+.dashboard-map {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.constituency-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	overflow: auto;
+	padding-top: 10px;
+	max-height: calc(100vh - 210px);
+}
+
+.constituency-item {
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 8px;
+	background: #fff;
+	cursor: pointer;
+}
+
+.constituency-item.missing {
+	background: #d7dee7;
+	color: #4e5b6d;
+	border-style: dashed;
+}
+
+.constituency-item .meta {
+	font-size: 0.82rem;
+	color: var(--subtle);
+}
+
+.top-n-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 6px;
+}
+
+.top-n-header h3 {
+	margin: 0;
+}
+
+#topNInput {
+	width: 70px;
+}
+
+.top-n-list {
+	margin: 8px 0 0;
+	padding-left: 18px;
+	display: grid;
+	gap: 5px;
+}
+
+.detail-popup {
+	position: fixed;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	z-index: 80;
+}
+
+.detail-popup[hidden] {
+	display: none;
+}
+
+.detail-popup-backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(7, 22, 44, 0.42);
+}
+
+.detail-popup-card {
+	position: relative;
+	min-width: min(560px, 92vw);
+	background: #fff;
+	border-radius: 14px;
+	padding: 16px;
+	box-shadow: 0 20px 44px rgba(0, 0, 0, 0.2);
+	border: 1px solid var(--border);
+}
+
+.popup-close {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	border: 1px solid var(--border);
+	background: #fff;
+	border-radius: 8px;
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
+}
+
+.popup-subtitle {
+	color: var(--subtle);
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
 }
 
 @media (max-width: 860px) {
@@ -160,7 +404,23 @@ body {
 		--gap: 3px;
 	}
 
-	.container {
-		width: min(1320px, 98vw);
+	.dashboard-layout {
+		grid-template-columns: 1fr;
+		gap: 10px;
+		overflow-y: auto;
+	}
+
+	.story-section {
+		height: auto;
+		min-height: 100vh;
+	}
+
+	.benford-chart-wrap {
+		height: 62vh;
+		min-height: 360px;
+	}
+
+	.constituency-list {
+		max-height: 34vh;
 	}
 }
