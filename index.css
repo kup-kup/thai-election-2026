@@ -1,9 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;700&display=swap");
+
+/* Thai glyphs -> CSChatThai */
 @font-face {
-    font-family: "CSChatThai";
+    font-family: "ElectionUI";
     src: url("./assets/fonts/CSChatThai.ttf") format("truetype");
-    font-weight: 400;
+    font-weight: 400 700;
     font-style: normal;
     font-display: swap;
+    unicode-range:
+        U+0E00-0E7F,   /* Thai */
+        U+200C-200D,   /* ZWNJ/ZWJ */
+        U+25CC;        /* dotted circle */
+}
+
+/* Latin glyphs -> Antonio */
+@font-face {
+    font-family: "ElectionUI";
+    src: local("Antonio"), local("Antonio Regular");
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range:
+        U+0000-00FF,   /* Basic Latin + Latin-1 */
+        U+0100-024F;   /* Latin Extended */
 }
 
 :root {
@@ -22,10 +41,10 @@
 }
 
 body {
-	margin: 0;
-	background: linear-gradient(180deg, #eef3fb 0%, var(--bg) 100%);
-	color: var(--text);
-	font-family: "CSChatThai", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: linear-gradient(180deg, #eef3fb 0%, var(--bg) 100%);
+    color: var(--text);
+    font-family: "ElectionUI", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .container {
