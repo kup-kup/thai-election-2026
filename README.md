@@ -80,33 +80,33 @@ Party-list ballot data by constituency and party-list number.
 Constituency-level aggregated comparison between constituency and party-list ballot systems.
 
 - **Columns (identity):**
-	- `รหัสจังหวัด`, `จังหวัด`, `เขต`
+	- `province_code`, `province_name`, `constituency`
 - **Columns (party-list participation):**
-	- `party_listผู้มีสิทธิ์`
-	- `party_listมาใช้สิทธิ์`
-	- `party_listคะแนนดี`
-	- `party_listคะแนนเสีย`
-	- `party_listไม่โหวต`
-	- `party_listballots_received`
-	- `party_listballots_used`
+	- `party_list_eligible_voters` --- eligible voters for party-list system in the constituency
+	- `party_list_voter_came` --- voters who participated in the party-list system in the constituency
+	- `party_list_good_votes` --- valid votes for party-list system in the constituency
+	- `party_list_invalid_votes` --- invalid votes for party-list system in the constituency
+	- `party_list_no_votes` --- voters who vote-no in the party-list system in the constituency
+	- `party_listballots_received` --- number of ballots received for the party-list system in the constituency
+	- `party_listballots_used` --- number of ballots used in the party-list system in the constituency
 - **Columns (constituency winner):**
-	- `แบ่งเขต_ผู้ชนะ`
-	- `แบ่งเขต_พรรค`
+	- `constituency_winner_candidate`
+	- `constituency_winner_party`
 - **Columns (constituency participation):**
-	- `consti_eligible_voters`
-	- `consti_voters_came`
-	- `consti_ballots_received`
-	- `consti_ballots_used`
-	- `consti_good_votes`
-	- `consti_invalid_votes`
-	- `consti_no_votes`
+	- `consti_eligible_voters` --- eligible voters for constituency system in the constituency
+	- `consti_voters_came` --- voters who participated in the constituency system in the constituency
+	- `consti_ballots_received` --- number of ballots received for the constituency system in the constituency
+	- `consti_ballots_used` --- number of ballots used in the constituency system in the constituency
+	- `consti_good_votes` --- valid votes for constituency system in the constituency
+	- `consti_invalid_votes` --- invalid votes for constituency system in the constituency
+	- `consti_no_votes` --- voters who vote-no in the constituency system in the constituency
 - **Columns (derived/anomaly metrics):**
-	- `2diff_came`
-	- `2pct_diff/ผู้มีสิทเขต`
-	- `3party_list_pct_มาใช้สิท`
-	- `3consti_pct_มาใช้สิท`
-	- `5partylist_บัตรผี`
-	- `5consti_บัตรผี`
+	- `2diff_came` --- difference in voters who came between the two systems
+	- `2pct_diff_eligible_voters` --- percentage difference in eligible voters between the two systems
+	- `3party_list_pct_came` --- percentage of eligible voters who participated in the party-list system
+	- `3consti_pct_came` --- percentage of eligible voters who participated in the constituency system
+	- `5partylist_ghost` --- voters who participated in the party-list system but not the constituency system
+	- `5consti_ghost` --- voters who participated in the constituency system but not the party-list system
 - **Used by dashboard metrics:**
 	1. difference between two ballot count systems
 	2. turnout percentages

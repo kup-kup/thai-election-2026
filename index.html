@@ -38,10 +38,8 @@
         <section id="dashboardSection" class="story-section dashboard-section">
             <div class="section-inner dashboard-layout">
                 <aside class="dashboard-left">
-                    <section class="panel status-card" id="statusCard" aria-live="polite">Loading election map data...</section>
-
                     <section class="panel control-panel">
-                        <h3>ข้อมูลที่ต้องการดู</h3>
+                        <h3 style="font-size: large;">ข้อมูลที่ต้องการดู</h3>
                         <div id="metricSelector" class="metric-selector"></div>
                     </section>
 
@@ -61,8 +59,9 @@
                 </aside>
 
                 <section class="dashboard-map panel">
-                    <h3>Constituency Tile Grid</h3>
+                    <button id="mapResetButton" class="map-reset-button" type="button">Reset View</button>
                     <div id="tileGridMap" class="tile-grid-map" role="img" aria-label="Thailand constituency tile grid map"></div>
+                    <div id="tileHoverTooltip" class="tile-hover-tooltip" aria-hidden="true"></div>
                     <div id="partyLegend" class="party-legend"></div>
                 </section>
 
