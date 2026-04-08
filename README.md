@@ -124,3 +124,6 @@ Constituency-level aggregated comparison between constituency and party-list bal
 - Some files contain non-numeric entries in numeric-looking columns (for example `N/A`).
 - Parsing should always be null-safe.
 - If province or district join fails, UI should keep tile/list entry visible but gray.
+
+## Citation
+Data source: [Chanon Ngernthongdee's GitHub repository](https://github.com/killernay/election-69-OCR-result) (originally from Thai Election Commission)
