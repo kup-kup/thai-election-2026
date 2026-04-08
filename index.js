@@ -2,8 +2,7 @@ const summary_winners_url = "https://raw.githubusercontent.com/killernay/electio
 const tile_grid_url = "src/tile_grid.csv";
 const province_encoding_url = "src/province_encoding.csv";
 const region_mapping_url = "src/region_mapping.csv";
-const consti1_url = "src/consti1.csv";
-const partylist1_url = "src/partylist1.csv";
+const benford_url = "src/benford.json";
 
 const statusCard = document.getElementById("statusCard");
 const tileGridMap = document.getElementById("tileGridMap");
@@ -38,12 +37,12 @@ const state = {
     searchQuery: "",
     topN: 5,
     records: [],
+    recordByKey: new Map(),
+    benfordData: null,
     gridRows: [],
     provincesByAcronym: new Map(),
     regionByProvinceCode: new Map(),
     regionLabels: new Map(),
-    constiFirstDigits: [],
-    partyListFirstDigits: [],
 };
 
 function parseCsv(text) {
@@ -138,6 +137,14 @@ async function fetchText(url) {
         throw new Error(`Failed to fetch ${url}: ${response.status}`);
     }
     return response.text();
+}
+
+async function fetchJson(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch ${url}: ${response.status}`);
+    }
+    return response.json();
 }
 
 function makePartyColor(partyName) {
@@ -406,7 +413,7 @@ function renderRegionFilter() {
 }
 
 function renderBenfordFilter() {
-    const parties = [...new Set(state.records.map((record) => record.party).filter((party) => party && party !== "Unknown"))].sort();
+    const parties = Object.keys(state.benfordData?.parties || {}).sort();
     benfordPartyFilter.innerHTML = "";
 
     const allOption = document.createElement("option");
@@ -420,43 +427,32 @@ function renderBenfordFilter() {
         option.textContent = party;
         benfordPartyFilter.appendChild(option);
     });
+
+    if (state.selectedPartyForBenford !== "overall" && !parties.includes(state.selectedPartyForBenford)) {
+        state.selectedPartyForBenford = "overall";
+    }
+
     benfordPartyFilter.value = state.selectedPartyForBenford;
 }
 
 function computeBenfordData() {
     const digits = d3.range(1, 10);
-    
-    // Combine First_Digit data from both sources
-    let allFirstDigits = [...state.constiFirstDigits, ...state.partyListFirstDigits];
-    
-    // Filter by party if selected
-    if (state.selectedPartyForBenford !== "overall") {
-        const constiWithParty = state.records
-            .filter(r => r.type === "constituency")
-            .map(record => ({ digit: record.firstDigit, party: record.party }));
-        
-        const partyListWithParty = state.records
-            .filter(r => r.type === "partylist")
-            .map(record => ({ digit: record.firstDigit, party: record.party }));
-        
-        allFirstDigits = [...constiWithParty, ...partyListWithParty]
-            .filter(item => item.party === state.selectedPartyForBenford)
-            .map(item => item.digit);
-    }
-    
-    const total = allFirstDigits.length;
-    const counter = new Map();
-    allFirstDigits.forEach((digit) => {
-        if (Number.isInteger(digit) && digit >= 1 && digit <= 9) {
-            counter.set(digit, (counter.get(digit) || 0) + 1);
-        }
-    });
+
+    const selectedData = state.selectedPartyForBenford === "overall"
+        ? state.benfordData?.overall
+        : state.benfordData?.parties?.[state.selectedPartyForBenford];
+
+    const distributionByDigit = new Map(
+        (selectedData?.distribution || []).map((entry) => [Number(entry.digit), entry])
+    );
 
     return digits.map((digit) => {
-        const expectedRatio = Math.log10(1 + 1 / digit);
-        const expected = total * expectedRatio;
-        const actual = counter.get(digit) || 0;
-        return { digit, expected, actual };
+        const entry = distributionByDigit.get(digit);
+        return {
+            digit,
+            expected: Number(entry?.expected) || 0,
+            actual: Number(entry?.actual) || 0,
+        };
     });
 }
 
@@ -578,7 +574,7 @@ function renderTileGrid(gridRows, winnerLookup, provinceLookup) {
             const party = normalized.party;
             const candidate = normalized.candidate;
             const provinceName = normalized.provinceName;
-            const record = state.records.find((entry) => entry.provinceCode === provinceCode && entry.district === district);
+            const record = state.recordByKey.get(`${provinceCode}-${district}`);
             const metricValue = getMetricValue(record, state.selectedMetric);
 
             if (state.selectedMetric === "winner") {
@@ -749,43 +745,34 @@ async function loadData() {
     try {
         statusCard.textContent = "Loading election map data...";
 
-        const [winnerCsv, tileGridCsv, provinceCsv, regionCsv, constiCsv, partyListCsv] = await Promise.all([
+        const [winnerCsv, tileGridCsv, provinceCsv, regionCsv, benfordData] = await Promise.all([
             fetchText(summary_winners_url),
             fetchText(tile_grid_url),
             fetchText(province_encoding_url),
             fetchText(region_mapping_url),
-            fetchText(consti1_url),
-            fetchText(partylist1_url),
+            fetchJson(benford_url),
         ]);
 
         const winnerRows = toObjects(winnerCsv);
         const gridRows = parseCsv(tileGridCsv).filter((row) => row.length > 0);
         const provinceRows = toObjects(provinceCsv);
         const regionRows = toObjects(regionCsv);
-        const constiRows = toObjects(constiCsv);
-        const partyListRows = toObjects(partyListCsv);
 
         state.winnerLookup = buildWinnerLookup(winnerRows);
         state.provincesByAcronym = buildProvinceLookup(provinceRows);
         state.gridRows = gridRows;
+        state.benfordData = benfordData;
 
         const regionBundle = buildRegionLookup(regionRows);
         state.regionByProvinceCode = regionBundle.lookup;
         state.regionLabels = regionBundle.labelLookup;
-        
-        // Build records and extract First_Digit data
+
+        // Build records
         const constituencyRecords = buildConstituencyRecords(gridRows, state.winnerLookup, state.provincesByAcronym);
-        const partyListRecords = buildPartyListRecords(partyListCsv);
-        state.records = [...constituencyRecords, ...partyListRecords];
-        
-        // Extract First_Digit data from both CSV sources
-        state.constiFirstDigits = constiRows
-            .map(row => Number(row["First_Digit"] || row["First_digit"] || ""))
-            .filter(digit => Number.isInteger(digit) && digit >= 1 && digit <= 9);
-        
-        state.partyListFirstDigits = partyListRows
-            .map(row => Number(row["First_digit"] || row["First_Digit"] || ""))
-            .filter(digit => Number.isInteger(digit) && digit >= 1 && digit <= 9);
+        state.records = constituencyRecords;
+        state.recordByKey = new Map(
+            constituencyRecords.map((record) => [`${record.provinceCode}-${record.district}`, record])
+        );
 
         renderBenfordFilter();
         renderAll();

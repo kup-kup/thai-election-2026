@@ -1,0 +1,5312 @@
+{
+  "sources": [
+    "src/consti1.csv",
+    "src/partylist1.csv"
+  ],
+  "overall": {
+    "total": 26270,
+    "distribution": [
+      {
+        "digit": 1,
+        "actual": 7952,
+        "expected_ratio": 0.3010299956639812,
+        "expected": 7908.057986092786,
+        "actual_ratio": 0.3027027027027027
+      },
+      {
+        "digit": 2,
+        "actual": 4879,
+        "expected_ratio": 0.17609125905568124,
+        "expected": 4625.917375392746,
+        "actual_ratio": 0.1857251617814998
+      },
+      {
+        "digit": 3,
+        "actual": 3426,
+        "expected_ratio": 0.12493873660829993,
+        "expected": 3282.1406107000394,
+        "actual_ratio": 0.13041492196421775
+      },
+      {
+        "digit": 4,
+        "actual": 2726,
+        "expected_ratio": 0.09691001300805642,
+        "expected": 2545.826041721642,
+        "actual_ratio": 0.10376855728968405
+      },
+      {
+        "digit": 5,
+        "actual": 2037,
+        "expected_ratio": 0.07918124604762482,
+        "expected": 2080.091333671104,
+        "actual_ratio": 0.07754092120289303
+      },
+      {
+        "digit": 6,
+        "actual": 1707,
+        "expected_ratio": 0.06694678963061322,
+        "expected": 1758.6921635962094,
+        "actual_ratio": 0.06497906357061287
+      },
+      {
+        "digit": 7,
+        "actual": 1297,
+        "expected_ratio": 0.05799194697768673,
+        "expected": 1523.4484471038304,
+        "actual_ratio": 0.049371907118385995
+      },
+      {
+        "digit": 8,
+        "actual": 1188,
+        "expected_ratio": 0.05115252244738129,
+        "expected": 1343.7767646927066,
+        "actual_ratio": 0.045222687476208605
+      },
+      {
+        "digit": 9,
+        "actual": 1058,
+        "expected_ratio": 0.04575749056067514,
+        "expected": 1202.049277028936,
+        "actual_ratio": 0.0402740768937952
+      }
+    ]
+  },
+  "parties": {
+    "กรีน": {
+      "total": 402,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 22,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.01405825692044,
+          "actual_ratio": 0.05472636815920398
+        },
+        {
+          "digit": 2,
+          "actual": 17,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.78868614038386,
+          "actual_ratio": 0.04228855721393035
+        },
+        {
+          "digit": 3,
+          "actual": 48,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.225372116536576,
+          "actual_ratio": 0.11940298507462686
+        },
+        {
+          "digit": 4,
+          "actual": 60,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.95782522923868,
+          "actual_ratio": 0.14925373134328357
+        },
+        {
+          "digit": 5,
+          "actual": 112,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.830860911145177,
+          "actual_ratio": 0.27860696517412936
+        },
+        {
+          "digit": 6,
+          "actual": 69,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.912609431506514,
+          "actual_ratio": 0.17164179104477612
+        },
+        {
+          "digit": 7,
+          "actual": 43,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.312762685030066,
+          "actual_ratio": 0.10696517412935323
+        },
+        {
+          "digit": 8,
+          "actual": 16,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.56331402384728,
+          "actual_ratio": 0.03980099502487562
+        },
+        {
+          "digit": 9,
+          "actual": 15,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.394511205391407,
+          "actual_ratio": 0.03731343283582089
+        }
+      ]
+    },
+    "กล้าธรรม": {
+      "total": 727,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 246,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 218.84880684771434,
+          "actual_ratio": 0.33837689133425036
+        },
+        {
+          "digit": 2,
+          "actual": 145,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 128.01834533348026,
+          "actual_ratio": 0.19944979367262725
+        },
+        {
+          "digit": 3,
+          "actual": 109,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 90.83046151423405,
+          "actual_ratio": 0.1499312242090784
+        },
+        {
+          "digit": 4,
+          "actual": 65,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 70.45357945685701,
+          "actual_ratio": 0.08940852819807428
+        },
+        {
+          "digit": 5,
+          "actual": 56,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 57.56476587662324,
+          "actual_ratio": 0.07702888583218707
+        },
+        {
+          "digit": 6,
+          "actual": 26,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 48.670316061455814,
+          "actual_ratio": 0.03576341127922971
+        },
+        {
+          "digit": 7,
+          "actual": 28,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 42.16014545277825,
+          "actual_ratio": 0.03851444291609354
+        },
+        {
+          "digit": 8,
+          "actual": 29,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 37.187883819246196,
+          "actual_ratio": 0.039889958734525444
+        },
+        {
+          "digit": 9,
+          "actual": 23,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 33.265695637610825,
+          "actual_ratio": 0.03163686382393398
+        }
+      ]
+    },
+    "ก้าวอิสระ": {
+      "total": 406,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 80,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 122.21817823957636,
+          "actual_ratio": 0.19704433497536947
+        },
+        {
+          "digit": 2,
+          "actual": 91,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 71.49305117660658,
+          "actual_ratio": 0.22413793103448276
+        },
+        {
+          "digit": 3,
+          "actual": 92,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.725127062969776,
+          "actual_ratio": 0.22660098522167488
+        },
+        {
+          "digit": 4,
+          "actual": 57,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 39.345465281270904,
+          "actual_ratio": 0.14039408866995073
+        },
+        {
+          "digit": 5,
+          "actual": 32,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 32.14758589533567,
+          "actual_ratio": 0.07881773399014778
+        },
+        {
+          "digit": 6,
+          "actual": 27,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 27.180396590028966,
+          "actual_ratio": 0.0665024630541872
+        },
+        {
+          "digit": 7,
+          "actual": 14,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.544730472940813,
+          "actual_ratio": 0.034482758620689655
+        },
+        {
+          "digit": 8,
+          "actual": 10,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.767924113636806,
+          "actual_ratio": 0.024630541871921183
+        },
+        {
+          "digit": 9,
+          "actual": 3,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.57754116763411,
+          "actual_ratio": 0.007389162561576354
+        }
+      ]
+    },
+    "ครูไทยเพื่อประชาชน": {
+      "total": 401,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 178,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.71302826125645,
+          "actual_ratio": 0.44389027431421446
+        },
+        {
+          "digit": 2,
+          "actual": 87,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.61259488132818,
+          "actual_ratio": 0.2169576059850374
+        },
+        {
+          "digit": 3,
+          "actual": 37,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.100433379928276,
+          "actual_ratio": 0.09226932668329177
+        },
+        {
+          "digit": 4,
+          "actual": 25,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.86091521623062,
+          "actual_ratio": 0.06234413965087282
+        },
+        {
+          "digit": 5,
+          "actual": 15,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.75167966509755,
+          "actual_ratio": 0.03740648379052369
+        },
+        {
+          "digit": 6,
+          "actual": 10,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.8456626418759,
+          "actual_ratio": 0.02493765586034913
+        },
+        {
+          "digit": 7,
+          "actual": 10,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.25477073805238,
+          "actual_ratio": 0.02493765586034913
+        },
+        {
+          "digit": 8,
+          "actual": 13,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.5121615013999,
+          "actual_ratio": 0.032418952618453865
+        },
+        {
+          "digit": 9,
+          "actual": 26,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.348753714830732,
+          "actual_ratio": 0.06483790523690773
+        }
+      ]
+    },
+    "คลองไทย": {
+      "total": 402,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 105,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.01405825692044,
+          "actual_ratio": 0.26119402985074625
+        },
+        {
+          "digit": 2,
+          "actual": 57,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.78868614038386,
+          "actual_ratio": 0.1417910447761194
+        },
+        {
+          "digit": 3,
+          "actual": 41,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.225372116536576,
+          "actual_ratio": 0.10199004975124377
+        },
+        {
+          "digit": 4,
+          "actual": 39,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.95782522923868,
+          "actual_ratio": 0.09701492537313433
+        },
+        {
+          "digit": 5,
+          "actual": 33,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.830860911145177,
+          "actual_ratio": 0.08208955223880597
+        },
+        {
+          "digit": 6,
+          "actual": 43,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.912609431506514,
+          "actual_ratio": 0.10696517412935323
+        },
+        {
+          "digit": 7,
+          "actual": 29,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.312762685030066,
+          "actual_ratio": 0.07213930348258707
+        },
+        {
+          "digit": 8,
+          "actual": 30,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.56331402384728,
+          "actual_ratio": 0.07462686567164178
+        },
+        {
+          "digit": 9,
+          "actual": 25,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.394511205391407,
+          "actual_ratio": 0.06218905472636816
+        }
+      ]
+    },
+    "ความหวังใหม่": {
+      "total": 401,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 130,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.71302826125645,
+          "actual_ratio": 0.32418952618453867
+        },
+        {
+          "digit": 2,
+          "actual": 133,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.61259488132818,
+          "actual_ratio": 0.3316708229426434
+        },
+        {
+          "digit": 3,
+          "actual": 67,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.100433379928276,
+          "actual_ratio": 0.16708229426433915
+        },
+        {
+          "digit": 4,
+          "actual": 28,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.86091521623062,
+          "actual_ratio": 0.06982543640897755
+        },
+        {
+          "digit": 5,
+          "actual": 3,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.75167966509755,
+          "actual_ratio": 0.007481296758104738
+        },
+        {
+          "digit": 6,
+          "actual": 9,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.8456626418759,
+          "actual_ratio": 0.022443890274314215
+        },
+        {
+          "digit": 7,
+          "actual": 6,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.25477073805238,
+          "actual_ratio": 0.014962593516209476
+        },
+        {
+          "digit": 8,
+          "actual": 9,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.5121615013999,
+          "actual_ratio": 0.022443890274314215
+        },
+        {
+          "digit": 9,
+          "actual": 16,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.348753714830732,
+          "actual_ratio": 0.0399002493765586
+        }
+      ]
+    },
+    "ทางเลือกใหม่": {
+      "total": 443,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 25,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 133.35628807914367,
+          "actual_ratio": 0.056433408577878104
+        },
+        {
+          "digit": 2,
+          "actual": 75,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 78.0084277616668,
+          "actual_ratio": 0.16930022573363432
+        },
+        {
+          "digit": 3,
+          "actual": 124,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 55.34786031747687,
+          "actual_ratio": 0.2799097065462754
+        },
+        {
+          "digit": 4,
+          "actual": 111,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 42.93113576256899,
+          "actual_ratio": 0.2505643340857788
+        },
+        {
+          "digit": 5,
+          "actual": 50,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 35.077291999097795,
+          "actual_ratio": 0.11286681715575621
+        },
+        {
+          "digit": 6,
+          "actual": 38,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 29.657427806361657,
+          "actual_ratio": 0.08577878103837472
+        },
+        {
+          "digit": 7,
+          "actual": 14,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 25.690432511115223,
+          "actual_ratio": 0.03160270880361174
+        },
+        {
+          "digit": 8,
+          "actual": 4,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 22.660567444189912,
+          "actual_ratio": 0.009029345372460496
+        },
+        {
+          "digit": 9,
+          "actual": 2,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 20.270568318379087,
+          "actual_ratio": 0.004514672686230248
+        }
+      ]
+    },
+    "ท้องที่ไทย": {
+      "total": 402,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 99,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.01405825692044,
+          "actual_ratio": 0.2462686567164179
+        },
+        {
+          "digit": 2,
+          "actual": 47,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.78868614038386,
+          "actual_ratio": 0.11691542288557213
+        },
+        {
+          "digit": 3,
+          "actual": 43,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.225372116536576,
+          "actual_ratio": 0.10696517412935323
+        },
+        {
+          "digit": 4,
+          "actual": 58,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.95782522923868,
+          "actual_ratio": 0.14427860696517414
+        },
+        {
+          "digit": 5,
+          "actual": 44,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.830860911145177,
+          "actual_ratio": 0.10945273631840796
+        },
+        {
+          "digit": 6,
+          "actual": 45,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.912609431506514,
+          "actual_ratio": 0.11194029850746269
+        },
+        {
+          "digit": 7,
+          "actual": 29,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.312762685030066,
+          "actual_ratio": 0.07213930348258707
+        },
+        {
+          "digit": 8,
+          "actual": 24,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.56331402384728,
+          "actual_ratio": 0.05970149253731343
+        },
+        {
+          "digit": 9,
+          "actual": 13,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.394511205391407,
+          "actual_ratio": 0.03233830845771144
+        }
+      ]
+    },
+    "บ้านเมือง": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 0,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 1,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "ประชากรไทย": {
+      "total": 442,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 155,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 133.05525808347969,
+          "actual_ratio": 0.3506787330316742
+        },
+        {
+          "digit": 2,
+          "actual": 97,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 77.83233650261111,
+          "actual_ratio": 0.21945701357466063
+        },
+        {
+          "digit": 3,
+          "actual": 50,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 55.22292158086857,
+          "actual_ratio": 0.11312217194570136
+        },
+        {
+          "digit": 4,
+          "actual": 34,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 42.834225749560936,
+          "actual_ratio": 0.07692307692307693
+        },
+        {
+          "digit": 5,
+          "actual": 31,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 34.99811075305017,
+          "actual_ratio": 0.07013574660633484
+        },
+        {
+          "digit": 6,
+          "actual": 26,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 29.590481016731044,
+          "actual_ratio": 0.058823529411764705
+        },
+        {
+          "digit": 7,
+          "actual": 12,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 25.632440564137536,
+          "actual_ratio": 0.027149321266968326
+        },
+        {
+          "digit": 8,
+          "actual": 17,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 22.60941492174253,
+          "actual_ratio": 0.038461538461538464
+        },
+        {
+          "digit": 9,
+          "actual": 20,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 20.224810827818413,
+          "actual_ratio": 0.04524886877828054
+        }
+      ]
+    },
+    "ประชาชน": {
+      "total": 799,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 283,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 240.52296653552096,
+          "actual_ratio": 0.3541927409261577
+        },
+        {
+          "digit": 2,
+          "actual": 221,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 140.6969159854893,
+          "actual_ratio": 0.2765957446808511
+        },
+        {
+          "digit": 3,
+          "actual": 134,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 99.82605055003165,
+          "actual_ratio": 0.1677096370463079
+        },
+        {
+          "digit": 4,
+          "actual": 102,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 77.43110039343708,
+          "actual_ratio": 0.1276595744680851
+        },
+        {
+          "digit": 5,
+          "actual": 13,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 63.26581559205223,
+          "actual_ratio": 0.016270337922403004
+        },
+        {
+          "digit": 6,
+          "actual": 8,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 53.49048491485996,
+          "actual_ratio": 0.010012515644555695
+        },
+        {
+          "digit": 7,
+          "actual": 3,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 46.3355656351717,
+          "actual_ratio": 0.0037546933667083854
+        },
+        {
+          "digit": 8,
+          "actual": 16,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 40.87086543545765,
+          "actual_ratio": 0.02002503128911139
+        },
+        {
+          "digit": 9,
+          "actual": 19,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 36.56023495797944,
+          "actual_ratio": 0.023779724655819776
+        }
+      ]
+    },
+    "ประชาชาติ": {
+      "total": 415,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 191,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 124.92744820055219,
+          "actual_ratio": 0.4602409638554217
+        },
+        {
+          "digit": 2,
+          "actual": 77,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 73.07787250810772,
+          "actual_ratio": 0.1855421686746988
+        },
+        {
+          "digit": 3,
+          "actual": 22,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 51.849575692444475,
+          "actual_ratio": 0.05301204819277108
+        },
+        {
+          "digit": 4,
+          "actual": 12,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 40.21765539834342,
+          "actual_ratio": 0.02891566265060241
+        },
+        {
+          "digit": 5,
+          "actual": 21,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 32.8602171097643,
+          "actual_ratio": 0.05060240963855422
+        },
+        {
+          "digit": 6,
+          "actual": 26,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 27.782917696704487,
+          "actual_ratio": 0.06265060240963856
+        },
+        {
+          "digit": 7,
+          "actual": 21,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 24.066657995739995,
+          "actual_ratio": 0.05060240963855422
+        },
+        {
+          "digit": 8,
+          "actual": 27,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 21.228296815663235,
+          "actual_ratio": 0.06506024096385542
+        },
+        {
+          "digit": 9,
+          "actual": 18,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.989358582680186,
+          "actual_ratio": 0.043373493975903614
+        }
+      ]
+    },
+    "ประชาธิปปัตย์": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 0,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 0,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 1,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "ประชาธิปัตย์": {
+      "total": 797,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 264,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 239.920906544193,
+          "actual_ratio": 0.3312421580928482
+        },
+        {
+          "digit": 2,
+          "actual": 111,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 140.34473346737795,
+          "actual_ratio": 0.13927227101631118
+        },
+        {
+          "digit": 3,
+          "actual": 78,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 99.57617307681505,
+          "actual_ratio": 0.09786700125470514
+        },
+        {
+          "digit": 4,
+          "actual": 89,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 77.23728036742096,
+          "actual_ratio": 0.11166875784190715
+        },
+        {
+          "digit": 5,
+          "actual": 63,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 63.10745309995698,
+          "actual_ratio": 0.07904642409033877
+        },
+        {
+          "digit": 6,
+          "actual": 69,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 53.356591335598736,
+          "actual_ratio": 0.08657465495608532
+        },
+        {
+          "digit": 7,
+          "actual": 51,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 46.219581741216324,
+          "actual_ratio": 0.06398996235884567
+        },
+        {
+          "digit": 8,
+          "actual": 41,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 40.76856039056289,
+          "actual_ratio": 0.05144291091593475
+        },
+        {
+          "digit": 9,
+          "actual": 31,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 36.46871997685809,
+          "actual_ratio": 0.03889585947302384
+        }
+      ]
+    },
+    "ประชาธิปัตย์ใหม่": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 1,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 0,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "ประชาธิปัติย์": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 0,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 1,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "ประชาธิปไตยใหม่": {
+      "total": 467,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 69,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 140.58100797507922,
+          "actual_ratio": 0.14775160599571735
+        },
+        {
+          "digit": 2,
+          "actual": 63,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 82.23461797900313,
+          "actual_ratio": 0.1349036402569593
+        },
+        {
+          "digit": 3,
+          "actual": 83,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 58.34638999607607,
+          "actual_ratio": 0.1777301927194861
+        },
+        {
+          "digit": 4,
+          "actual": 69,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 45.25697607476235,
+          "actual_ratio": 0.14775160599571735
+        },
+        {
+          "digit": 5,
+          "actual": 63,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 36.97764190424079,
+          "actual_ratio": 0.1349036402569593
+        },
+        {
+          "digit": 6,
+          "actual": 52,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 31.264150757496374,
+          "actual_ratio": 0.11134903640256959
+        },
+        {
+          "digit": 7,
+          "actual": 26,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 27.082239238579703,
+          "actual_ratio": 0.055674518201284794
+        },
+        {
+          "digit": 8,
+          "actual": 26,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 23.888227982927063,
+          "actual_ratio": 0.055674518201284794
+        },
+        {
+          "digit": 9,
+          "actual": 16,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 21.368748091835293,
+          "actual_ratio": 0.034261241970021415
+        }
+      ]
+    },
+    "ประชาอาสาชาติ": {
+      "total": 400,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 161,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.41199826559247,
+          "actual_ratio": 0.4025
+        },
+        {
+          "digit": 2,
+          "actual": 35,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.4365036222725,
+          "actual_ratio": 0.0875
+        },
+        {
+          "digit": 3,
+          "actual": 20,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 49.975494643319976,
+          "actual_ratio": 0.05
+        },
+        {
+          "digit": 4,
+          "actual": 21,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.76400520322257,
+          "actual_ratio": 0.0525
+        },
+        {
+          "digit": 5,
+          "actual": 25,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.672498419049926,
+          "actual_ratio": 0.0625
+        },
+        {
+          "digit": 6,
+          "actual": 35,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.778715852245288,
+          "actual_ratio": 0.0875
+        },
+        {
+          "digit": 7,
+          "actual": 21,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.196778791074692,
+          "actual_ratio": 0.0525
+        },
+        {
+          "digit": 8,
+          "actual": 39,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.461008978952517,
+          "actual_ratio": 0.0975
+        },
+        {
+          "digit": 9,
+          "actual": 43,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.302996224270057,
+          "actual_ratio": 0.1075
+        }
+      ]
+    },
+    "ประชาไทย": {
+      "total": 401,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 250,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.71302826125645,
+          "actual_ratio": 0.6234413965087282
+        },
+        {
+          "digit": 2,
+          "actual": 68,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.61259488132818,
+          "actual_ratio": 0.16957605985037408
+        },
+        {
+          "digit": 3,
+          "actual": 17,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.100433379928276,
+          "actual_ratio": 0.04239401496259352
+        },
+        {
+          "digit": 4,
+          "actual": 1,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.86091521623062,
+          "actual_ratio": 0.0024937655860349127
+        },
+        {
+          "digit": 5,
+          "actual": 4,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.75167966509755,
+          "actual_ratio": 0.00997506234413965
+        },
+        {
+          "digit": 6,
+          "actual": 4,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.8456626418759,
+          "actual_ratio": 0.00997506234413965
+        },
+        {
+          "digit": 7,
+          "actual": 18,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.25477073805238,
+          "actual_ratio": 0.04488778054862843
+        },
+        {
+          "digit": 8,
+          "actual": 21,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.5121615013999,
+          "actual_ratio": 0.05236907730673317
+        },
+        {
+          "digit": 9,
+          "actual": 18,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.348753714830732,
+          "actual_ratio": 0.04488778054862843
+        }
+      ]
+    },
+    "ปวงชนชาวไทย": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 0,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 1,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "ปวงชนไทย": {
+      "total": 495,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 81,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 149.0098478536707,
+          "actual_ratio": 0.16363636363636364
+        },
+        {
+          "digit": 2,
+          "actual": 48,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 87.16517323256221,
+          "actual_ratio": 0.09696969696969697
+        },
+        {
+          "digit": 3,
+          "actual": 63,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 61.84467462110847,
+          "actual_ratio": 0.12727272727272726
+        },
+        {
+          "digit": 4,
+          "actual": 89,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 47.97045643898793,
+          "actual_ratio": 0.1797979797979798
+        },
+        {
+          "digit": 5,
+          "actual": 62,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 39.19471679357429,
+          "actual_ratio": 0.12525252525252525
+        },
+        {
+          "digit": 6,
+          "actual": 48,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 33.13866086715355,
+          "actual_ratio": 0.09696969696969697
+        },
+        {
+          "digit": 7,
+          "actual": 48,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 28.70601375395493,
+          "actual_ratio": 0.09696969696969697
+        },
+        {
+          "digit": 8,
+          "actual": 32,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 25.32049861145374,
+          "actual_ratio": 0.06464646464646465
+        },
+        {
+          "digit": 9,
+          "actual": 24,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 22.649957827534195,
+          "actual_ratio": 0.048484848484848485
+        }
+      ]
+    },
+    "พรรคเศรษฐกิจ": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 1,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 0,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "พร้อม": {
+      "total": 404,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 37,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.6161182482484,
+          "actual_ratio": 0.09158415841584158
+        },
+        {
+          "digit": 2,
+          "actual": 68,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 71.14086865849522,
+          "actual_ratio": 0.16831683168316833
+        },
+        {
+          "digit": 3,
+          "actual": 94,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.475249589753176,
+          "actual_ratio": 0.23267326732673269
+        },
+        {
+          "digit": 4,
+          "actual": 66,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 39.15164525525479,
+          "actual_ratio": 0.16336633663366337
+        },
+        {
+          "digit": 5,
+          "actual": 56,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.989223403240427,
+          "actual_ratio": 0.13861386138613863
+        },
+        {
+          "digit": 6,
+          "actual": 48,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 27.04650301076774,
+          "actual_ratio": 0.1188118811881188
+        },
+        {
+          "digit": 7,
+          "actual": 21,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.42874657898544,
+          "actual_ratio": 0.05198019801980198
+        },
+        {
+          "digit": 8,
+          "actual": 12,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.665619068742043,
+          "actual_ratio": 0.0297029702970297
+        },
+        {
+          "digit": 9,
+          "actual": 2,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.486026186512756,
+          "actual_ratio": 0.0049504950495049506
+        }
+      ]
+    },
+    "พลวัต": {
+      "total": 460,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 192,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 138.47379800543135,
+          "actual_ratio": 0.41739130434782606
+        },
+        {
+          "digit": 2,
+          "actual": 79,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 81.00197916561336,
+          "actual_ratio": 0.17173913043478262
+        },
+        {
+          "digit": 3,
+          "actual": 34,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 57.47181883981797,
+          "actual_ratio": 0.07391304347826087
+        },
+        {
+          "digit": 4,
+          "actual": 31,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 44.578605983705955,
+          "actual_ratio": 0.06739130434782609
+        },
+        {
+          "digit": 5,
+          "actual": 12,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 36.423373181907415,
+          "actual_ratio": 0.02608695652173913
+        },
+        {
+          "digit": 6,
+          "actual": 26,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 30.795523230082082,
+          "actual_ratio": 0.05652173913043478
+        },
+        {
+          "digit": 7,
+          "actual": 20,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 26.6762956097359,
+          "actual_ratio": 0.043478260869565216
+        },
+        {
+          "digit": 8,
+          "actual": 26,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 23.530160325795393,
+          "actual_ratio": 0.05652173913043478
+        },
+        {
+          "digit": 9,
+          "actual": 40,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 21.048445657910566,
+          "actual_ratio": 0.08695652173913043
+        }
+      ]
+    },
+    "พลังธรรมใหม่": {
+      "total": 400,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 76,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.41199826559247,
+          "actual_ratio": 0.19
+        },
+        {
+          "digit": 2,
+          "actual": 68,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.4365036222725,
+          "actual_ratio": 0.17
+        },
+        {
+          "digit": 3,
+          "actual": 81,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 49.975494643319976,
+          "actual_ratio": 0.2025
+        },
+        {
+          "digit": 4,
+          "actual": 66,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.76400520322257,
+          "actual_ratio": 0.165
+        },
+        {
+          "digit": 5,
+          "actual": 38,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.672498419049926,
+          "actual_ratio": 0.095
+        },
+        {
+          "digit": 6,
+          "actual": 26,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.778715852245288,
+          "actual_ratio": 0.065
+        },
+        {
+          "digit": 7,
+          "actual": 15,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.196778791074692,
+          "actual_ratio": 0.0375
+        },
+        {
+          "digit": 8,
+          "actual": 19,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.461008978952517,
+          "actual_ratio": 0.0475
+        },
+        {
+          "digit": 9,
+          "actual": 11,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.302996224270057,
+          "actual_ratio": 0.0275
+        }
+      ]
+    },
+    "พลังประชาชารัฐ": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 0,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 0,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 4,
+          "actual": 1,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "พลังประชารัฐ": {
+      "total": 592,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 248,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 178.20975743307687,
+          "actual_ratio": 0.4189189189189189
+        },
+        {
+          "digit": 2,
+          "actual": 123,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 104.24602536096329,
+          "actual_ratio": 0.20777027027027026
+        },
+        {
+          "digit": 3,
+          "actual": 53,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 73.96373207211356,
+          "actual_ratio": 0.08952702702702703
+        },
+        {
+          "digit": 4,
+          "actual": 34,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 57.3707277007694,
+          "actual_ratio": 0.057432432432432436
+        },
+        {
+          "digit": 5,
+          "actual": 22,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 46.875297660193894,
+          "actual_ratio": 0.037162162162162164
+        },
+        {
+          "digit": 6,
+          "actual": 30,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 39.63249946132303,
+          "actual_ratio": 0.05067567567567568
+        },
+        {
+          "digit": 7,
+          "actual": 23,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 34.33123261079054,
+          "actual_ratio": 0.03885135135135135
+        },
+        {
+          "digit": 8,
+          "actual": 34,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 30.282293288849726,
+          "actual_ratio": 0.057432432432432436
+        },
+        {
+          "digit": 9,
+          "actual": 25,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 27.088434411919685,
+          "actual_ratio": 0.04222972972972973
+        }
+      ]
+    },
+    "พลังสังคมใหม่": {
+      "total": 401,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 122,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.71302826125645,
+          "actual_ratio": 0.30423940149625933
+        },
+        {
+          "digit": 2,
+          "actual": 130,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.61259488132818,
+          "actual_ratio": 0.32418952618453867
+        },
+        {
+          "digit": 3,
+          "actual": 80,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.100433379928276,
+          "actual_ratio": 0.19950124688279303
+        },
+        {
+          "digit": 4,
+          "actual": 32,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.86091521623062,
+          "actual_ratio": 0.0798004987531172
+        },
+        {
+          "digit": 5,
+          "actual": 8,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.75167966509755,
+          "actual_ratio": 0.0199501246882793
+        },
+        {
+          "digit": 6,
+          "actual": 10,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.8456626418759,
+          "actual_ratio": 0.02493765586034913
+        },
+        {
+          "digit": 7,
+          "actual": 5,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.25477073805238,
+          "actual_ratio": 0.012468827930174564
+        },
+        {
+          "digit": 8,
+          "actual": 5,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.5121615013999,
+          "actual_ratio": 0.012468827930174564
+        },
+        {
+          "digit": 9,
+          "actual": 9,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.348753714830732,
+          "actual_ratio": 0.022443890274314215
+        }
+      ]
+    },
+    "พลังเพื่อไทย": {
+      "total": 401,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 125,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.71302826125645,
+          "actual_ratio": 0.3117206982543641
+        },
+        {
+          "digit": 2,
+          "actual": 129,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.61259488132818,
+          "actual_ratio": 0.32169576059850374
+        },
+        {
+          "digit": 3,
+          "actual": 48,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.100433379928276,
+          "actual_ratio": 0.11970074812967581
+        },
+        {
+          "digit": 4,
+          "actual": 22,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.86091521623062,
+          "actual_ratio": 0.05486284289276808
+        },
+        {
+          "digit": 5,
+          "actual": 20,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.75167966509755,
+          "actual_ratio": 0.04987531172069826
+        },
+        {
+          "digit": 6,
+          "actual": 15,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.8456626418759,
+          "actual_ratio": 0.03740648379052369
+        },
+        {
+          "digit": 7,
+          "actual": 12,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.25477073805238,
+          "actual_ratio": 0.029925187032418952
+        },
+        {
+          "digit": 8,
+          "actual": 18,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.5121615013999,
+          "actual_ratio": 0.04488778054862843
+        },
+        {
+          "digit": 9,
+          "actual": 12,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.348753714830732,
+          "actual_ratio": 0.029925187032418952
+        }
+      ]
+    },
+    "พลังไทยรักชาติ": {
+      "total": 393,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 48,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 118.3047882959446,
+          "actual_ratio": 0.12213740458015267
+        },
+        {
+          "digit": 2,
+          "actual": 46,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 69.20386480888273,
+          "actual_ratio": 0.11704834605597965
+        },
+        {
+          "digit": 3,
+          "actual": 52,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 49.10092348706188,
+          "actual_ratio": 0.13231552162849872
+        },
+        {
+          "digit": 4,
+          "actual": 66,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.08563511216617,
+          "actual_ratio": 0.16793893129770993
+        },
+        {
+          "digit": 5,
+          "actual": 54,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.118229696716554,
+          "actual_ratio": 0.13740458015267176
+        },
+        {
+          "digit": 6,
+          "actual": 30,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.310088324830996,
+          "actual_ratio": 0.07633587786259542
+        },
+        {
+          "digit": 7,
+          "actual": 35,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 22.790835162230884,
+          "actual_ratio": 0.089058524173028
+        },
+        {
+          "digit": 8,
+          "actual": 41,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.102941321820847,
+          "actual_ratio": 0.10432569974554708
+        },
+        {
+          "digit": 9,
+          "actual": 21,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 17.98269379034533,
+          "actual_ratio": 0.05343511450381679
+        }
+      ]
+    },
+    "ฟิวชน": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 1,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 0,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "ฟิวชัน": {
+      "total": 405,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 108,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.91714824391238,
+          "actual_ratio": 0.26666666666666666
+        },
+        {
+          "digit": 2,
+          "actual": 129,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 71.3169599175509,
+          "actual_ratio": 0.31851851851851853
+        },
+        {
+          "digit": 3,
+          "actual": 79,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.600188326361476,
+          "actual_ratio": 0.19506172839506172
+        },
+        {
+          "digit": 4,
+          "actual": 42,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 39.24855526826285,
+          "actual_ratio": 0.1037037037037037
+        },
+        {
+          "digit": 5,
+          "actual": 21,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 32.06840464928805,
+          "actual_ratio": 0.05185185185185185
+        },
+        {
+          "digit": 6,
+          "actual": 11,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 27.113449800398353,
+          "actual_ratio": 0.027160493827160494
+        },
+        {
+          "digit": 7,
+          "actual": 7,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.486738525963126,
+          "actual_ratio": 0.01728395061728395
+        },
+        {
+          "digit": 8,
+          "actual": 5,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.716771591189424,
+          "actual_ratio": 0.012345679012345678
+        },
+        {
+          "digit": 9,
+          "actual": 3,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.531783677073435,
+          "actual_ratio": 0.007407407407407408
+        }
+      ]
+    },
+    "ภูมิใจไทย": {
+      "total": 794,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 266,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 239.01781655720106,
+          "actual_ratio": 0.3350125944584383
+        },
+        {
+          "digit": 2,
+          "actual": 154,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 139.8164596902109,
+          "actual_ratio": 0.19395465994962216
+        },
+        {
+          "digit": 3,
+          "actual": 101,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 99.20135686699015,
+          "actual_ratio": 0.12720403022670027
+        },
+        {
+          "digit": 4,
+          "actual": 78,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 76.9465503283968,
+          "actual_ratio": 0.0982367758186398
+        },
+        {
+          "digit": 5,
+          "actual": 71,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 62.8699093618141,
+          "actual_ratio": 0.08942065491183879
+        },
+        {
+          "digit": 6,
+          "actual": 34,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 53.1557509667069,
+          "actual_ratio": 0.042821158690176324
+        },
+        {
+          "digit": 7,
+          "actual": 33,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 46.04560590028326,
+          "actual_ratio": 0.041561712846347604
+        },
+        {
+          "digit": 8,
+          "actual": 27,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 40.615102823220745,
+          "actual_ratio": 0.03400503778337532
+        },
+        {
+          "digit": 9,
+          "actual": 30,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 36.331447505176065,
+          "actual_ratio": 0.037783375314861464
+        }
+      ]
+    },
+    "มิติใหม่": {
+      "total": 400,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 126,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.41199826559247,
+          "actual_ratio": 0.315
+        },
+        {
+          "digit": 2,
+          "actual": 96,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.4365036222725,
+          "actual_ratio": 0.24
+        },
+        {
+          "digit": 3,
+          "actual": 55,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 49.975494643319976,
+          "actual_ratio": 0.1375
+        },
+        {
+          "digit": 4,
+          "actual": 30,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.76400520322257,
+          "actual_ratio": 0.075
+        },
+        {
+          "digit": 5,
+          "actual": 22,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.672498419049926,
+          "actual_ratio": 0.055
+        },
+        {
+          "digit": 6,
+          "actual": 27,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.778715852245288,
+          "actual_ratio": 0.0675
+        },
+        {
+          "digit": 7,
+          "actual": 12,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.196778791074692,
+          "actual_ratio": 0.03
+        },
+        {
+          "digit": 8,
+          "actual": 18,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.461008978952517,
+          "actual_ratio": 0.045
+        },
+        {
+          "digit": 9,
+          "actual": 14,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.302996224270057,
+          "actual_ratio": 0.035
+        }
+      ]
+    },
+    "รวมพลัง": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 1,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 0,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "รวมพลังประชาชน": {
+      "total": 402,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 27,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.01405825692044,
+          "actual_ratio": 0.06716417910447761
+        },
+        {
+          "digit": 2,
+          "actual": 50,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.78868614038386,
+          "actual_ratio": 0.12437810945273632
+        },
+        {
+          "digit": 3,
+          "actual": 59,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.225372116536576,
+          "actual_ratio": 0.14676616915422885
+        },
+        {
+          "digit": 4,
+          "actual": 74,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.95782522923868,
+          "actual_ratio": 0.18407960199004975
+        },
+        {
+          "digit": 5,
+          "actual": 73,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.830860911145177,
+          "actual_ratio": 0.18159203980099503
+        },
+        {
+          "digit": 6,
+          "actual": 67,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.912609431506514,
+          "actual_ratio": 0.16666666666666666
+        },
+        {
+          "digit": 7,
+          "actual": 31,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.312762685030066,
+          "actual_ratio": 0.07711442786069651
+        },
+        {
+          "digit": 8,
+          "actual": 11,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.56331402384728,
+          "actual_ratio": 0.02736318407960199
+        },
+        {
+          "digit": 9,
+          "actual": 10,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.394511205391407,
+          "actual_ratio": 0.024875621890547265
+        }
+      ]
+    },
+    "รวมพลังสร้างชาติ": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 0,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 1,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "รวมใจไทย": {
+      "total": 402,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 82,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.01405825692044,
+          "actual_ratio": 0.20398009950248755
+        },
+        {
+          "digit": 2,
+          "actual": 78,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.78868614038386,
+          "actual_ratio": 0.19402985074626866
+        },
+        {
+          "digit": 3,
+          "actual": 58,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.225372116536576,
+          "actual_ratio": 0.14427860696517414
+        },
+        {
+          "digit": 4,
+          "actual": 46,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.95782522923868,
+          "actual_ratio": 0.11442786069651742
+        },
+        {
+          "digit": 5,
+          "actual": 40,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.830860911145177,
+          "actual_ratio": 0.09950248756218906
+        },
+        {
+          "digit": 6,
+          "actual": 31,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.912609431506514,
+          "actual_ratio": 0.07711442786069651
+        },
+        {
+          "digit": 7,
+          "actual": 27,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.312762685030066,
+          "actual_ratio": 0.06716417910447761
+        },
+        {
+          "digit": 8,
+          "actual": 21,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.56331402384728,
+          "actual_ratio": 0.05223880597014925
+        },
+        {
+          "digit": 9,
+          "actual": 19,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.394511205391407,
+          "actual_ratio": 0.0472636815920398
+        }
+      ]
+    },
+    "รวมไทยสร้าง": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 1,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 0,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "รวมไทยสร้างชาติ": {
+      "total": 640,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 262,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 192.65919722494797,
+          "actual_ratio": 0.409375
+        },
+        {
+          "digit": 2,
+          "actual": 155,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 112.69840579563599,
+          "actual_ratio": 0.2421875
+        },
+        {
+          "digit": 3,
+          "actual": 47,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 79.96079142931195,
+          "actual_ratio": 0.0734375
+        },
+        {
+          "digit": 4,
+          "actual": 36,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 62.02240832515611,
+          "actual_ratio": 0.05625
+        },
+        {
+          "digit": 5,
+          "actual": 26,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 50.675997470479885,
+          "actual_ratio": 0.040625
+        },
+        {
+          "digit": 6,
+          "actual": 21,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 42.84594536359246,
+          "actual_ratio": 0.0328125
+        },
+        {
+          "digit": 7,
+          "actual": 34,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 37.11484606571951,
+          "actual_ratio": 0.053125
+        },
+        {
+          "digit": 8,
+          "actual": 33,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 32.737614366324024,
+          "actual_ratio": 0.0515625
+        },
+        {
+          "digit": 9,
+          "actual": 26,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 29.28479395883209,
+          "actual_ratio": 0.040625
+        }
+      ]
+    },
+    "รักชาติ": {
+      "total": 432,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 228,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 130.04495812683987,
+          "actual_ratio": 0.5277777777777778
+        },
+        {
+          "digit": 2,
+          "actual": 58,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 76.0714239120543,
+          "actual_ratio": 0.13425925925925927
+        },
+        {
+          "digit": 3,
+          "actual": 26,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 53.97353421478557,
+          "actual_ratio": 0.06018518518518518
+        },
+        {
+          "digit": 4,
+          "actual": 12,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 41.865125619480374,
+          "actual_ratio": 0.027777777777777776
+        },
+        {
+          "digit": 5,
+          "actual": 14,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 34.20629829257392,
+          "actual_ratio": 0.032407407407407406
+        },
+        {
+          "digit": 6,
+          "actual": 17,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 28.921013120424913,
+          "actual_ratio": 0.03935185185185185
+        },
+        {
+          "digit": 7,
+          "actual": 21,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 25.052521094360667,
+          "actual_ratio": 0.04861111111111111
+        },
+        {
+          "digit": 8,
+          "actual": 30,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 22.097889697268716,
+          "actual_ratio": 0.06944444444444445
+        },
+        {
+          "digit": 9,
+          "actual": 26,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 19.76723592221166,
+          "actual_ratio": 0.06018518518518518
+        }
+      ]
+    },
+    "รักษ์ธรรม": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 1,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 0,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "วิชชั่นใหม่": {
+      "total": 25,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 9,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 7.52574989159953,
+          "actual_ratio": 0.36
+        },
+        {
+          "digit": 2,
+          "actual": 4,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 4.402281476392031,
+          "actual_ratio": 0.16
+        },
+        {
+          "digit": 3,
+          "actual": 3,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 3.1234684152074985,
+          "actual_ratio": 0.12
+        },
+        {
+          "digit": 4,
+          "actual": 2,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 2.4227503252014104,
+          "actual_ratio": 0.08
+        },
+        {
+          "digit": 5,
+          "actual": 1,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 1.9795311511906204,
+          "actual_ratio": 0.04
+        },
+        {
+          "digit": 6,
+          "actual": 3,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 1.6736697407653305,
+          "actual_ratio": 0.12
+        },
+        {
+          "digit": 7,
+          "actual": 1,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 1.4497986744421683,
+          "actual_ratio": 0.04
+        },
+        {
+          "digit": 8,
+          "actual": 2,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 1.2788130611845323,
+          "actual_ratio": 0.08
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 1.1439372640168786,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "วินัยไทย": {
+      "total": 400,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 96,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.41199826559247,
+          "actual_ratio": 0.24
+        },
+        {
+          "digit": 2,
+          "actual": 67,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.4365036222725,
+          "actual_ratio": 0.1675
+        },
+        {
+          "digit": 3,
+          "actual": 44,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 49.975494643319976,
+          "actual_ratio": 0.11
+        },
+        {
+          "digit": 4,
+          "actual": 56,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.76400520322257,
+          "actual_ratio": 0.14
+        },
+        {
+          "digit": 5,
+          "actual": 46,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.672498419049926,
+          "actual_ratio": 0.115
+        },
+        {
+          "digit": 6,
+          "actual": 24,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.778715852245288,
+          "actual_ratio": 0.06
+        },
+        {
+          "digit": 7,
+          "actual": 26,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.196778791074692,
+          "actual_ratio": 0.065
+        },
+        {
+          "digit": 8,
+          "actual": 27,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.461008978952517,
+          "actual_ratio": 0.0675
+        },
+        {
+          "digit": 9,
+          "actual": 14,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.302996224270057,
+          "actual_ratio": 0.035
+        }
+      ]
+    },
+    "สร้างชาติ": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 0,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 1,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "สร้างอนาคตไทย": {
+      "total": 401,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 175,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.71302826125645,
+          "actual_ratio": 0.43640897755610975
+        },
+        {
+          "digit": 2,
+          "actual": 89,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.61259488132818,
+          "actual_ratio": 0.22194513715710723
+        },
+        {
+          "digit": 3,
+          "actual": 42,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.100433379928276,
+          "actual_ratio": 0.10473815461346633
+        },
+        {
+          "digit": 4,
+          "actual": 20,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.86091521623062,
+          "actual_ratio": 0.04987531172069826
+        },
+        {
+          "digit": 5,
+          "actual": 12,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.75167966509755,
+          "actual_ratio": 0.029925187032418952
+        },
+        {
+          "digit": 6,
+          "actual": 19,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.8456626418759,
+          "actual_ratio": 0.04738154613466334
+        },
+        {
+          "digit": 7,
+          "actual": 12,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.25477073805238,
+          "actual_ratio": 0.029925187032418952
+        },
+        {
+          "digit": 8,
+          "actual": 15,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.5121615013999,
+          "actual_ratio": 0.03740648379052369
+        },
+        {
+          "digit": 9,
+          "actual": 17,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.348753714830732,
+          "actual_ratio": 0.04239401496259352
+        }
+      ]
+    },
+    "สังคมประชาธิปไตยไทย": {
+      "total": 402,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 50,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.01405825692044,
+          "actual_ratio": 0.12437810945273632
+        },
+        {
+          "digit": 2,
+          "actual": 72,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.78868614038386,
+          "actual_ratio": 0.1791044776119403
+        },
+        {
+          "digit": 3,
+          "actual": 82,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.225372116536576,
+          "actual_ratio": 0.20398009950248755
+        },
+        {
+          "digit": 4,
+          "actual": 76,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.95782522923868,
+          "actual_ratio": 0.1890547263681592
+        },
+        {
+          "digit": 5,
+          "actual": 57,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.830860911145177,
+          "actual_ratio": 0.1417910447761194
+        },
+        {
+          "digit": 6,
+          "actual": 26,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.912609431506514,
+          "actual_ratio": 0.06467661691542288
+        },
+        {
+          "digit": 7,
+          "actual": 22,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.312762685030066,
+          "actual_ratio": 0.05472636815920398
+        },
+        {
+          "digit": 8,
+          "actual": 9,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.56331402384728,
+          "actual_ratio": 0.022388059701492536
+        },
+        {
+          "digit": 9,
+          "actual": 8,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.394511205391407,
+          "actual_ratio": 0.01990049751243781
+        }
+      ]
+    },
+    "สัมมาธิปไตย": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 1,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 0,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "อนาคตไทย": {
+      "total": 405,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 72,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.91714824391238,
+          "actual_ratio": 0.17777777777777778
+        },
+        {
+          "digit": 2,
+          "actual": 26,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 71.3169599175509,
+          "actual_ratio": 0.06419753086419754
+        },
+        {
+          "digit": 3,
+          "actual": 35,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.600188326361476,
+          "actual_ratio": 0.08641975308641975
+        },
+        {
+          "digit": 4,
+          "actual": 46,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 39.24855526826285,
+          "actual_ratio": 0.11358024691358025
+        },
+        {
+          "digit": 5,
+          "actual": 49,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 32.06840464928805,
+          "actual_ratio": 0.12098765432098765
+        },
+        {
+          "digit": 6,
+          "actual": 63,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 27.113449800398353,
+          "actual_ratio": 0.15555555555555556
+        },
+        {
+          "digit": 7,
+          "actual": 44,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.486738525963126,
+          "actual_ratio": 0.10864197530864197
+        },
+        {
+          "digit": 8,
+          "actual": 43,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.716771591189424,
+          "actual_ratio": 0.10617283950617284
+        },
+        {
+          "digit": 9,
+          "actual": 27,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.531783677073435,
+          "actual_ratio": 0.06666666666666667
+        }
+      ]
+    },
+    "เครือข่ายชาวนาแห่งประเทศไทย": {
+      "total": 402,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 195,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.01405825692044,
+          "actual_ratio": 0.48507462686567165
+        },
+        {
+          "digit": 2,
+          "actual": 80,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.78868614038386,
+          "actual_ratio": 0.19900497512437812
+        },
+        {
+          "digit": 3,
+          "actual": 19,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.225372116536576,
+          "actual_ratio": 0.0472636815920398
+        },
+        {
+          "digit": 4,
+          "actual": 20,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.95782522923868,
+          "actual_ratio": 0.04975124378109453
+        },
+        {
+          "digit": 5,
+          "actual": 22,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.830860911145177,
+          "actual_ratio": 0.05472636815920398
+        },
+        {
+          "digit": 6,
+          "actual": 22,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.912609431506514,
+          "actual_ratio": 0.05472636815920398
+        },
+        {
+          "digit": 7,
+          "actual": 14,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.312762685030066,
+          "actual_ratio": 0.03482587064676617
+        },
+        {
+          "digit": 8,
+          "actual": 17,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.56331402384728,
+          "actual_ratio": 0.04228855721393035
+        },
+        {
+          "digit": 9,
+          "actual": 13,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.394511205391407,
+          "actual_ratio": 0.03233830845771144
+        }
+      ]
+    },
+    "เป็นธรรม": {
+      "total": 402,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 84,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.01405825692044,
+          "actual_ratio": 0.208955223880597
+        },
+        {
+          "digit": 2,
+          "actual": 30,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.78868614038386,
+          "actual_ratio": 0.07462686567164178
+        },
+        {
+          "digit": 3,
+          "actual": 30,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.225372116536576,
+          "actual_ratio": 0.07462686567164178
+        },
+        {
+          "digit": 4,
+          "actual": 65,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.95782522923868,
+          "actual_ratio": 0.16169154228855723
+        },
+        {
+          "digit": 5,
+          "actual": 57,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.830860911145177,
+          "actual_ratio": 0.1417910447761194
+        },
+        {
+          "digit": 6,
+          "actual": 42,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.912609431506514,
+          "actual_ratio": 0.1044776119402985
+        },
+        {
+          "digit": 7,
+          "actual": 41,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.312762685030066,
+          "actual_ratio": 0.10199004975124377
+        },
+        {
+          "digit": 8,
+          "actual": 28,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.56331402384728,
+          "actual_ratio": 0.06965174129353234
+        },
+        {
+          "digit": 9,
+          "actual": 25,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.394511205391407,
+          "actual_ratio": 0.06218905472636816
+        }
+      ]
+    },
+    "เพื่อชาติไทย": {
+      "total": 400,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 175,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.41199826559247,
+          "actual_ratio": 0.4375
+        },
+        {
+          "digit": 2,
+          "actual": 64,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.4365036222725,
+          "actual_ratio": 0.16
+        },
+        {
+          "digit": 3,
+          "actual": 43,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 49.975494643319976,
+          "actual_ratio": 0.1075
+        },
+        {
+          "digit": 4,
+          "actual": 46,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.76400520322257,
+          "actual_ratio": 0.115
+        },
+        {
+          "digit": 5,
+          "actual": 30,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.672498419049926,
+          "actual_ratio": 0.075
+        },
+        {
+          "digit": 6,
+          "actual": 14,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.778715852245288,
+          "actual_ratio": 0.035
+        },
+        {
+          "digit": 7,
+          "actual": 11,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.196778791074692,
+          "actual_ratio": 0.0275
+        },
+        {
+          "digit": 8,
+          "actual": 5,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.461008978952517,
+          "actual_ratio": 0.0125
+        },
+        {
+          "digit": 9,
+          "actual": 12,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.302996224270057,
+          "actual_ratio": 0.03
+        }
+      ]
+    },
+    "เพื่อชีวิตใหม่": {
+      "total": 401,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 98,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.71302826125645,
+          "actual_ratio": 0.24438902743142144
+        },
+        {
+          "digit": 2,
+          "actual": 90,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.61259488132818,
+          "actual_ratio": 0.22443890274314215
+        },
+        {
+          "digit": 3,
+          "actual": 86,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.100433379928276,
+          "actual_ratio": 0.2144638403990025
+        },
+        {
+          "digit": 4,
+          "actual": 49,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.86091521623062,
+          "actual_ratio": 0.12219451371571072
+        },
+        {
+          "digit": 5,
+          "actual": 23,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.75167966509755,
+          "actual_ratio": 0.057356608478802994
+        },
+        {
+          "digit": 6,
+          "actual": 13,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.8456626418759,
+          "actual_ratio": 0.032418952618453865
+        },
+        {
+          "digit": 7,
+          "actual": 15,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.25477073805238,
+          "actual_ratio": 0.03740648379052369
+        },
+        {
+          "digit": 8,
+          "actual": 13,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.5121615013999,
+          "actual_ratio": 0.032418952618453865
+        },
+        {
+          "digit": 9,
+          "actual": 14,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.348753714830732,
+          "actual_ratio": 0.034912718204488775
+        }
+      ]
+    },
+    "เพื่อบ้านเมือง": {
+      "total": 440,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 117,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 132.45319809215172,
+          "actual_ratio": 0.26590909090909093
+        },
+        {
+          "digit": 2,
+          "actual": 94,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 77.48015398449975,
+          "actual_ratio": 0.21363636363636362
+        },
+        {
+          "digit": 3,
+          "actual": 78,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 54.97304410765197,
+          "actual_ratio": 0.17727272727272728
+        },
+        {
+          "digit": 4,
+          "actual": 56,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 42.64040572354482,
+          "actual_ratio": 0.12727272727272726
+        },
+        {
+          "digit": 5,
+          "actual": 29,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 34.83974826095492,
+          "actual_ratio": 0.0659090909090909
+        },
+        {
+          "digit": 6,
+          "actual": 29,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 29.456587437469818,
+          "actual_ratio": 0.0659090909090909
+        },
+        {
+          "digit": 7,
+          "actual": 14,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 25.516456670182162,
+          "actual_ratio": 0.031818181818181815
+        },
+        {
+          "digit": 8,
+          "actual": 11,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 22.507109876847768,
+          "actual_ratio": 0.025
+        },
+        {
+          "digit": 9,
+          "actual": 12,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 20.133295846697063,
+          "actual_ratio": 0.02727272727272727
+        }
+      ]
+    },
+    "เพื่อไทย": {
+      "total": 796,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 269,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 239.61987654852902,
+          "actual_ratio": 0.3379396984924623
+        },
+        {
+          "digit": 2,
+          "actual": 183,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 140.16864220832227,
+          "actual_ratio": 0.22989949748743718
+        },
+        {
+          "digit": 3,
+          "actual": 95,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 99.45123434020675,
+          "actual_ratio": 0.11934673366834171
+        },
+        {
+          "digit": 4,
+          "actual": 55,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 77.14037035441291,
+          "actual_ratio": 0.06909547738693467
+        },
+        {
+          "digit": 5,
+          "actual": 39,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 63.02827185390935,
+          "actual_ratio": 0.048994974874371856
+        },
+        {
+          "digit": 6,
+          "actual": 42,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 53.28964454596812,
+          "actual_ratio": 0.052763819095477386
+        },
+        {
+          "digit": 7,
+          "actual": 32,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 46.16158979423864,
+          "actual_ratio": 0.04020100502512563
+        },
+        {
+          "digit": 8,
+          "actual": 39,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 40.71740786811551,
+          "actual_ratio": 0.048994974874371856
+        },
+        {
+          "digit": 9,
+          "actual": 42,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 36.422962486297415,
+          "actual_ratio": 0.052763819095477386
+        }
+      ]
+    },
+    "เศรษฐกิจ": {
+      "total": 661,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 222,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 198.98082713389158,
+          "actual_ratio": 0.3358547655068079
+        },
+        {
+          "digit": 2,
+          "actual": 171,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 116.3963222358053,
+          "actual_ratio": 0.2586989409984871
+        },
+        {
+          "digit": 3,
+          "actual": 136,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 82.58450489808625,
+          "actual_ratio": 0.20574886535552195
+        },
+        {
+          "digit": 4,
+          "actual": 45,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 64.05751859832529,
+          "actual_ratio": 0.0680786686838124
+        },
+        {
+          "digit": 5,
+          "actual": 17,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 52.338803637480005,
+          "actual_ratio": 0.025718608169440244
+        },
+        {
+          "digit": 6,
+          "actual": 21,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 44.25182794583534,
+          "actual_ratio": 0.03177004538577912
+        },
+        {
+          "digit": 7,
+          "actual": 12,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 38.33267695225093,
+          "actual_ratio": 0.018154311649016642
+        },
+        {
+          "digit": 8,
+          "actual": 18,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 33.811817337719035,
+          "actual_ratio": 0.02723146747352496
+        },
+        {
+          "digit": 9,
+          "actual": 19,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 30.24570126060627,
+          "actual_ratio": 0.028744326777609682
+        }
+      ]
+    },
+    "เสรีรวมไทย": {
+      "total": 421,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 36,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 126.73362817453608,
+          "actual_ratio": 0.0855106888361045
+        },
+        {
+          "digit": 2,
+          "actual": 50,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 74.1344200624418,
+          "actual_ratio": 0.1187648456057007
+        },
+        {
+          "digit": 3,
+          "actual": 74,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 52.599208112094274,
+          "actual_ratio": 0.17577197149643706
+        },
+        {
+          "digit": 4,
+          "actual": 85,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 40.799115476391755,
+          "actual_ratio": 0.20190023752969122
+        },
+        {
+          "digit": 5,
+          "actual": 84,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 33.33530458605005,
+          "actual_ratio": 0.1995249406175772
+        },
+        {
+          "digit": 6,
+          "actual": 45,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 28.184598434488166,
+          "actual_ratio": 0.10688836104513064
+        },
+        {
+          "digit": 7,
+          "actual": 26,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 24.414609677606116,
+          "actual_ratio": 0.06175771971496437
+        },
+        {
+          "digit": 8,
+          "actual": 11,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 21.535211950347524,
+          "actual_ratio": 0.026128266033254157
+        },
+        {
+          "digit": 9,
+          "actual": 10,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 19.263903526044235,
+          "actual_ratio": 0.023752969121140142
+        }
+      ]
+    },
+    "แผ่นดินธรรม": {
+      "total": 401,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 118,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.71302826125645,
+          "actual_ratio": 0.2942643391521197
+        },
+        {
+          "digit": 2,
+          "actual": 111,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.61259488132818,
+          "actual_ratio": 0.27680798004987534
+        },
+        {
+          "digit": 3,
+          "actual": 50,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.100433379928276,
+          "actual_ratio": 0.12468827930174564
+        },
+        {
+          "digit": 4,
+          "actual": 46,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.86091521623062,
+          "actual_ratio": 0.11471321695760599
+        },
+        {
+          "digit": 5,
+          "actual": 27,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.75167966509755,
+          "actual_ratio": 0.06733167082294264
+        },
+        {
+          "digit": 6,
+          "actual": 17,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.8456626418759,
+          "actual_ratio": 0.04239401496259352
+        },
+        {
+          "digit": 7,
+          "actual": 5,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.25477073805238,
+          "actual_ratio": 0.012468827930174564
+        },
+        {
+          "digit": 8,
+          "actual": 16,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.5121615013999,
+          "actual_ratio": 0.0399002493765586
+        },
+        {
+          "digit": 9,
+          "actual": 11,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.348753714830732,
+          "actual_ratio": 0.02743142144638404
+        }
+      ]
+    },
+    "แรงงานสร้างชาติ": {
+      "total": 411,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 175,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 123.72332821789627,
+          "actual_ratio": 0.4257907542579075
+        },
+        {
+          "digit": 2,
+          "actual": 68,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 72.37350747188499,
+          "actual_ratio": 0.1654501216545012
+        },
+        {
+          "digit": 3,
+          "actual": 44,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 51.349820746011275,
+          "actual_ratio": 0.1070559610705596
+        },
+        {
+          "digit": 4,
+          "actual": 30,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 39.830015346311185,
+          "actual_ratio": 0.072992700729927
+        },
+        {
+          "digit": 5,
+          "actual": 12,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 32.5434921255738,
+          "actual_ratio": 0.029197080291970802
+        },
+        {
+          "digit": 6,
+          "actual": 22,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 27.515130538182035,
+          "actual_ratio": 0.0535279805352798
+        },
+        {
+          "digit": 7,
+          "actual": 26,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.834690207829247,
+          "actual_ratio": 0.06326034063260341
+        },
+        {
+          "digit": 8,
+          "actual": 16,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 21.02368672587371,
+          "actual_ratio": 0.038929440389294405
+        },
+        {
+          "digit": 9,
+          "actual": 18,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.806328620437483,
+          "actual_ratio": 0.043795620437956206
+        }
+      ]
+    },
+    "แรงงานสร้างไทย": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 0,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 0,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 1,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "โอกาสใหม่": {
+      "total": 473,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 107,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 142.3871879490631,
+          "actual_ratio": 0.226215644820296
+        },
+        {
+          "digit": 2,
+          "actual": 61,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 83.29116553333722,
+          "actual_ratio": 0.12896405919661733
+        },
+        {
+          "digit": 3,
+          "actual": 74,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 59.09602241572587,
+          "actual_ratio": 0.15644820295983086
+        },
+        {
+          "digit": 4,
+          "actual": 70,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 45.83843615281069,
+          "actual_ratio": 0.14799154334038056
+        },
+        {
+          "digit": 5,
+          "actual": 46,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 37.45272938052654,
+          "actual_ratio": 0.09725158562367865
+        },
+        {
+          "digit": 6,
+          "actual": 43,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 31.665831495280052,
+          "actual_ratio": 0.09090909090909091
+        },
+        {
+          "digit": 7,
+          "actual": 25,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 27.430190920445824,
+          "actual_ratio": 0.052854122621564484
+        },
+        {
+          "digit": 8,
+          "actual": 29,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 24.19514311761135,
+          "actual_ratio": 0.0613107822410148
+        },
+        {
+          "digit": 9,
+          "actual": 18,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 21.643293035199342,
+          "actual_ratio": 0.03805496828752643
+        }
+      ]
+    },
+    "ใหม่": {
+      "total": 402,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 92,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.01405825692044,
+          "actual_ratio": 0.22885572139303484
+        },
+        {
+          "digit": 2,
+          "actual": 96,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.78868614038386,
+          "actual_ratio": 0.23880597014925373
+        },
+        {
+          "digit": 3,
+          "actual": 53,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.225372116536576,
+          "actual_ratio": 0.1318407960199005
+        },
+        {
+          "digit": 4,
+          "actual": 53,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.95782522923868,
+          "actual_ratio": 0.1318407960199005
+        },
+        {
+          "digit": 5,
+          "actual": 34,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.830860911145177,
+          "actual_ratio": 0.0845771144278607
+        },
+        {
+          "digit": 6,
+          "actual": 29,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.912609431506514,
+          "actual_ratio": 0.07213930348258707
+        },
+        {
+          "digit": 7,
+          "actual": 22,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.312762685030066,
+          "actual_ratio": 0.05472636815920398
+        },
+        {
+          "digit": 8,
+          "actual": 15,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.56331402384728,
+          "actual_ratio": 0.03731343283582089
+        },
+        {
+          "digit": 9,
+          "actual": 8,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.394511205391407,
+          "actual_ratio": 0.01990049751243781
+        }
+      ]
+    },
+    "ไทยก้าวหน้า": {
+      "total": 404,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 242,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.6161182482484,
+          "actual_ratio": 0.599009900990099
+        },
+        {
+          "digit": 2,
+          "actual": 28,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 71.14086865849522,
+          "actual_ratio": 0.06930693069306931
+        },
+        {
+          "digit": 3,
+          "actual": 1,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.475249589753176,
+          "actual_ratio": 0.0024752475247524753
+        },
+        {
+          "digit": 4,
+          "actual": 7,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 39.15164525525479,
+          "actual_ratio": 0.017326732673267328
+        },
+        {
+          "digit": 5,
+          "actual": 9,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.989223403240427,
+          "actual_ratio": 0.022277227722772276
+        },
+        {
+          "digit": 6,
+          "actual": 20,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 27.04650301076774,
+          "actual_ratio": 0.04950495049504951
+        },
+        {
+          "digit": 7,
+          "actual": 31,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.42874657898544,
+          "actual_ratio": 0.07673267326732673
+        },
+        {
+          "digit": 8,
+          "actual": 27,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.665619068742043,
+          "actual_ratio": 0.06683168316831684
+        },
+        {
+          "digit": 9,
+          "actual": 39,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.486026186512756,
+          "actual_ratio": 0.09653465346534654
+        }
+      ]
+    },
+    "ไทยก้าวใหม่": {
+      "total": 532,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 186,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 160.147957693238,
+          "actual_ratio": 0.34962406015037595
+        },
+        {
+          "digit": 2,
+          "actual": 129,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 93.68054981762242,
+          "actual_ratio": 0.2424812030075188
+        },
+        {
+          "digit": 3,
+          "actual": 59,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 66.46740787561556,
+          "actual_ratio": 0.11090225563909774
+        },
+        {
+          "digit": 4,
+          "actual": 35,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 51.55612692028602,
+          "actual_ratio": 0.06578947368421052
+        },
+        {
+          "digit": 5,
+          "actual": 32,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 42.1244228973364,
+          "actual_ratio": 0.06015037593984962
+        },
+        {
+          "digit": 6,
+          "actual": 30,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 35.61569208348623,
+          "actual_ratio": 0.05639097744360902
+        },
+        {
+          "digit": 7,
+          "actual": 24,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 30.85171579212934,
+          "actual_ratio": 0.045112781954887216
+        },
+        {
+          "digit": 8,
+          "actual": 22,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 27.213141942006846,
+          "actual_ratio": 0.041353383458646614
+        },
+        {
+          "digit": 9,
+          "actual": 15,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 24.342984978279176,
+          "actual_ratio": 0.02819548872180451
+        }
+      ]
+    },
+    "ไทยก้าวไทย": {
+      "total": 1,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 0,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 0.3010299956639812,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 2,
+          "actual": 1,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.17609125905568124,
+          "actual_ratio": 1.0
+        },
+        {
+          "digit": 3,
+          "actual": 0,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.12493873660829993,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.09691001300805642,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.07918124604762482,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.06694678963061322,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.05799194697768673,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.05115252244738129,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.04575749056067514,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "ไทยชนะ": {
+      "total": 403,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 211,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.31508825258442,
+          "actual_ratio": 0.5235732009925558
+        },
+        {
+          "digit": 2,
+          "actual": 43,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.96477739943954,
+          "actual_ratio": 0.10669975186104218
+        },
+        {
+          "digit": 3,
+          "actual": 21,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.350310853144876,
+          "actual_ratio": 0.052109181141439205
+        },
+        {
+          "digit": 4,
+          "actual": 20,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 39.054735242246736,
+          "actual_ratio": 0.04962779156327544
+        },
+        {
+          "digit": 5,
+          "actual": 13,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.9100421571928,
+          "actual_ratio": 0.03225806451612903
+        },
+        {
+          "digit": 6,
+          "actual": 21,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.979556221137127,
+          "actual_ratio": 0.052109181141439205
+        },
+        {
+          "digit": 7,
+          "actual": 25,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.370754632007753,
+          "actual_ratio": 0.062034739454094295
+        },
+        {
+          "digit": 8,
+          "actual": 18,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.61446654629466,
+          "actual_ratio": 0.04466501240694789
+        },
+        {
+          "digit": 9,
+          "actual": 31,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.44026869595208,
+          "actual_ratio": 0.07692307692307693
+        }
+      ]
+    },
+    "ไทยทรัพย์ทวี": {
+      "total": 405,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 98,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.91714824391238,
+          "actual_ratio": 0.2419753086419753
+        },
+        {
+          "digit": 2,
+          "actual": 83,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 71.3169599175509,
+          "actual_ratio": 0.20493827160493827
+        },
+        {
+          "digit": 3,
+          "actual": 77,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.600188326361476,
+          "actual_ratio": 0.19012345679012346
+        },
+        {
+          "digit": 4,
+          "actual": 43,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 39.24855526826285,
+          "actual_ratio": 0.10617283950617284
+        },
+        {
+          "digit": 5,
+          "actual": 30,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 32.06840464928805,
+          "actual_ratio": 0.07407407407407407
+        },
+        {
+          "digit": 6,
+          "actual": 27,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 27.113449800398353,
+          "actual_ratio": 0.06666666666666667
+        },
+        {
+          "digit": 7,
+          "actual": 20,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.486738525963126,
+          "actual_ratio": 0.04938271604938271
+        },
+        {
+          "digit": 8,
+          "actual": 9,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.716771591189424,
+          "actual_ratio": 0.022222222222222223
+        },
+        {
+          "digit": 9,
+          "actual": 18,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.531783677073435,
+          "actual_ratio": 0.044444444444444446
+        }
+      ]
+    },
+    "ไทยธรรม": {
+      "total": 403,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 86,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 121.31508825258442,
+          "actual_ratio": 0.21339950372208435
+        },
+        {
+          "digit": 2,
+          "actual": 57,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.96477739943954,
+          "actual_ratio": 0.141439205955335
+        },
+        {
+          "digit": 3,
+          "actual": 40,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.350310853144876,
+          "actual_ratio": 0.09925558312655088
+        },
+        {
+          "digit": 4,
+          "actual": 46,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 39.054735242246736,
+          "actual_ratio": 0.1141439205955335
+        },
+        {
+          "digit": 5,
+          "actual": 45,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.9100421571928,
+          "actual_ratio": 0.11166253101736973
+        },
+        {
+          "digit": 6,
+          "actual": 40,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.979556221137127,
+          "actual_ratio": 0.09925558312655088
+        },
+        {
+          "digit": 7,
+          "actual": 29,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.370754632007753,
+          "actual_ratio": 0.07196029776674938
+        },
+        {
+          "digit": 8,
+          "actual": 33,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.61446654629466,
+          "actual_ratio": 0.08188585607940446
+        },
+        {
+          "digit": 9,
+          "actual": 27,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.44026869595208,
+          "actual_ratio": 0.06699751861042183
+        }
+      ]
+    },
+    "ไทยพร้อม": {
+      "total": 409,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 196,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 123.1212682265683,
+          "actual_ratio": 0.4792176039119804
+        },
+        {
+          "digit": 2,
+          "actual": 67,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 72.02132495377363,
+          "actual_ratio": 0.16381418092909536
+        },
+        {
+          "digit": 3,
+          "actual": 33,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 51.099943272794675,
+          "actual_ratio": 0.08068459657701711
+        },
+        {
+          "digit": 4,
+          "actual": 31,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 39.63619532029507,
+          "actual_ratio": 0.07579462102689487
+        },
+        {
+          "digit": 5,
+          "actual": 19,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 32.38512963347855,
+          "actual_ratio": 0.04645476772616137
+        },
+        {
+          "digit": 6,
+          "actual": 18,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 27.38123695892081,
+          "actual_ratio": 0.044009779951100246
+        },
+        {
+          "digit": 7,
+          "actual": 15,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.718706313873874,
+          "actual_ratio": 0.03667481662591687
+        },
+        {
+          "digit": 8,
+          "actual": 11,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.921381680978946,
+          "actual_ratio": 0.02689486552567237
+        },
+        {
+          "digit": 9,
+          "actual": 19,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.714813639316134,
+          "actual_ratio": 0.04645476772616137
+        }
+      ]
+    },
+    "ไทยพิทักษ์ธรรม": {
+      "total": 4,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 2,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 1.2041199826559248,
+          "actual_ratio": 0.5
+        },
+        {
+          "digit": 2,
+          "actual": 1,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.704365036222725,
+          "actual_ratio": 0.25
+        },
+        {
+          "digit": 3,
+          "actual": 1,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.49975494643319973,
+          "actual_ratio": 0.25
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.3876400520322257,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.31672498419049927,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.2677871585224529,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.23196778791074693,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.20461008978952516,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.18302996224270057,
+          "actual_ratio": 0.0
+        }
+      ]
+    },
+    "ไทยภักดี": {
+      "total": 440,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 96,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 132.45319809215172,
+          "actual_ratio": 0.21818181818181817
+        },
+        {
+          "digit": 2,
+          "actual": 89,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 77.48015398449975,
+          "actual_ratio": 0.20227272727272727
+        },
+        {
+          "digit": 3,
+          "actual": 61,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 54.97304410765197,
+          "actual_ratio": 0.13863636363636364
+        },
+        {
+          "digit": 4,
+          "actual": 42,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 42.64040572354482,
+          "actual_ratio": 0.09545454545454546
+        },
+        {
+          "digit": 5,
+          "actual": 44,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 34.83974826095492,
+          "actual_ratio": 0.1
+        },
+        {
+          "digit": 6,
+          "actual": 36,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 29.456587437469818,
+          "actual_ratio": 0.08181818181818182
+        },
+        {
+          "digit": 7,
+          "actual": 27,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 25.516456670182162,
+          "actual_ratio": 0.06136363636363636
+        },
+        {
+          "digit": 8,
+          "actual": 30,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 22.507109876847768,
+          "actual_ratio": 0.06818181818181818
+        },
+        {
+          "digit": 9,
+          "actual": 15,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 20.133295846697063,
+          "actual_ratio": 0.03409090909090909
+        }
+      ]
+    },
+    "ไทยภักดีธรรม": {
+      "total": 401,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 182,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.71302826125645,
+          "actual_ratio": 0.4538653366583541
+        },
+        {
+          "digit": 2,
+          "actual": 58,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.61259488132818,
+          "actual_ratio": 0.14463840399002495
+        },
+        {
+          "digit": 3,
+          "actual": 25,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.100433379928276,
+          "actual_ratio": 0.06234413965087282
+        },
+        {
+          "digit": 4,
+          "actual": 15,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.86091521623062,
+          "actual_ratio": 0.03740648379052369
+        },
+        {
+          "digit": 5,
+          "actual": 25,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.75167966509755,
+          "actual_ratio": 0.06234413965087282
+        },
+        {
+          "digit": 6,
+          "actual": 25,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.8456626418759,
+          "actual_ratio": 0.06234413965087282
+        },
+        {
+          "digit": 7,
+          "actual": 21,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.25477073805238,
+          "actual_ratio": 0.05236907730673317
+        },
+        {
+          "digit": 8,
+          "actual": 22,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.5121615013999,
+          "actual_ratio": 0.05486284289276808
+        },
+        {
+          "digit": 9,
+          "actual": 28,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.348753714830732,
+          "actual_ratio": 0.06982543640897755
+        }
+      ]
+    },
+    "ไทยรวมพลัง": {
+      "total": 400,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 37,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.41199826559247,
+          "actual_ratio": 0.0925
+        },
+        {
+          "digit": 2,
+          "actual": 40,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.4365036222725,
+          "actual_ratio": 0.1
+        },
+        {
+          "digit": 3,
+          "actual": 82,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 49.975494643319976,
+          "actual_ratio": 0.205
+        },
+        {
+          "digit": 4,
+          "actual": 89,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.76400520322257,
+          "actual_ratio": 0.2225
+        },
+        {
+          "digit": 5,
+          "actual": 60,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.672498419049926,
+          "actual_ratio": 0.15
+        },
+        {
+          "digit": 6,
+          "actual": 41,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.778715852245288,
+          "actual_ratio": 0.1025
+        },
+        {
+          "digit": 7,
+          "actual": 27,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.196778791074692,
+          "actual_ratio": 0.0675
+        },
+        {
+          "digit": 8,
+          "actual": 15,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.461008978952517,
+          "actual_ratio": 0.0375
+        },
+        {
+          "digit": 9,
+          "actual": 9,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.302996224270057,
+          "actual_ratio": 0.0225
+        }
+      ]
+    },
+    "ไทยรวมไทย": {
+      "total": 401,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 165,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 120.71302826125645,
+          "actual_ratio": 0.4114713216957606
+        },
+        {
+          "digit": 2,
+          "actual": 123,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 70.61259488132818,
+          "actual_ratio": 0.30673316708229426
+        },
+        {
+          "digit": 3,
+          "actual": 39,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 50.100433379928276,
+          "actual_ratio": 0.09725685785536159
+        },
+        {
+          "digit": 4,
+          "actual": 13,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 38.86091521623062,
+          "actual_ratio": 0.032418952618453865
+        },
+        {
+          "digit": 5,
+          "actual": 9,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 31.75167966509755,
+          "actual_ratio": 0.022443890274314215
+        },
+        {
+          "digit": 6,
+          "actual": 12,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 26.8456626418759,
+          "actual_ratio": 0.029925187032418952
+        },
+        {
+          "digit": 7,
+          "actual": 19,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 23.25477073805238,
+          "actual_ratio": 0.04738154613466334
+        },
+        {
+          "digit": 8,
+          "actual": 12,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 20.5121615013999,
+          "actual_ratio": 0.029925187032418952
+        },
+        {
+          "digit": 9,
+          "actual": 9,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 18.348753714830732,
+          "actual_ratio": 0.022443890274314215
+        }
+      ]
+    },
+    "ไทยสร้างชาติ": {
+      "total": 5,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 0,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 1.505149978319906,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 2,
+          "actual": 0,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 0.8804562952784062,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 3,
+          "actual": 2,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 0.6246936830414996,
+          "actual_ratio": 0.4
+        },
+        {
+          "digit": 4,
+          "actual": 0,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 0.4845500650402821,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 5,
+          "actual": 1,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.3959062302381241,
+          "actual_ratio": 0.2
+        },
+        {
+          "digit": 6,
+          "actual": 0,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.3347339481530661,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.2899597348884337,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 1,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.25576261223690644,
+          "actual_ratio": 0.2
+        },
+        {
+          "digit": 9,
+          "actual": 1,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.2287874528033757,
+          "actual_ratio": 0.2
+        }
+      ]
+    },
+    "ไทยสร้างไทย": {
+      "total": 467,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 66,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 140.58100797507922,
+          "actual_ratio": 0.14132762312633834
+        },
+        {
+          "digit": 2,
+          "actual": 67,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 82.23461797900313,
+          "actual_ratio": 0.14346895074946467
+        },
+        {
+          "digit": 3,
+          "actual": 93,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 58.34638999607607,
+          "actual_ratio": 0.19914346895074947
+        },
+        {
+          "digit": 4,
+          "actual": 67,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 45.25697607476235,
+          "actual_ratio": 0.14346895074946467
+        },
+        {
+          "digit": 5,
+          "actual": 61,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 36.97764190424079,
+          "actual_ratio": 0.13062098501070663
+        },
+        {
+          "digit": 6,
+          "actual": 34,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 31.264150757496374,
+          "actual_ratio": 0.0728051391862955
+        },
+        {
+          "digit": 7,
+          "actual": 41,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 27.082239238579703,
+          "actual_ratio": 0.08779443254817987
+        },
+        {
+          "digit": 8,
+          "actual": 19,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 23.888227982927063,
+          "actual_ratio": 0.04068522483940043
+        },
+        {
+          "digit": 9,
+          "actual": 19,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 21.368748091835293,
+          "actual_ratio": 0.04068522483940043
+        }
+      ]
+    },
+    "ไทรวมพลัง": {
+      "total": 11,
+      "distribution": [
+        {
+          "digit": 1,
+          "actual": 2,
+          "expected_ratio": 0.3010299956639812,
+          "expected": 3.3113299523037933,
+          "actual_ratio": 0.18181818181818182
+        },
+        {
+          "digit": 2,
+          "actual": 2,
+          "expected_ratio": 0.17609125905568124,
+          "expected": 1.9370038496124935,
+          "actual_ratio": 0.18181818181818182
+        },
+        {
+          "digit": 3,
+          "actual": 4,
+          "expected_ratio": 0.12493873660829993,
+          "expected": 1.3743261026912992,
+          "actual_ratio": 0.36363636363636365
+        },
+        {
+          "digit": 4,
+          "actual": 2,
+          "expected_ratio": 0.09691001300805642,
+          "expected": 1.0660101430886206,
+          "actual_ratio": 0.18181818181818182
+        },
+        {
+          "digit": 5,
+          "actual": 0,
+          "expected_ratio": 0.07918124604762482,
+          "expected": 0.870993706523873,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 6,
+          "actual": 1,
+          "expected_ratio": 0.06694678963061322,
+          "expected": 0.7364146859367454,
+          "actual_ratio": 0.09090909090909091
+        },
+        {
+          "digit": 7,
+          "actual": 0,
+          "expected_ratio": 0.05799194697768673,
+          "expected": 0.6379114167545541,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 8,
+          "actual": 0,
+          "expected_ratio": 0.05115252244738129,
+          "expected": 0.5626777469211942,
+          "actual_ratio": 0.0
+        },
+        {
+          "digit": 9,
+          "actual": 0,
+          "expected_ratio": 0.04575749056067514,
+          "expected": 0.5033323961674265,
+          "actual_ratio": 0.0
+        }
+      ]
+    }
+  }
+}
