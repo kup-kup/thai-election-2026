@@ -4,6 +4,18 @@ const province_encoding_url = "src/province_encoding.csv";
 const region_mapping_url = "src/region_mapping.csv";
 const benford_url = "src/benford.json";
 
+const BENFORD_THEORETICAL_PERCENT = {
+    1: 30.1,
+    2: 17.6,
+    3: 12.5,
+    4: 9.7,
+    5: 7.9,
+    6: 6.7,
+    7: 5.8,
+    8: 5.1,
+    9: 4.6,
+};
+
 const tileGridMap = document.getElementById("tileGridMap");
 const partyLegend = document.getElementById("partyLegend");
 const metricSelector = document.getElementById("metricSelector");
@@ -15,6 +27,7 @@ const topNInput = document.getElementById("topNInput");
 const topNList = document.getElementById("topNList");
 const topNValueLabel = document.getElementById("topNValueLabel");
 const benfordChart = document.getElementById("benfordChart");
+const benfordTooltip = document.getElementById("benfordTooltip");
 const benfordPartyFilter = document.getElementById("benfordPartyFilter");
 const mapResetButton = document.getElementById("mapResetButton");
 const tileHoverTooltip = document.getElementById("tileHoverTooltip");
@@ -904,10 +917,18 @@ function computeBenfordData() {
 
     return digits.map((digit) => {
         const entry = distributionByDigit.get(digit);
+        const actualRatio = Number(entry?.actual_ratio) || 0;
+        const theoreticalPct = BENFORD_THEORETICAL_PERCENT[digit] || 0;
+        const actualPct = actualRatio * 100;
+        const difference = actualPct - theoreticalPct;
+
         return {
             digit,
             expected: Number(entry?.expected) || 0,
             actual: Number(entry?.actual) || 0,
+            actualPct: Number.isFinite(actualPct) ? actualPct : 0,
+            theoreticalPct: theoreticalPct,
+            difference: Number.isFinite(difference) ? difference : 0,
         };
     });
 }
@@ -942,7 +963,27 @@ function renderBenfordChart() {
         .attr("y", (entry) => yScale(entry.expected))
         .attr("width", xScale.bandwidth())
         .attr("height", (entry) => innerHeight - yScale(entry.expected))
-        .attr("fill", "#d5dce8");
+        .attr("fill", "#d5dce8")
+        .on("mouseenter", (event, entry) => {
+            benfordTooltip.innerHTML = `
+                <strong>Digit ${entry.digit}</strong>
+                <span>Actual: ${entry.actualPct.toFixed(1)}%</span>
+                <span>Benford: ${entry.theoreticalPct.toFixed(1)}%</span>
+                <span>Difference: ${entry.difference.toFixed(1)}</span>
+            `;
+            const [x, y] = d3.pointer(event, benfordChart);
+            benfordTooltip.style.left = `${x + 12}px`;
+            benfordTooltip.style.top = `${y + 12}px`;
+            benfordTooltip.classList.add("visible");
+        })
+        .on("mousemove", (event) => {
+            const [x, y] = d3.pointer(event, benfordChart);
+            benfordTooltip.style.left = `${x + 12}px`;
+            benfordTooltip.style.top = `${y + 12}px`;
+        })
+        .on("mouseleave", () => {
+            benfordTooltip.classList.remove("visible");
+        });
 
     chart
         .append("g")
@@ -953,7 +994,27 @@ function renderBenfordChart() {
         .attr("y", (entry) => yScale(entry.actual))
         .attr("width", xScale.bandwidth() * 0.64)
         .attr("height", (entry) => innerHeight - yScale(entry.actual))
-        .attr("fill", "#3367d6");
+        .attr("fill", "#3367d6")
+        .on("mouseenter", (event, entry) => {
+            benfordTooltip.innerHTML = `
+                <strong>Digit ${entry.digit}</strong>
+                <span>Actual: ${entry.actualPct.toFixed(1)}%</span>
+                <span>Benford: ${entry.theoreticalPct.toFixed(1)}%</span>
+                <span>Difference: ${entry.difference.toFixed(1)}</span>
+            `;
+            const [x, y] = d3.pointer(event, benfordChart);
+            benfordTooltip.style.left = `${x + 12}px`;
+            benfordTooltip.style.top = `${y + 12}px`;
+            benfordTooltip.classList.add("visible");
+        })
+        .on("mousemove", (event) => {
+            const [x, y] = d3.pointer(event, benfordChart);
+            benfordTooltip.style.left = `${x + 12}px`;
+            benfordTooltip.style.top = `${y + 12}px`;
+        })
+        .on("mouseleave", () => {
+            benfordTooltip.classList.remove("visible");
+        });
 
     chart
         .append("g")

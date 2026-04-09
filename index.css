@@ -175,6 +175,43 @@ body {
 	width: 100%;
 }
 
+.benford-chart-wrap {
+	position: relative;
+}
+
+.benford-tooltip {
+	position: absolute;
+	top: 0;
+	left: 0;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 80ms ease-out;
+	background: rgba(15, 23, 42, 0.92);
+	color: #ffffff;
+	padding: 8px 10px;
+	border-radius: 8px;
+	font-size: 0.85rem;
+	line-height: 1.35;
+	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+	white-space: nowrap;
+	z-index: 100;
+}
+
+.benford-tooltip.visible {
+	opacity: 1;
+}
+
+.benford-tooltip strong {
+	display: block;
+	font-weight: 600;
+	margin: 0 0 3px 0;
+}
+
+.benford-tooltip span {
+	display: block;
+	font-size: 0.82rem;
+}
+
 
 .dashboard-layout {
 	display: grid;
