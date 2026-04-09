@@ -7,22 +7,6 @@
     font-weight: 400 700;
     font-style: normal;
     font-display: swap;
-    unicode-range:
-        U+0E00-0E7F,   /* Thai */
-        U+200C-200D,   /* ZWNJ/ZWJ */
-        U+25CC;        /* dotted circle */
-}
-
-/* Latin glyphs -> Antonio */
-@font-face {
-    font-family: "ElectionUI";
-    src: local("Antonio"), local("Antonio Regular");
-    font-weight: 400 700;
-    font-style: normal;
-    font-display: swap;
-    unicode-range:
-        U+0000-00FF,   /* Basic Latin + Latin-1 */
-        U+0100-024F;   /* Latin Extended */
 }
 
 :root {
@@ -151,8 +135,7 @@ body {
 
 .benford-toolbar select,
 #regionFilter,
-#constituencySearch,
-#topNInput {
+#constituencySearch {
 	border: 1px solid var(--border);
 	background: #fff;
 	border-radius: 8px;
@@ -227,6 +210,14 @@ body {
 	overflow: hidden;
 }
 
+.dashboard-left {
+	min-height: 0;
+}
+
+.dashboard-left .control-panel {
+	flex: 0 0 auto;
+}
+
 .panel {
 	background: var(--panel);
 	border: 1px solid var(--border);
@@ -237,22 +228,36 @@ body {
 
 .panel h3 {
 	margin: 0 0 10px;
-	font-size: 1rem;
+	font-size: 1.3rem;
 }
 
 .metric-selector {
-	display: grid;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.metric-row {
+	display: flex;
+	align-items: center;
 	gap: 8px;
 }
 
 .metric-option {
-	width: 100%;
+	font-family: inherit;
+	font-size: 1.1rem;
+	inline-size: fit-content;
+	max-inline-size: 100%;
+	justify-self: start;
 	text-align: left;
 	border: 1px solid var(--border);
-	padding: 8px;
+	padding: 3px 8px 3px 8px; /* top right bottom left */
 	border-radius: 8px;
 	background: #f8fbff;
 	cursor: pointer;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .metric-option.active {
@@ -470,6 +475,237 @@ body {
 	background: #ffffff;
 }
 
+.overview-panel {
+	position: relative;
+	flex: 1 1 auto;
+	min-height: 0;
+	padding: 10px;
+	overflow: hidden;
+	font-family: inherit;
+	display: flex;
+	flex-direction: column;
+}
+
+.overview-panel.is-floating-ballot {
+	position: fixed;
+	left: 14px;
+	bottom: 14px;
+	width: min(66vmin, 400px);
+	max-width: calc(100vw - 28px);
+	flex: 0 0 auto;
+	max-height: 430px;
+	min-height: 0;
+	z-index: 30;
+	background: rgba(255, 255, 255, 0.97);
+	box-shadow: 0 18px 40px rgba(7, 24, 46, 0.26);
+	border: 1px solid var(--border);
+	pointer-events: auto;
+}
+
+.overview-title {
+	margin: 0 0 8px;
+	font-size: 0.98rem;
+	font-weight: 700;
+	color: var(--text);
+}
+
+.overview-empty {
+	margin: 0;
+	font-size: 0.9rem;
+	color: var(--subtle);
+}
+
+.winner-overview-list {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow: auto;
+	padding-right: 2px;
+}
+
+.overview-winner-bar {
+	position: relative;
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow: auto;
+}
+
+.overview-winner-bar-svg {
+	width: 100%;
+	height: 100%;
+	display: block;
+	text-rendering: geometricPrecision;
+}
+
+.overview-winner-bar-rect {
+	stroke: rgba(255, 255, 255, 0.35);
+	stroke-width: 0.8;
+}
+
+.overview-winner-bar-label {
+	font-family: inherit;
+	font-size: 1rem;
+	font-weight: 700;
+	pointer-events: none;
+}
+
+.overview-winner-bar-label.is-inside {
+	fill: #ffffff;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.overview-winner-bar-label.is-outside {
+	fill: #34445d;
+}
+
+.winner-party-card {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 8px 10px;
+	border-radius: 8px;
+	color: #ffffff;
+	font-size: 1rem;
+	font-weight: 700;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+}
+
+.winner-party-name,
+.winner-party-count {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.winner-party-count {
+	flex: 0 0 auto;
+	opacity: 0.95;
+	font-weight: 700;
+}
+
+.overview-beeswarm {
+	position: relative;
+	height: 100%;
+	min-height: 200px;
+}
+
+.overview-scatter-square {
+	position: relative;
+	width: 100%;
+	max-width: 100%;
+	aspect-ratio: 1 / 1;
+	align-self: center;
+	flex: 0 0 auto;
+	min-height: 260px;
+}
+
+.overview-panel.is-floating-ballot .overview-scatter-square {
+	width: min(72vmin, 600px);
+	max-width: calc(100vw - 48px);
+	min-height: 0;
+}
+
+.overview-scatter-svg {
+	width: 100%;
+	max-width: 490px;
+	height: 100%;
+	max-height: 490px;
+	display: block;
+}
+
+.overview-diagonal-line {
+	stroke: rgba(40, 62, 97, 0.55);
+	stroke-width: 1.4;
+	stroke-dasharray: 4 4;
+}
+
+.overview-scatter-point {
+	fill: #2b6ad6;
+	fill-opacity: 0.8;
+	stroke: #ffffff;
+	stroke-width: 1;
+	cursor: pointer;
+	transition: fill-opacity 120ms ease, r 120ms ease;
+}
+
+.overview-scatter-point:hover,
+.overview-scatter-point.is-hovered {
+	fill-opacity: 1;
+	r: 5.6;
+}
+
+.overview-scatter-axis-caption {
+	font-family: inherit;
+	font-size: 0.72rem;
+	font-weight: 700;
+	fill: #42526b;
+}
+
+.overview-panel.is-floating-ballot .overview-axis text {
+	font-size: 0.55rem;
+}
+
+.overview-panel.is-floating-ballot .overview-scatter-axis-caption {
+	font-size: 1.1rem;
+	font-weight: 700;
+}
+
+.overview-beeswarm-svg {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+.overview-tooltip {
+	position: absolute;
+	left: 0;
+	top: 0;
+	transform: translate(10px, -100%);
+	padding: 6px 8px;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.96);
+	box-shadow: var(--shadow);
+	font-size: 0.8rem;
+	color: var(--text);
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 120ms ease;
+	white-space: nowrap;
+	z-index: 2;
+}
+
+.overview-tooltip.visible {
+	opacity: 1;
+}
+
+.beeswarm-point {
+	fill: #2b6ad6;
+	fill-opacity: 0.78;
+	stroke: #ffffff;
+	stroke-width: 1;
+	cursor: pointer;
+	transition: fill-opacity 120ms ease, r 120ms ease;
+}
+
+.beeswarm-point:hover,
+.beeswarm-point.is-hovered {
+	fill-opacity: 1;
+	r: 5.6;
+}
+
+.overview-axis text,
+.overview-axis path,
+.overview-axis line {
+	font-family: inherit;
+	font-size: 0.75rem;
+	color: var(--subtle);
+	stroke: rgba(23, 34, 51, 0.45);
+}
+
 .constituency-list {
 	display: flex;
 	flex-direction: column;
@@ -480,11 +716,18 @@ body {
 }
 
 .constituency-item {
+	font-family: inherit;
+	font-size: 1.1rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
 	border: 1px solid var(--border);
 	border-radius: 8px;
-	padding: 8px;
+	padding: 10px 10px;
 	background: #fff;
 	cursor: pointer;
+	text-align: left;
 }
 
 .constituency-item.missing {
@@ -493,31 +736,37 @@ body {
 	border-style: dashed;
 }
 
-.constituency-item .meta {
-	font-size: 0.82rem;
-	color: var(--subtle);
-}
-
-.top-n-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 6px;
-}
-
-.top-n-header h3 {
-	margin: 0;
-}
-
-#topNInput {
-	width: 70px;
-}
-
-.top-n-list {
-	margin: 8px 0 0;
-	padding-left: 18px;
+.constituency-item-left {
 	display: grid;
-	gap: 5px;
+	grid-template-columns: minmax(0, 18ch) auto;
+	column-gap: 8px;
+	align-items: center;
+	max-width: 60%;
+	min-width: 0;
+	overflow: hidden;
+}
+
+.constituency-province {
+	font-weight: 700;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.constituency-district {
+	font-weight: 400;
+	white-space: nowrap;
+}
+
+.constituency-item-right {
+	flex: 0 0 auto;
+	text-align: right;
+	font-weight: 700;
+	color: var(--subtle);
+	max-width: 45%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .detail-popup {
@@ -597,7 +846,61 @@ body {
 		min-height: 360px;
 	}
 
+	.metric-selector {
+		gap: 8px;
+	}
+
+	.metric-row {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.constituency-item-left {
+		grid-template-columns: minmax(0, 14ch) auto;
+		max-width: 58%;
+	}
+
 	.constituency-list {
 		max-height: 34vh;
+	}
+
+	.overview-panel {
+		position: static;
+		width: 100%;
+		flex: 1 1 auto;
+		min-height: 260px;
+	}
+
+	.overview-panel.is-floating-ballot {
+		position: static;
+		left: auto;
+		bottom: auto;
+		width: 100%;
+		max-width: none;
+		z-index: auto;
+		background: var(--panel);
+		box-shadow: var(--shadow);
+	}
+
+	.overview-scatter-square {
+		min-height: 220px;
+	}
+
+	.overview-panel.is-floating-ballot .overview-scatter-square {
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.overview-panel.is-floating-ballot .overview-axis text {
+		font-size: 0.75rem;
+	}
+
+	.overview-panel.is-floating-ballot .overview-scatter-axis-caption {
+		font-size: 0.78rem;
+	}
+
+	.overview-beeswarm {
+		height: 100%;
+		min-height: 220px;
 	}
 }

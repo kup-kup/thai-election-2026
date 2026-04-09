@@ -22,19 +22,20 @@ const metricSelector = document.getElementById("metricSelector");
 const regionFilter = document.getElementById("regionFilter");
 const constituencySearch = document.getElementById("constituencySearch");
 const constituencyList = document.getElementById("constituencyList");
-const topNPanel = document.getElementById("topNPanel");
-const topNInput = document.getElementById("topNInput");
-const topNList = document.getElementById("topNList");
-const topNValueLabel = document.getElementById("topNValueLabel");
 const benfordChart = document.getElementById("benfordChart");
 const benfordTooltip = document.getElementById("benfordTooltip");
 const benfordPartyFilter = document.getElementById("benfordPartyFilter");
 const mapResetButton = document.getElementById("mapResetButton");
 const tileHoverTooltip = document.getElementById("tileHoverTooltip");
+const overviewPanel = document.getElementById("overviewPanel");
+const dashboardSection = document.getElementById("dashboardSection");
+const storyScrollContainer = document.querySelector(".story-scroll");
 const landingRotator = document.getElementById("landingRotator");
 const detailPopup = document.getElementById("detailPopup");
 const popupClose = document.getElementById("popupClose");
 const popupSubtitle = document.getElementById("popupSubtitle");
+
+const excludedWinnerPartyLabels = new Set(["Unknown", "ไม่มีข้อมูล"]);
 
 const metricOptions = [
     { key: "winner", label: "สส. เขต" },
@@ -48,7 +49,6 @@ const state = {
     selectedRegion: "all",
     selectedPartyForBenford: "overall",
     searchQuery: "",
-    topN: 5,
     records: [],
     recordByKey: new Map(),
     benfordData: null,
@@ -483,17 +483,16 @@ function bindMapInteractions() {
     tileGridMap.addEventListener("pointerleave", endDrag);
 
     window.addEventListener("resize", () => {
-        if (!state.mapView.hasInitialFit) {
-            return;
+        if (state.mapView.hasInitialFit) {
+            const focusedRegion = state.mapView.lastFocusedRegion || "all";
+            if (focusedRegion === "all") {
+                fitMapToViewport();
+            } else {
+                focusMapForRegion(focusedRegion);
+            }
+            updateHoveredTileTooltipPosition();
         }
-
-        const focusedRegion = state.mapView.lastFocusedRegion || "all";
-        if (focusedRegion === "all") {
-            fitMapToViewport();
-        } else {
-            focusMapForRegion(focusedRegion);
-        }
-        updateHoveredTileTooltipPosition();
+        renderOverviewPanel();
     });
 }
 
@@ -676,9 +675,32 @@ function getMetricValue(record, metricKey) {
     return record.metrics[metricKey] ?? null;
 }
 
+function formatMetricValueForList(record) {
+    if (!record) {
+        return "-";
+    }
+
+    if (state.selectedMetric === "winner") {
+        return record.party || "ไม่มีข้อมูล";
+    }
+
+    const metricValue = getMetricValue(record, state.selectedMetric);
+    if (!Number.isFinite(metricValue)) {
+        return "-";
+    }
+
+    if (state.selectedMetric === "turnout") {
+        return `${metricValue.toLocaleString("th-TH", { maximumFractionDigits: 2 })}%`;
+    }
+
+    return metricValue.toLocaleString("th-TH", { maximumFractionDigits: 2 });
+}
+
 function normalizeWinnerRecord(row) {
     const partyListGhost = firstAvailableNumber(row, ["5partylist_ghost"]);
     const constiGhost = firstAvailableNumber(row, ["5consti_ghost"]);
+    const partyListVoterCame = firstAvailableNumber(row, ["party_list_voter_came"]);
+    const constiVotersCame = firstAvailableNumber(row, ["consti_voters_came"]);
 
     return {
         party: row["constituency_winner_party"] || row["แบ่งเขต_พรรค"] || row["พรรค"] || "Unknown",
@@ -691,6 +713,8 @@ function normalizeWinnerRecord(row) {
             discrepancy: (partyListGhost === null && constiGhost === null)
                 ? null
                 : Math.abs(partyListGhost || 0) + Math.abs(constiGhost || 0),
+            party_list_voter_came: partyListVoterCame,
+            consti_voters_came: constiVotersCame,
             lower_number_tendency: null,
         },
     };
@@ -774,6 +798,501 @@ function renderMetricLegend() {
     partyLegend.appendChild(item);
 }
 
+function getMetricLabel(metricKey) {
+    return metricOptions.find((entry) => entry.key === metricKey)?.label || metricKey;
+}
+
+function formatOverviewMetricValue(metricKey, value) {
+    if (!Number.isFinite(value)) {
+        return "-";
+    }
+    if (metricKey === "turnout") {
+        return `${value.toLocaleString("th-TH", { maximumFractionDigits: 2 })}%`;
+    }
+    return value.toLocaleString("th-TH", { maximumFractionDigits: 2 });
+}
+
+const textMeasureCanvas = document.createElement("canvas");
+const textMeasureContext = textMeasureCanvas.getContext("2d");
+
+function measureTextWidth(text, font = "700 12px ElectionUI") {
+    if (!textMeasureContext) {
+        return text.length * 8;
+    }
+    textMeasureContext.font = font;
+    return textMeasureContext.measureText(text).width;
+}
+
+function truncateTextToWidth(text, maxWidth, font = "700 12px ElectionUI") {
+    if (!text) {
+        return "";
+    }
+
+    if (!Number.isFinite(maxWidth) || maxWidth <= 0) {
+        return "…";
+    }
+
+    const ellipsis = "…";
+    const ellipsisWidth = measureTextWidth(ellipsis, font);
+    if (maxWidth <= ellipsisWidth) {
+        return ellipsis;
+    }
+
+    if (measureTextWidth(text, font) <= maxWidth) {
+        return text;
+    }
+
+    let low = 0;
+    let high = text.length;
+    while (low < high) {
+        const mid = Math.ceil((low + high) / 2);
+        const sample = `${text.slice(0, mid)}${ellipsis}`;
+        if (measureTextWidth(sample, font) <= maxWidth) {
+            low = mid;
+        } else {
+            high = mid - 1;
+        }
+    }
+
+    const safeLength = Math.max(1, low);
+    return `${text.slice(0, safeLength)}${ellipsis}`;
+}
+
+function ensureOverviewTooltip(container) {
+    let tooltip = container.querySelector(".overview-tooltip");
+    if (!tooltip) {
+        tooltip = document.createElement("div");
+        tooltip.className = "overview-tooltip";
+        tooltip.setAttribute("aria-hidden", "true");
+        container.appendChild(tooltip);
+    }
+    return tooltip;
+}
+
+function hideOverviewTooltip(tooltip) {
+    if (!tooltip) {
+        return;
+    }
+    tooltip.classList.remove("visible");
+    tooltip.setAttribute("aria-hidden", "true");
+}
+
+function showOverviewTooltip(tooltip, container, event, content) {
+    if (!tooltip || !container) {
+        return;
+    }
+    tooltip.textContent = content;
+    tooltip.classList.add("visible");
+    tooltip.setAttribute("aria-hidden", "false");
+
+    const containerRect = container.getBoundingClientRect();
+    const localX = event.clientX - containerRect.left;
+    const localY = event.clientY - containerRect.top;
+
+    const tooltipWidth = tooltip.offsetWidth || 0;
+    const minLeft = 6;
+    const maxLeft = Math.max(minLeft, containerRect.width - tooltipWidth - 6);
+    const left = Math.max(minLeft, Math.min(maxLeft, localX + 12));
+
+    const minTop = (tooltip.offsetHeight || 24) + 4;
+    const top = Math.max(minTop, localY - 10);
+
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top}px`;
+}
+
+function renderWinnerOverview(container) {
+    const countsByParty = new Map();
+
+    getVisibleRecords().forEach((record) => {
+        const partyName = String(record.party || "").trim();
+        if (!partyName || excludedWinnerPartyLabels.has(partyName)) {
+            return;
+        }
+        countsByParty.set(partyName, (countsByParty.get(partyName) || 0) + 1);
+    });
+
+    const sortedParties = [...countsByParty.entries()].sort((left, right) => right[1] - left[1]);
+    if (sortedParties.length === 0) {
+        const empty = document.createElement("p");
+        empty.className = "overview-empty";
+        empty.textContent = "ไม่มีข้อมูลพรรคที่สรุปได้ในภูมิภาคนี้";
+        container.appendChild(empty);
+        return;
+    }
+
+    const plotWrap = document.createElement("div");
+    plotWrap.className = "overview-winner-bar";
+    container.appendChild(plotWrap);
+
+    const width = Math.max(280, Math.floor(plotWrap.clientWidth || container.clientWidth || 320));
+    const containerHeight = Math.max(220, Math.floor(plotWrap.clientHeight || (container.clientHeight - 44) || 260));
+    const margin = { top: 8, right: 8, bottom: 8, left: 10 };
+    const innerWidth = Math.max(120, width - margin.left - margin.right);
+    const innerHeight = Math.max(120, containerHeight - margin.top - margin.bottom);
+    const barSlotHeight = innerHeight / 10;
+    const barHeight = Math.max(8, barSlotHeight * 0.78);
+    const chartInnerHeight = Math.max(innerHeight, sortedParties.length * barSlotHeight);
+    const chartHeight = Math.ceil(chartInnerHeight + margin.top + margin.bottom);
+
+    const xMax = d3.max(sortedParties, (entry) => entry[1]) || 1;
+    const xScale = d3.scaleLinear().domain([0, xMax]).nice().range([0, innerWidth]);
+
+    const rows = sortedParties.map(([partyName, count], index) => {
+        const y = (index * barSlotHeight) + ((barSlotHeight - barHeight) / 2);
+        return {
+            partyName,
+            count,
+            y,
+            barHeight,
+            barWidth: xScale(count),
+        };
+    });
+
+    const svg = d3
+        .select(plotWrap)
+        .append("svg")
+        .attr("class", "overview-winner-bar-svg")
+        .attr("width", width)
+        .attr("height", chartHeight)
+        .attr("viewBox", `0 0 ${width} ${chartHeight}`)
+        .attr("preserveAspectRatio", "xMinYMin meet");
+
+    const chart = svg.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    chart
+        .append("g")
+        .selectAll("rect.overview-winner-bar-rect")
+        .data(rows)
+        .join("rect")
+        .attr("class", "overview-winner-bar-rect")
+        .attr("x", 0)
+        .attr("y", (entry) => entry.y)
+        .attr("height", (entry) => entry.barHeight)
+        .attr("width", (entry) => entry.barWidth)
+        .attr("fill", (entry) => makePartyColor(entry.partyName));
+
+    const labelFont = "700 16px ElectionUI";
+    const labelData = rows.map((row) => {
+        const { partyName, count, barWidth } = row;
+        const fullLabel = `${partyName}: ${count.toLocaleString("th-TH")}`;
+        const fullLabelWidth = measureTextWidth(fullLabel, labelFont);
+        const insidePadding = 8;
+        const outsidePadding = 6;
+        const placeInside = barWidth >= (fullLabelWidth + (insidePadding * 2));
+        const labelX = placeInside ? Math.max(insidePadding, barWidth - insidePadding) : (barWidth + outsidePadding);
+        const maxWidth = placeInside
+            ? Math.max(8, barWidth - (insidePadding * 2))
+            : Math.max(8, innerWidth - labelX - 2);
+
+        return {
+            partyName,
+            count,
+            barWidth,
+            y: row.y,
+            barHeight: row.barHeight,
+            labelText: truncateTextToWidth(fullLabel, maxWidth, labelFont),
+            labelX,
+            placeInside,
+        };
+    });
+
+    chart
+        .append("g")
+        .selectAll("text.overview-winner-bar-label")
+        .data(labelData)
+        .join("text")
+        .attr("class", (entry) => `overview-winner-bar-label ${entry.placeInside ? "is-inside" : "is-outside"}`)
+        .attr("x", (entry) => entry.labelX)
+        .attr("y", (entry) => entry.y + (entry.barHeight / 2))
+        .attr("text-anchor", (entry) => (entry.placeInside ? "end" : "start"))
+        .attr("dominant-baseline", "middle")
+        .text((entry) => entry.labelText);
+}
+
+function renderBallotDifferenceScatter(container) {
+    const points = getVisibleRecords()
+        .map((record) => {
+            const xValue = getMetricValue(record, "party_list_voter_came");
+            const yValue = getMetricValue(record, "consti_voters_came");
+            return {
+                record,
+                xValue,
+                yValue,
+            };
+        })
+        .filter((entry) => Number.isFinite(entry.xValue) && Number.isFinite(entry.yValue));
+
+    if (points.length === 0) {
+        const empty = document.createElement("p");
+        empty.className = "overview-empty";
+        empty.textContent = "ไม่มีข้อมูลการมาใช้สิทธิ์ที่เปรียบเทียบได้ในภูมิภาคนี้";
+        container.appendChild(empty);
+        return;
+    }
+
+    const plotWrap = document.createElement("div");
+    plotWrap.className = "overview-scatter-square";
+    container.appendChild(plotWrap);
+
+    const tooltip = ensureOverviewTooltip(plotWrap);
+    const wrapWidth = Math.floor(plotWrap.clientWidth || container.clientWidth || 320);
+    const wrapHeight = Math.floor(plotWrap.clientHeight || wrapWidth);
+    const squareSize = Math.max(220, Math.min(wrapWidth, wrapHeight));
+    const margin = { top: 0, right: 12, bottom: 46, left: 180 };
+    const innerSize = Math.max(140, squareSize - margin.left - margin.right);
+
+    const minCombined = d3.min(points, (entry) => Math.min(entry.xValue, entry.yValue)) || 0;
+    const maxCombined = d3.max(points, (entry) => Math.max(entry.xValue, entry.yValue)) || 1;
+    const pad = minCombined === maxCombined ? Math.max(1, Math.abs(maxCombined) * 0.08 || 1) : 0;
+    const domainMin = minCombined - pad;
+    const domainMax = maxCombined + pad;
+
+    const xScale = d3.scaleLinear().domain([domainMin, domainMax]).nice().range([0, innerSize]);
+    const yScale = d3.scaleLinear().domain([domainMin, domainMax]).nice().range([innerSize, 0]);
+
+    const svg = d3
+        .select(plotWrap)
+        .append("svg")
+        .attr("class", "overview-scatter-svg")
+        .attr("viewBox", `0 0 ${squareSize} ${squareSize}`)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+
+    const chart = svg.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    chart
+        .append("line")
+        .attr("class", "overview-diagonal-line")
+        .attr("x1", xScale(domainMin))
+        .attr("y1", yScale(domainMin))
+        .attr("x2", xScale(domainMax))
+        .attr("y2", yScale(domainMax));
+
+    const numberFormat = (value) => Number(value).toLocaleString("th-TH", { maximumFractionDigits: 0 });
+    const axisNumberFormat = (value) => {
+        const absolute = Math.abs(value);
+        if (absolute >= 1_000_000) {
+            const shortened = (value / 1_000_000).toFixed(absolute >= 10_000_000 ? 0 : 1);
+            return `${shortened.replace(/\.0$/, "")}M`;
+        }
+        if (absolute >= 1_000) {
+            const shortened = (value / 1_000).toFixed(absolute >= 10_000 ? 0 : 1);
+            return `${shortened.replace(/\.0$/, "")}k`;
+        }
+        return Number(value).toLocaleString("th-TH", { maximumFractionDigits: 0 });
+    };
+
+    chart
+        .append("g")
+        .attr("class", "overview-axis")
+        .attr("transform", `translate(0, ${innerSize})`)
+        .call(d3.axisBottom(xScale).ticks(5).tickSizeOuter(0).tickFormat(axisNumberFormat));
+
+    chart
+        .append("g")
+        .attr("class", "overview-axis")
+        .call(d3.axisLeft(yScale).ticks(5).tickSizeOuter(0).tickFormat(axisNumberFormat));
+
+    chart
+        .append("text")
+        .attr("class", "overview-scatter-axis-caption")
+        .attr("x", innerSize / 2)
+        .attr("y", innerSize + 34)
+        .attr("text-anchor", "middle")
+        .text("ผู้มาใช้สิทธิ์บัญชีรายชื่อ");
+
+    chart
+        .append("text")
+        .attr("class", "overview-scatter-axis-caption")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -(innerSize / 2))
+        .attr("y", -34)
+        .attr("text-anchor", "middle")
+        .text("ผู้มาใช้สิทธิ์แบ่งเขต");
+
+    const pointSelection = chart
+        .append("g")
+        .selectAll("circle.overview-scatter-point")
+        .data(points)
+        .join("circle")
+        .attr("class", "overview-scatter-point")
+        .attr("cx", (entry) => xScale(entry.xValue))
+        .attr("cy", (entry) => yScale(entry.yValue))
+        .attr("r", 4.1)
+        .on("mouseenter", function handleMouseEnter(event, entry) {
+            pointSelection.classed("is-hovered", (candidate) => candidate === entry);
+            showOverviewTooltip(
+                tooltip,
+                plotWrap,
+                event,
+                `${entry.record.provinceName} เขต ${entry.record.district} • บัญชีรายชื่อ ${numberFormat(entry.xValue)} • แบ่งเขต ${numberFormat(entry.yValue)}`
+            );
+        })
+        .on("mousemove", function handleMouseMove(event, entry) {
+            showOverviewTooltip(
+                tooltip,
+                plotWrap,
+                event,
+                `${entry.record.provinceName} เขต ${entry.record.district} • บัญชีรายชื่อ ${numberFormat(entry.xValue)} • แบ่งเขต ${numberFormat(entry.yValue)}`
+            );
+        })
+        .on("mouseleave", () => {
+            pointSelection.classed("is-hovered", false);
+            hideOverviewTooltip(tooltip);
+        })
+        .on("click", (_, entry) => {
+            openPopup(entry.record);
+        });
+}
+
+function renderMetricBeeswarm(container, metricKey) {
+    const points = getVisibleRecords()
+        .map((record) => ({
+            record,
+            value: getMetricValue(record, metricKey),
+        }))
+        .filter((entry) => Number.isFinite(entry.value));
+
+    if (points.length === 0) {
+        const empty = document.createElement("p");
+        empty.className = "overview-empty";
+        empty.textContent = "ไม่มีข้อมูลตัวเลขสำหรับภูมิภาคนี้";
+        container.appendChild(empty);
+        return;
+    }
+
+    const plotWrap = document.createElement("div");
+    plotWrap.className = "overview-beeswarm";
+    container.appendChild(plotWrap);
+
+    const tooltip = ensureOverviewTooltip(plotWrap);
+
+    const width = Math.max(240, Math.floor(plotWrap.clientWidth || container.clientWidth || 300));
+    const height = Math.max(220, Math.floor(plotWrap.clientHeight || 280));
+    const margin = { top: 8, right: 12, bottom: 16, left: 50 };
+    const innerWidth = Math.max(140, width - margin.left - margin.right);
+    const innerHeight = Math.max(140, height - margin.top - margin.bottom);
+
+    const minValue = d3.min(points, (entry) => entry.value) || 0;
+    const maxValue = d3.max(points, (entry) => entry.value) || 0;
+    const pad = minValue === maxValue ? Math.max(1, Math.abs(minValue) * 0.08 || 1) : 0;
+
+    const yScale = d3
+        .scaleLinear()
+        .domain([minValue - pad, maxValue + pad])
+        .nice()
+        .range([innerHeight, 0]);
+
+    const nodes = points.map((entry, index) => ({
+        id: index,
+        record: entry.record,
+        value: entry.value,
+        x: innerWidth / 2,
+        y: yScale(entry.value),
+    }));
+
+    const simulation = d3
+        .forceSimulation(nodes)
+        .force("x", d3.forceX(innerWidth / 2).strength(0.06))
+        .force("y", d3.forceY((node) => yScale(node.value)).strength(1))
+        .force("collide", d3.forceCollide(4.6))
+        .stop();
+
+    for (let tick = 0; tick < 220; tick += 1) {
+        simulation.tick();
+    }
+
+    const svg = d3
+        .select(plotWrap)
+        .append("svg")
+        .attr("class", "overview-beeswarm-svg")
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+
+    const chart = svg.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    const yAxis = d3
+        .axisLeft(yScale)
+        .ticks(5)
+        .tickFormat((value) => formatOverviewMetricValue(metricKey, Number(value)));
+
+    chart.append("g").attr("class", "overview-axis").call(yAxis);
+
+    const pointSelection = chart
+        .append("g")
+        .selectAll("circle.beeswarm-point")
+        .data(nodes)
+        .join("circle")
+        .attr("class", "beeswarm-point")
+        .attr("cx", (node) => Math.max(5, Math.min(innerWidth - 5, node.x)))
+        .attr("cy", (node) => Math.max(4, Math.min(innerHeight - 4, node.y)))
+        .attr("r", 4.2)
+        .on("mouseenter", function handleMouseEnter(event, node) {
+            pointSelection.classed("is-hovered", (candidate) => candidate.id === node.id);
+            showOverviewTooltip(
+                tooltip,
+                plotWrap,
+                event,
+                `${node.record.provinceName} เขต ${node.record.district} • ${formatOverviewMetricValue(metricKey, node.value)}`
+            );
+        })
+        .on("mousemove", function handleMouseMove(event, node) {
+            showOverviewTooltip(
+                tooltip,
+                plotWrap,
+                event,
+                `${node.record.provinceName} เขต ${node.record.district} • ${formatOverviewMetricValue(metricKey, node.value)}`
+            );
+        })
+        .on("mouseleave", () => {
+            pointSelection.classed("is-hovered", false);
+            hideOverviewTooltip(tooltip);
+        })
+        .on("click", (_, node) => {
+            openPopup(node.record);
+        });
+}
+
+function isDashboardSectionInView() {
+    if (!dashboardSection) {
+        return false;
+    }
+    const rect = dashboardSection.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+    const focusY = viewportHeight / 2;
+    return rect.top <= focusY && rect.bottom >= focusY;
+}
+
+function renderOverviewPanel() {
+    if (!overviewPanel) {
+        return;
+    }
+
+    const shouldFloatBallot = state.selectedMetric === "ballot_difference" && isDashboardSectionInView();
+    overviewPanel.classList.toggle("is-floating-ballot", shouldFloatBallot);
+
+    overviewPanel.innerHTML = "";
+
+    const title = document.createElement("h3");
+    title.className = "overview-title";
+    title.textContent = state.selectedMetric === "winner"
+        ? "สรุปจำนวนเขตที่ชนะ"
+        : `${getMetricLabel(state.selectedMetric)}`;
+    overviewPanel.appendChild(title);
+
+    if (state.selectedMetric === "winner") {
+        renderWinnerOverview(overviewPanel);
+        return;
+    }
+
+    if (state.selectedMetric === "ballot_difference") {
+        renderBallotDifferenceScatter(overviewPanel);
+        return;
+    }
+
+    renderMetricBeeswarm(overviewPanel, state.selectedMetric);
+}
+
 function openPopup(record) {
     if (!record) {
         return;
@@ -801,6 +1320,26 @@ function renderConstituencyList() {
         return haystack.includes(keyword);
     });
 
+    if (state.selectedMetric !== "winner") {
+        filtered.sort((left, right) => {
+            const leftValue = getMetricValue(left, state.selectedMetric);
+            const rightValue = getMetricValue(right, state.selectedMetric);
+            const leftFinite = Number.isFinite(leftValue);
+            const rightFinite = Number.isFinite(rightValue);
+
+            if (!leftFinite && !rightFinite) {
+                return 0;
+            }
+            if (!leftFinite) {
+                return 1;
+            }
+            if (!rightFinite) {
+                return -1;
+            }
+            return rightValue - leftValue;
+        });
+    }
+
     filtered.forEach((record) => {
         const card = document.createElement("button");
         card.type = "button";
@@ -808,63 +1347,40 @@ function renderConstituencyList() {
         if (record.isMissingData) {
             card.classList.add("missing");
         }
-        card.innerHTML = `<strong>${record.provinceName} เขต ${record.district}</strong><div class="meta">${record.party || "ไม่มีข้อมูล"}</div>`;
+        const rightLabel = formatMetricValueForList(record);
+        card.innerHTML = `<span class="constituency-item-left"><span class="constituency-province">${record.provinceName}</span><span class="constituency-district">เขต ${record.district}</span></span><span class="constituency-item-right">${rightLabel}</span>`;
         card.addEventListener("click", () => openPopup(record));
         constituencyList.appendChild(card);
     });
 }
 
-function renderTopN() {
-    const hidePanel = state.selectedMetric === "winner";
-    topNPanel.hidden = hidePanel;
-    if (hidePanel) {
-        return;
-    }
-
-    const topNValue = Math.min(Math.max(Number(topNInput.value) || 5, 1), 20);
-    state.topN = topNValue;
-    topNValueLabel.textContent = String(topNValue);
-
-    const ranked = getVisibleRecords()
-        .map((record) => ({
-            record,
-            value: getMetricValue(record, state.selectedMetric),
-        }))
-        .filter((entry) => Number.isFinite(entry.value))
-        .sort((a, b) => b.value - a.value)
-        .slice(0, topNValue);
-
-    topNList.innerHTML = "";
-    if (ranked.length === 0) {
-        const li = document.createElement("li");
-        li.textContent = "ยังไม่มีข้อมูลสำหรับ metric นี้";
-        topNList.appendChild(li);
-        return;
-    }
-
-    ranked.forEach((entry) => {
-        const li = document.createElement("li");
-        li.textContent = `${entry.record.provinceName} เขต ${entry.record.district}: ${entry.value}`;
-        topNList.appendChild(li);
-    });
-}
-
 function renderMetricSelector() {
     metricSelector.innerHTML = "";
-    metricOptions.forEach((option) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "metric-option";
-        if (option.key === state.selectedMetric) {
-            button.classList.add("active");
-        }
-        button.textContent = option.label;
-        button.addEventListener("click", () => {
-            state.selectedMetric = option.key;
-            renderAll();
+    for (let index = 0; index < metricOptions.length; index += 2) {
+        const row = document.createElement("div");
+        row.className = "metric-row";
+
+        const pair = metricOptions.slice(index, index + 2);
+        pair.forEach((option) => {
+            const button = document.createElement("button");
+            const isSelected = option.key === state.selectedMetric;
+            button.type = "button";
+            button.className = "metric-option";
+            if (isSelected) {
+                button.classList.add("active");
+            }
+            button.textContent = option.label;
+            button.title = option.label;
+            button.setAttribute("aria-pressed", isSelected ? "true" : "false");
+            button.addEventListener("click", () => {
+                state.selectedMetric = option.key;
+                renderAll();
+            });
+            row.appendChild(button);
         });
-        metricSelector.appendChild(button);
-    });
+
+        metricSelector.appendChild(row);
+    }
 }
 
 function renderRegionFilter() {
@@ -1217,6 +1733,8 @@ function buildConstituencyRecords(gridRows, winnerLookup, provinceLookup) {
                     ballot_difference: null,
                     turnout: null,
                     discrepancy: null,
+                    party_list_voter_came: null,
+                    consti_voters_came: null,
                     lower_number_tendency: null,
                 },
                 regionKey,
@@ -1260,6 +1778,8 @@ function buildPartyListRecords(partyListCsv) {
                 ballot_difference: null,
                 turnout: null,
                 discrepancy: null,
+                party_list_voter_came: null,
+                consti_voters_came: null,
                 lower_number_tendency: null,
             },
             regionKey,
@@ -1275,8 +1795,8 @@ function buildPartyListRecords(partyListCsv) {
 function renderAll() {
     renderMetricSelector();
     renderRegionFilter();
+    renderOverviewPanel();
     renderConstituencyList();
-    renderTopN();
     renderTileGrid(state.gridRows, state.winnerLookup, state.provincesByAcronym);
     renderBenfordChart();
 }
@@ -1302,10 +1822,6 @@ function bindEvents() {
         renderAll();
     });
 
-    topNInput.addEventListener("change", () => {
-        renderTopN();
-    });
-
     benfordPartyFilter.addEventListener("change", (event) => {
         state.selectedPartyForBenford = event.target.value;
         renderBenfordChart();
@@ -1323,6 +1839,14 @@ function bindEvents() {
             closePopup();
         }
     });
+
+    if (storyScrollContainer) {
+        storyScrollContainer.addEventListener("scroll", () => {
+            if (state.selectedMetric === "ballot_difference" || overviewPanel?.classList.contains("is-floating-ballot")) {
+                renderOverviewPanel();
+            }
+        }, { passive: true });
+    }
 }
 
 async function loadData() {

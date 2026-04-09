@@ -45,18 +45,13 @@
                     </section>
 
                     <section class="panel control-panel">
-                        <h3>ภูมิภาค</h3>
-                        <select id="regionFilter"></select>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <h3 style="margin: 0;">ภูมิภาค</h3>
+                            <select id="regionFilter"></select>
+                        </div>
                     </section>
 
-                    <section class="panel" id="topNPanel">
-                        <div class="top-n-header">
-                            <h3>Top <span id="topNValueLabel">5</span></h3>
-                            <label for="topNInput" class="sr-only">Top N value</label>
-                            <input id="topNInput" type="number" min="1" max="20" value="5">
-                        </div>
-                        <ol id="topNList" class="top-n-list"></ol>
-                    </section>
+                    <section id="overviewPanel" class="overview-panel panel" aria-live="polite"></section>
                 </aside>
 
                 <section class="dashboard-map panel">
@@ -67,7 +62,7 @@
                 </section>
 
                 <aside class="dashboard-right panel">
-                    <h3>Constituencies</h3>
+                    <h3>เขตเลือกตั้ง</h3>
                     <label for="constituencySearch" class="sr-only">Search constituencies</label>
                     <input id="constituencySearch" type="search" placeholder="ค้นหาจังหวัดหรือเขต">
                     <div id="constituencyList" class="constituency-list"></div>
