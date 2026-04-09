@@ -11,9 +11,9 @@ This project is an interactive, scroll-based story page for exploring election p
 - `#landingSection`: headline + rotating phrase text
 - `#benfordSection`: party filter + Benford chart (expected bars in gray, actual bars in blue)
 - `#dashboardSection`:
-	- left: status, metric selector, region selector, top-N panel
+	- left: metric selector, region selector
 	- center: Thailand tile-grid map + legend
-	- right: searchable constituency list
+	- right: searchable constituency list with metric-aware value and sorting
 - `#detailPopup`: popup shell (currently shows province + constituency only)
 
 ## CSV Data Dictionary (`src/`)
@@ -46,7 +46,7 @@ Region mapping used as the canonical source for region filters.
 	- `province_code`: numeric province code (join key to `province_encoding.code`)
 	- `region_key`: machine-friendly key (`bangkok`, `central`, `north`, `northeast`, `east`, `west`, `south`)
 	- `region_label`: Thai display label for UI
-- **Used by:** region filter and region-scoped map/list/top-N rendering
+- **Used by:** region filter and region-scoped map/list rendering
 
 ### `src/consti1.csv`
 Constituency ballot data at candidate level (multiple rows per constituency).
@@ -117,7 +117,7 @@ Constituency-level aggregated comparison between constituency and party-list bal
 
 - Missing constituencies are shown as **gray** tiles on the map.
 - Missing constituencies are shown as **gray** items in the constituency list.
-- Missing numeric values are treated as `null` and excluded from ranking/scale calculations.
+- Missing numeric values are treated as `null` and are displayed as `-` in the constituency list.
 
 ## Data Quality Notes
 
