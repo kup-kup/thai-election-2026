@@ -3,6 +3,7 @@ const tile_grid_url = "src/tile_grid.csv";
 const province_encoding_url = "src/province_encoding.csv";
 const region_mapping_url = "src/region_mapping.csv";
 const benford_url = "src/benford.json";
+const chart3_url = "src/chart3.csv";
 
 const BENFORD_THEORETICAL_PERCENT = {
     1: 30.1,
@@ -34,6 +35,7 @@ const landingRotator = document.getElementById("landingRotator");
 const detailPopup = document.getElementById("detailPopup");
 const popupClose = document.getElementById("popupClose");
 const popupSubtitle = document.getElementById("popupSubtitle");
+const chart3Canvas = document.getElementById("chart3");
 
 const excludedWinnerPartyLabels = new Set(["Unknown", "ไม่มีข้อมูล"]);
 
@@ -82,6 +84,207 @@ const state = {
 };
 
 let hoveredMapTile = null;
+let chart3Instance = null;
+
+// CSV Parsing utility that handles quoted values
+function parseCSV(csvText) {
+    const lines = csvText.trim().split('\n');
+    if (lines.length < 1) return [];
+    
+    // Parse header line
+    const headerLine = lines[0].replace(/\r/g, '').trim();
+    const headers = parseCSVLine(headerLine);
+    
+    const data = [];
+    for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].replace(/\r/g, '').trim();
+        if (!line) continue;
+        
+        const values = parseCSVLine(line);
+        if (values.length === headers.length) {
+            const row = {};
+            headers.forEach((header, index) => {
+                row[header] = values[index];
+            });
+            data.push(row);
+        }
+    }
+    
+    return data;
+}
+
+// Helper to parse a CSV line handling quoted values
+function parseCSVLine(line) {
+    const result = [];
+    let current = '';
+    let insideQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const nextChar = line[i + 1];
+        
+        if (char === '"') {
+            if (insideQuotes && nextChar === '"') {
+                current += '"';
+                i++;
+            } else {
+                insideQuotes = !insideQuotes;
+            }
+        } else if (char === ',' && !insideQuotes) {
+            result.push(current.trim().replace(/^"|"$/g, ''));
+            current = '';
+        } else {
+            current += char;
+        }
+    }
+    
+    result.push(current.trim().replace(/^"|"$/g, ''));
+    return result;
+}
+
+// Fetch and initialize Chart 3
+async function initializeChart3() {
+    try {
+        const response = await fetch(chart3_url);
+        if (!response.ok) throw new Error(`Failed to fetch ${chart3_url}`);
+        
+        const csvText = await response.text();
+        const chartData = parseCSV(csvText);
+        
+        // Filter data for parties 1, 2, 3, 4, 5, 7, 8
+        const partyNumbers = ['1', '2', '3', '4', '5', '7', '8'];
+        const barData = [];
+        const labels = [];
+        
+        partyNumbers.forEach(num => {
+            const row = chartData.find(r => r['หมายเลข'] === num);
+            if (row) {
+                labels.push(num);
+                const voteStr = row['คะแนน'].replace(/,/g, '');
+                barData.push(parseInt(voteStr) || 0);
+            }
+        });
+        
+        // Find average row
+        const averageRow = chartData.find(r => r['party_name'] === 'ค่าเฉลี่ยพรคคเล็ก10+');
+        const averageVoteStr = averageRow ? averageRow['คะแนน'].replace(/,/g, '') : '0';
+        const averageVotes = parseInt(averageVoteStr) || 0;
+        
+        // Create line dataset array (horizontal line)
+        const lineData = labels.map(() => averageVotes);
+        
+        // Initialize Chart.js
+        const ctx = chart3Canvas.getContext('2d');
+        chart3Instance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'Parties 1-9 Votes',
+                        data: barData,
+                        backgroundColor: '#2b6ad6',
+                        borderColor: '#1d4a99',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        barPercentage: 0.7,
+                        categoryPercentage: 0.8,
+                    },
+                    {
+                        type: 'line',
+                        label: 'Average (Parties 10+)',
+                        data: lineData,
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        fill: false,
+                        pointRadius: 0,
+                        tension: 0,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: { size: 12, family: "'ElectionUI', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" },
+                            color: '#172233',
+                            padding: 15,
+                            usePointStyle: true,
+                        },
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(23, 34, 51, 0.92)',
+                        titleFont: { size: 12, weight: 'bold' },
+                        bodyFont: { size: 11 },
+                        padding: 10,
+                        cornerRadius: 8,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                const label = tooltipItem.dataset.label || '';
+                                const value = tooltipItem.parsed.y || 0;
+                                return `${label}: ${value.toLocaleString()}`;
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Small Party Votes vs Average',
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Party Number (หมายเลขพรรค)',
+                            font: { size: 12, weight: 'bold' },
+                            color: '#172233',
+                        },
+                        ticks: {
+                            font: { size: 11 },
+                            color: '#4c5c74',
+                        },
+                        grid: {
+                            color: 'rgba(220, 228, 239, 0.5)',
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Votes (คะแนนโหวต)',
+                            font: { size: 12, weight: 'bold' },
+                            color: '#172233',
+                        },
+                        ticks: {
+                            font: { size: 11 },
+                            color: '#4c5c74',
+                            callback: function(value) {
+                                return value.toLocaleString();
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(220, 228, 239, 0.5)',
+                        }
+                    }
+                }
+            }
+        });
+        
+        console.log('Chart 3 initialized successfully');
+    } catch (error) {
+        console.error('Error initializing Chart 3:', error);
+    }
+}
 
 function getMapSvg() {
     let svg = tileGridMap.querySelector("svg.tile-grid-svg");
@@ -1894,6 +2097,7 @@ function initApp() {
     bindEvents();
     initLandingRotator();
     loadData();
+    initializeChart3();
 }
 
 document.addEventListener("DOMContentLoaded", initApp);

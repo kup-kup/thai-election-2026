@@ -69,6 +69,27 @@
                 </aside>
             </div>
         </section>
+
+        <section id="chart3Section" class="story-section chart3-section">
+            <div class="section-inner">
+                <header class="section-header">
+                    <h2>Fraud Detection Analysis</h2>
+                    <p>Comparing small party votes (1-9) against the average of larger parties (10+)</p>
+                </header>
+
+                <div class="chart3-container">
+                    <div class="chart3-left">
+                        <canvas id="chart3"></canvas>
+                    </div>
+                    <div class="chart3-right">
+                        <!-- Placeholder for Chart 4 and 5 -->
+                        <div class="chart3-placeholder">
+                            <p>Placeholder for Chart 4 and 5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <div id="detailPopup" class="detail-popup" hidden>
@@ -80,6 +101,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="index.js"></script>
 </body>
