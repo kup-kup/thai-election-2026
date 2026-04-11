@@ -86,6 +86,39 @@ const state = {
 let hoveredMapTile = null;
 let chart3Instance = null;
 
+function isOverviewLinkedHighlightMetric(metricKey = state.selectedMetric) {
+    return metricKey === "ballot_difference" || metricKey === "turnout" || metricKey === "discrepancy";
+}
+
+function clearOverviewLinkedHighlight() {
+    if (!overviewPanel) {
+        return;
+    }
+    overviewPanel
+        .querySelectorAll(".overview-scatter-point.is-linked-hover, .beeswarm-point.is-linked-hover")
+        .forEach((element) => {
+            element.classList.remove("is-linked-hover");
+        });
+}
+
+function applyOverviewLinkedHighlight(recordKey) {
+    clearOverviewLinkedHighlight();
+
+    if (!overviewPanel || !isOverviewLinkedHighlightMetric() || !recordKey) {
+        return;
+    }
+
+    const target = overviewPanel.querySelector(`[data-record-key='${recordKey}']`);
+    if (!target) {
+        return;
+    }
+
+    target.classList.add("is-linked-hover");
+    if (target.parentNode) {
+        target.parentNode.appendChild(target);
+    }
+}
+
 // CSV Parsing utility that handles quoted values
 function parseCSV(csvText) {
     const lines = csvText.trim().split('\n');
@@ -494,6 +527,7 @@ function clearHoveredTile() {
         hoveredMapTile.classList.remove("is-hovered");
     }
     hoveredMapTile = null;
+    clearOverviewLinkedHighlight();
 
     if (tileHoverTooltip) {
         tileHoverTooltip.classList.remove("visible");
@@ -527,6 +561,7 @@ function setHoveredTile(tile) {
     if (!tile || tile === hoveredMapTile) {
         if (tile) {
             updateHoveredTileTooltipPosition();
+            applyOverviewLinkedHighlight(tile.dataset.recordKey);
         }
         return;
     }
@@ -538,6 +573,7 @@ function setHoveredTile(tile) {
     hoveredMapTile = tile;
     hoveredMapTile.classList.add("is-hovered");
     updateHoveredTileTooltipPosition();
+    applyOverviewLinkedHighlight(tile.dataset.recordKey);
 }
 
 function bindMapInteractions() {
@@ -1087,18 +1123,25 @@ function showOverviewTooltip(tooltip, container, event, content) {
     tooltip.textContent = content;
     tooltip.classList.add("visible");
     tooltip.setAttribute("aria-hidden", "false");
-
-    const containerRect = container.getBoundingClientRect();
-    const localX = event.clientX - containerRect.left;
-    const localY = event.clientY - containerRect.top;
-
     const tooltipWidth = tooltip.offsetWidth || 0;
-    const minLeft = 6;
-    const maxLeft = Math.max(minLeft, containerRect.width - tooltipWidth - 6);
-    const left = Math.max(minLeft, Math.min(maxLeft, localX + 12));
+    const tooltipHeight = tooltip.offsetHeight || 24;
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+    const edgePadding = 8;
+    const offsetX = 14;
+    const offsetY = 12;
 
-    const minTop = (tooltip.offsetHeight || 24) + 4;
-    const top = Math.max(minTop, localY - 10);
+    let left = event.clientX + offsetX;
+    let top = event.clientY - tooltipHeight - offsetY;
+
+    const maxLeft = Math.max(edgePadding, viewportWidth - tooltipWidth - edgePadding);
+    left = Math.max(edgePadding, Math.min(maxLeft, left));
+
+    if (top < edgePadding) {
+        top = event.clientY + offsetY;
+    }
+    const maxTop = Math.max(edgePadding, viewportHeight - tooltipHeight - edgePadding);
+    top = Math.max(edgePadding, Math.min(maxTop, top));
 
     tooltip.style.left = `${left}px`;
     tooltip.style.top = `${top}px`;
@@ -1319,11 +1362,15 @@ function renderBallotDifferenceScatter(container) {
         .data(points)
         .join("circle")
         .attr("class", "overview-scatter-point")
+        .attr("data-record-key", (entry) => entry.record.key || `${entry.record.provinceCode}-${entry.record.district}`)
         .attr("cx", (entry) => xScale(entry.xValue))
         .attr("cy", (entry) => yScale(entry.yValue))
         .attr("r", 4.1)
         .on("mouseenter", function handleMouseEnter(event, entry) {
             pointSelection.classed("is-hovered", (candidate) => candidate === entry);
+            if (this.parentNode) {
+                this.parentNode.appendChild(this);
+            }
             showOverviewTooltip(
                 tooltip,
                 plotWrap,
@@ -1427,11 +1474,15 @@ function renderMetricBeeswarm(container, metricKey) {
         .data(nodes)
         .join("circle")
         .attr("class", "beeswarm-point")
+        .attr("data-record-key", (node) => node.record.key || `${node.record.provinceCode}-${node.record.district}`)
         .attr("cx", (node) => Math.max(5, Math.min(innerWidth - 5, node.x)))
         .attr("cy", (node) => Math.max(4, Math.min(innerHeight - 4, node.y)))
         .attr("r", 4.2)
         .on("mouseenter", function handleMouseEnter(event, node) {
             pointSelection.classed("is-hovered", (candidate) => candidate.id === node.id);
+            if (this.parentNode) {
+                this.parentNode.appendChild(this);
+            }
             showOverviewTooltip(
                 tooltip,
                 plotWrap,
@@ -1485,15 +1536,18 @@ function renderOverviewPanel() {
 
     if (state.selectedMetric === "winner") {
         renderWinnerOverview(overviewPanel);
+        clearOverviewLinkedHighlight();
         return;
     }
 
     if (state.selectedMetric === "ballot_difference") {
         renderBallotDifferenceScatter(overviewPanel);
+        applyOverviewLinkedHighlight(hoveredMapTile?.dataset.recordKey);
         return;
     }
 
     renderMetricBeeswarm(overviewPanel, state.selectedMetric);
+    applyOverviewLinkedHighlight(hoveredMapTile?.dataset.recordKey);
 }
 
 function openPopup(record) {
@@ -1861,6 +1915,10 @@ function renderTileGrid(gridRows, winnerLookup, provinceLookup) {
             const record = state.recordByKey.get(`${provinceCode}-${district}`);
             const metricValue = getMetricValue(record, state.selectedMetric);
 
+            if (record?.key) {
+                tileGroup.dataset.recordKey = record.key;
+            }
+
             if (state.selectedMetric === "winner") {
                 if (!partyColorMap.has(party)) {
                     partyColorMap.set(party, makePartyColor(party));
@@ -1924,6 +1982,7 @@ function buildConstituencyRecords(gridRows, winnerLookup, provinceLookup) {
             const regionLabel = state.regionLabels.get(regionKey) || regionKey;
 
             records.push({
+                key: `${provinceCode}-${district}`,
                 tileCode: value,
                 provinceCode,
                 district,
