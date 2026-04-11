@@ -83,9 +83,301 @@
                     </div>
                     <div class="chart3-right">
                         <!-- Placeholder for Chart 4 and 5 -->
-                        <div class="chart3-placeholder">
-                            <p>Placeholder for Chart 4 and 5</p>
+                        <div id="chart4Container" class="chart4-container" style="width:100%; min-height:460px; position:relative;">
+                            <div id="chart4Subtitle" style="width:100%; text-align:center; color:#6b7280; font-size:13px; font-weight:400; padding:0.5rem 0 0; white-space:nowrap; overflow-x:auto;">Comparing valid ballots, invalid ballots, abstained ballots, and total ballots across constituencies</div>
+                            <div id="chart4Controls" style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; flex-wrap:wrap; padding:0.5rem 0 0; background:#fff;">
+                                <div style="display:inline-flex; border:1px solid #ccc; border-radius:10px; overflow:hidden; background:#fff;">
+                                    <button id="chart4ToggleConstituency" type="button" style="border:none; background:#fff; color:#000; padding:0.72rem 1rem; cursor:pointer; font-size:0.95rem; line-height:1;">เขต</button>
+                                    <button id="chart4TogglePartyList" type="button" style="border:none; background:#fff; color:#666; padding:0.72rem 1rem; cursor:pointer; font-size:0.95rem; line-height:1;">บัญชีรายชื่อ</button>
+                                </div>
+                                <div style="display:flex; justify-content:flex-end; width:220px; min-width:220px;">
+                                    <input id="chart4Input" list="chart4Options" placeholder="ค้นหา..." autocomplete="off" style="width:210px; padding:0.72rem 0.9rem; border:1px solid #ccc; border-radius:10px; background:#fff; color:#000; font-size:0.95rem;" />
+                                    <datalist id="chart4Options"></datalist>
+                                </div>
+                            </div>
+                            <div id="chart4" style="width:100%; height:440px; position:relative;"></div>
+                            <div id="chart4Tooltip" style="position:absolute; top:0; left:0; transform:translate(12px, 12px); pointer-events:none; background:rgba(0,0,0,0.8); color:#fff; border-radius:6px; padding:0.55rem 0.75rem; font-size:0.95rem; line-height:1.4; display:none; box-shadow:0 8px 20px rgba(0,0,0,0.2); max-width:280px; z-index:2;"></div>
                         </div>
+                        <script>
+                            window.addEventListener("load", () => {
+                                const chartRoot = document.getElementById("chart4");
+                                const tooltip = document.getElementById("chart4Tooltip");
+                                const toggleConstituency = document.getElementById("chart4ToggleConstituency");
+                                const togglePartyList = document.getElementById("chart4TogglePartyList");
+                                const dropdown = document.getElementById("chart4Input");
+                                const dropdownOptions = document.getElementById("chart4Options");
+                                if (!chartRoot || !tooltip || !toggleConstituency || !togglePartyList || !dropdown || !dropdownOptions || typeof d3 === "undefined") {
+                                    return;
+                                }
+
+                                const CSV_URL = "src/waterfall_long.csv";
+                                const DEFAULT_TRACK = "constituency";
+                                const DEFAULT_SELECTION_KEY = "กรุงเทพมหานคร|1";
+                                const barDefinitions = [
+                                    { key: "voters_came", label: "จำนวนบัตรทั้งหมด", color: "#5b5eff" },
+                                    { key: "good_votes", label: "บัตรดี", color: "#4caf50" },
+                                    { key: "invalid_votes", label: "บัตรเสีย", color: "#f44336" },
+                                    { key: "no_votes", label: "ไม่ประสงค์ออกเสียง", color: "#9e9e9e" },
+                                ];
+
+                                let allRows = [];
+                                let selectedTrack = DEFAULT_TRACK;
+                                let selectedRowKey = DEFAULT_SELECTION_KEY;
+
+                                const parseNumber = (value) => {
+                                    if (value == null) {
+                                        return 0;
+                                    }
+                                    const parsed = Number(String(value).replace(/[^\d-]/g, ""));
+                                    return Number.isFinite(parsed) ? parsed : 0;
+                                };
+
+                                const formatNumber = (value) => Number(value).toLocaleString("th-TH");
+
+                                const getBalanceTooltip = (balance) => {
+                                    const formatted = formatNumber(Math.abs(balance));
+                                    return balance > 0
+                                        ? `มีบัตรหายไปจากระบบ ${formatted} ใบ`
+                                        : `มีคนมาใช้สิทธิเกิน ${formatted} ใบ`;
+                                };
+
+                                const rowKey = (row) => `${row.province_name}|${row.constituency}`;
+
+                                const buildWaterfallData = (row) => {
+                                    const values = barDefinitions.map((def) => ({
+                                        ...def,
+                                        value: parseNumber(row[def.key]),
+                                        tooltip: `${def.label}: ${formatNumber(parseNumber(row[def.key]))}`,
+                                    }));
+
+                                    const votersCame = values[0].value;
+                                    const goodVotes = values[1].value;
+                                    const invalidVotes = values[2].value;
+                                    const noVotes = values[3].value;
+                                    const balance = votersCame - (goodVotes + invalidVotes + noVotes);
+
+                                    const data = [];
+                                    let cumulative = 0;
+                                    values.forEach((entry, index) => {
+                                        const start = index === 0 ? 0 : cumulative;
+                                        const end = index === 0 ? entry.value : cumulative - entry.value;
+                                        cumulative = end;
+                                        data.push({
+                                            ...entry,
+                                            start,
+                                            end,
+                                        });
+                                    });
+
+                                    if (balance !== 0) {
+                                        data.push({
+                                            key: "balance",
+                                            label: "ส่วนต่าง",
+                                            color: "#9c27b0",
+                                            value: balance,
+                                            start: 0,
+                                            end: balance,
+                                            tooltip: getBalanceTooltip(balance),
+                                        });
+                                    }
+
+                                    return data;
+                                };
+
+                                const setActiveTrackButton = () => {
+                                    if (selectedTrack === "constituency") {
+                                        toggleConstituency.style.color = "#000";
+                                        togglePartyList.style.color = "#666";
+                                    } else {
+                                        toggleConstituency.style.color = "#666";
+                                        togglePartyList.style.color = "#000";
+                                    }
+                                };
+
+                                const optionKeyMap = new Map();
+                                const selectedLabel = { value: "" };
+
+                                const updateDropdownOptions = () => {
+                                    const filteredRows = allRows.filter((row) => row.vote_track === selectedTrack);
+                                    dropdownOptions.innerHTML = "";
+                                    optionKeyMap.clear();
+
+                                    filteredRows.forEach((row) => {
+                                        const label = `${row.province_name} เขต ${row.constituency}`;
+                                        optionKeyMap.set(label, rowKey(row));
+                                        const option = document.createElement("option");
+                                        option.value = label;
+                                        dropdownOptions.appendChild(option);
+                                    });
+
+                                    if (!filteredRows.length) {
+                                        selectedRowKey = "";
+                                        selectedLabel.value = "";
+                                        dropdown.value = "";
+                                        return;
+                                    }
+
+                                    const matchingDefault = filteredRows.some((row) => rowKey(row) === DEFAULT_SELECTION_KEY);
+                                    if (filteredRows.some((row) => rowKey(row) === selectedRowKey)) {
+                                        const row = filteredRows.find((row) => rowKey(row) === selectedRowKey);
+                                        selectedLabel.value = `${row.province_name} เขต ${row.constituency}`;
+                                    } else if (selectedTrack === "constituency" && matchingDefault) {
+                                        selectedRowKey = DEFAULT_SELECTION_KEY;
+                                        const row = filteredRows.find((row) => rowKey(row) === DEFAULT_SELECTION_KEY);
+                                        selectedLabel.value = `${row.province_name} เขต ${row.constituency}`;
+                                    } else {
+                                        selectedRowKey = rowKey(filteredRows[0]);
+                                        selectedLabel.value = `${filteredRows[0].province_name} เขต ${filteredRows[0].constituency}`;
+                                    }
+                                    dropdown.value = selectedLabel.value;
+                                };
+
+                                const getSelectedRow = () => allRows.find((row) => rowKey(row) === selectedRowKey && row.vote_track === selectedTrack);
+
+                                const renderChart = (row) => {
+                                    chartRoot.innerHTML = "";
+                                    tooltip.style.display = "none";
+
+                                    const width = chartRoot.clientWidth;
+                                    const height = chartRoot.clientHeight;
+                                    const margin = { top: 22, right: 14, bottom: 88, left: 58 };
+                                    const innerWidth = Math.max(320, width - margin.left - margin.right);
+                                    const innerHeight = Math.max(260, height - margin.top - margin.bottom);
+
+                                    const data = buildWaterfallData(row);
+                                    const yDomain = [
+                                        d3.min(data, (d) => Math.min(d.start, d.end, 0)),
+                                        d3.max(data, (d) => Math.max(d.start, d.end, 0)),
+                                    ];
+
+                                    const xScale = d3.scaleBand()
+                                        .domain(data.map((entry) => entry.label))
+                                        .range([0, innerWidth])
+                                        .padding(0.30);
+
+                                    const yScale = d3.scaleLinear()
+                                        .domain(yDomain)
+                                        .nice()
+                                        .range([innerHeight, 0]);
+
+                                    const svg = d3.select(chartRoot)
+                                        .append("svg")
+                                        .attr("width", width)
+                                        .attr("height", height)
+                                        .attr("viewBox", `0 0 ${width} ${height}`);
+
+                                    const chart = svg.append("g")
+                                        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+                                    const yAxis = d3.axisLeft(yScale)
+                                        .ticks(5)
+                                        .tickFormat((value) => d3.format(",d")(value));
+
+                                    chart.append("g")
+                                        .attr("class", "chart4-axis-y")
+                                        .call(yAxis)
+                                        .selectAll("line")
+                                        .attr("stroke", "#d7d9df");
+
+                                    chart.append("text")
+                                        .attr("text-anchor", "middle")
+                                        .attr("transform", `rotate(-90)`)
+                                        .attr("x", -innerHeight / 2)
+                                        .attr("y", -42)
+                                        .attr("fill", "#1b1f23")
+                                        .attr("font-size", "12px")
+                                        .attr("font-weight", 400)
+                                        .text("จำนวนบัตร (ใบ)");
+
+                                    chart.append("g")
+                                        .attr("transform", `translate(0,${innerHeight})`)
+                                        .call(d3.axisBottom(xScale).tickSizeOuter(0))
+                                        .selectAll("text")
+                                        .style("text-anchor", "end")
+                                        .attr("dx", "-0.2em")
+                                        .attr("dy", "0.25em")
+                                        .attr("transform", "rotate(-35)");
+
+                                    chart.append("line")
+                                        .attr("x1", 0)
+                                        .attr("x2", innerWidth)
+                                        .attr("y1", yScale(0))
+                                        .attr("y2", yScale(0))
+                                        .attr("stroke", "#c8cad0")
+                                        .attr("stroke-width", 1);
+
+                                    chart.selectAll("rect.chart4-bar")
+                                        .data(data)
+                                        .join("rect")
+                                        .attr("class", "chart4-bar")
+                                        .attr("x", (d) => xScale(d.label) || 0)
+                                        .attr("width", xScale.bandwidth())
+                                        .attr("y", (d) => yScale(Math.max(d.start, d.end)))
+                                        .attr("height", (d) => Math.max(1, Math.abs(yScale(d.start) - yScale(d.end))))
+                                        .attr("fill", (d) => d.color)
+                                        .attr("rx", 4)
+                                        .on("mouseenter", (event, d) => {
+                                            tooltip.innerHTML = d.tooltip;
+                                            tooltip.style.display = "block";
+                                            const [x, y] = d3.pointer(event, chartRoot);
+                                            tooltip.style.left = `${x + 12}px`;
+                                            tooltip.style.top = `${y + 12}px`;
+                                        })
+                                        .on("mousemove", (event) => {
+                                            const [x, y] = d3.pointer(event, chartRoot);
+                                            tooltip.style.left = `${x + 12}px`;
+                                            tooltip.style.top = `${y + 12}px`;
+                                        })
+                                        .on("mouseleave", () => {
+                                            tooltip.style.display = "none";
+                                        });
+                                };
+
+                                const renderSelectedRow = () => {
+                                    const row = getSelectedRow();
+                                    if (row) {
+                                        renderChart(row);
+                                    } else {
+                                        chartRoot.innerHTML = "ไม่พบข้อมูลสำหรับการเลือกนี้";
+                                    }
+                                };
+
+                                const changeTrack = (track) => {
+                                    selectedTrack = track;
+                                    setActiveTrackButton();
+                                    updateDropdownOptions();
+                                    renderSelectedRow();
+                                };
+
+                                toggleConstituency.addEventListener("click", () => changeTrack("constituency"));
+                                togglePartyList.addEventListener("click", () => changeTrack("party_list"));
+                                dropdown.addEventListener("input", (event) => {
+                                    const value = event.target.value;
+                                    if (optionKeyMap.has(value)) {
+                                        selectedRowKey = optionKeyMap.get(value);
+                                        selectedLabel.value = value;
+                                        renderSelectedRow();
+                                    }
+                                });
+
+                                window.addEventListener("resize", () => {
+                                    renderSelectedRow();
+                                });
+
+                                fetch(CSV_URL)
+                                    .then((response) => response.ok ? response.text() : Promise.reject(response.statusText))
+                                    .then((text) => {
+                                        allRows = d3.csvParse(text);
+                                        setActiveTrackButton();
+                                        updateDropdownOptions();
+                                        renderSelectedRow();
+                                    })
+                                    .catch((error) => {
+                                        console.error("Chart 4 load error:", error);
+                                        chartRoot.textContent = "ไม่สามารถโหลดกราฟได้ขณะนี้";
+                                    });
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
