@@ -516,6 +516,54 @@ body {
 	color: var(--subtle);
 }
 
+.overall-score-controls {
+	border: 1px solid var(--border);
+	border-radius: 10px;
+	padding: 8px;
+	background: #f8fbff;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 10px;
+}
+
+.overall-score-subtitle {
+	margin: 0;
+	font-size: 0.78rem;
+	color: var(--subtle);
+}
+
+.overall-score-row {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.overall-score-row-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.overall-score-label {
+	font-size: 0.82rem;
+	font-weight: 700;
+	color: var(--text);
+}
+
+.overall-score-value {
+	font-size: 0.82rem;
+	font-weight: 700;
+	color: #0f4a95;
+}
+
+.overall-score-slider {
+	width: 100%;
+	accent-color: #2b6ad6;
+	touch-action: pan-y;
+}
+
 .winner-overview-list {
 	display: flex;
 	flex-direction: column;

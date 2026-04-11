@@ -44,7 +44,10 @@ const metricOptions = [
     { key: "ballot_difference", label: "ผลต่างของจำนวนบัตรเลือกตั้ง" },
     { key: "turnout", label: "สัดส่วนผู้ออกมาใช้สิทธิ์" },
     { key: "discrepancy", label: "บัตรผี / บัตรหาย" },
+    { key: "overall_score", label: "คะแนนรวม" },
 ];
+
+const overallScoreMetricKeys = ["ballot_difference", "turnout", "discrepancy"];
 
 const state = {
     selectedMetric: "winner",
@@ -59,6 +62,13 @@ const state = {
     provinceThaiNameByAcronym: new Map(),
     regionByProvinceCode: new Map(),
     regionLabels: new Map(),
+    overallScoreWeights: {
+        ballot_difference: 1 / 3,
+        turnout: 1 / 3,
+        discrepancy: 1 / 3,
+    },
+    overallScoreDomains: null,
+    overallScoreTurnoutMean: null,
     mapView: {
         scale: 1,
         translateX: 0,
@@ -81,13 +91,14 @@ const state = {
         contentHeight: 0,
     },
     mapInteractionBound: false,
+    overallScoreRerenderTimerId: null,
 };
 
 let hoveredMapTile = null;
 let chart3Instance = null;
 
 function isOverviewLinkedHighlightMetric(metricKey = state.selectedMetric) {
-    return metricKey === "ballot_difference" || metricKey === "turnout" || metricKey === "discrepancy";
+    return metricKey === "ballot_difference" || metricKey === "turnout" || metricKey === "discrepancy" || metricKey === "overall_score";
 }
 
 function clearOverviewLinkedHighlight() {
@@ -907,11 +918,125 @@ function buildWinnerLookup(winnerRows) {
     return lookup;
 }
 
-function getMetricValue(record, metricKey) {
+function getRawMetricValue(record, metricKey) {
     if (!record || !record.metrics) {
         return null;
     }
     return record.metrics[metricKey] ?? null;
+}
+
+function computeMetricMean(records, metricKey) {
+    const values = records
+        .map((record) => getRawMetricValue(record, metricKey))
+        .filter((value) => Number.isFinite(value));
+
+    if (values.length === 0) {
+        return null;
+    }
+
+    return d3.mean(values);
+}
+
+function getOverallScoreComponentValue(record, metricKey, turnoutMean = state.overallScoreTurnoutMean) {
+    const rawValue = getRawMetricValue(record, metricKey);
+    if (!Number.isFinite(rawValue)) {
+        return null;
+    }
+
+    if (metricKey === "turnout") {
+        if (!Number.isFinite(turnoutMean)) {
+            return null;
+        }
+        return Math.abs(rawValue - turnoutMean);
+    }
+
+    return rawValue;
+}
+
+function computeGlobalMetricDomain(records, metricKey, valueAccessor = getRawMetricValue) {
+    const values = records
+        .map((record) => valueAccessor(record, metricKey))
+        .filter((value) => Number.isFinite(value));
+
+    if (values.length === 0) {
+        return null;
+    }
+
+    return {
+        min: Math.min(...values),
+        max: Math.max(...values),
+    };
+}
+
+function computeOverallScoreDomains(records = state.records, turnoutMean = state.overallScoreTurnoutMean) {
+    const domains = {};
+    overallScoreMetricKeys.forEach((metricKey) => {
+        domains[metricKey] = computeGlobalMetricDomain(
+            records,
+            metricKey,
+            (record, key) => getOverallScoreComponentValue(record, key, turnoutMean)
+        );
+    });
+    return domains;
+}
+
+function normalizeMetricByDomain(value, domain) {
+    if (!Number.isFinite(value) || !domain) {
+        return null;
+    }
+
+    const { min, max } = domain;
+    if (!Number.isFinite(min) || !Number.isFinite(max)) {
+        return null;
+    }
+
+    if (max === min) {
+        return 0.5;
+    }
+
+    const normalized = (value - min) / (max - min);
+    return Math.max(0, Math.min(1, normalized));
+}
+
+function getOverallScore(record) {
+    if (!record) {
+        return null;
+    }
+
+    const weights = state.overallScoreWeights;
+    const domains = state.overallScoreDomains || {};
+
+    let weightedSum = 0;
+    let availableWeight = 0;
+
+    overallScoreMetricKeys.forEach((metricKey) => {
+        const metricWeight = Number(weights[metricKey]) || 0;
+        if (metricWeight <= 0) {
+            return;
+        }
+
+        const componentValue = getOverallScoreComponentValue(record, metricKey);
+        const normalized = normalizeMetricByDomain(componentValue, domains[metricKey]);
+        if (!Number.isFinite(normalized)) {
+            return;
+        }
+
+        weightedSum += normalized * metricWeight;
+        availableWeight += metricWeight;
+    });
+
+    if (availableWeight <= 0) {
+        return null;
+    }
+
+    return (weightedSum / availableWeight) * 100;
+}
+
+function getMetricValue(record, metricKey) {
+    if (metricKey === "overall_score") {
+        return getOverallScore(record);
+    }
+    return getRawMetricValue(record, metricKey);
 }
 
 function formatMetricValueForList(record) {
@@ -928,7 +1053,7 @@ function formatMetricValueForList(record) {
         return "-";
     }
 
-    if (state.selectedMetric === "turnout") {
+    if (state.selectedMetric === "turnout" || state.selectedMetric === "overall_score") {
         return `${metricValue.toLocaleString("th-TH", { maximumFractionDigits: 2 })}%`;
     }
 
@@ -1045,10 +1170,161 @@ function formatOverviewMetricValue(metricKey, value) {
     if (!Number.isFinite(value)) {
         return "-";
     }
-    if (metricKey === "turnout") {
+    if (metricKey === "turnout" || metricKey === "overall_score") {
         return `${value.toLocaleString("th-TH", { maximumFractionDigits: 2 })}%`;
     }
     return value.toLocaleString("th-TH", { maximumFractionDigits: 2 });
+}
+
+function updateOverallScoreWeights(changedMetricKey, nextWeight) {
+    const constrained = Math.max(0, Math.min(1, Number(nextWeight) || 0));
+    const previous = { ...state.overallScoreWeights };
+    const next = { ...previous, [changedMetricKey]: constrained };
+
+    const otherKeys = overallScoreMetricKeys.filter((metricKey) => metricKey !== changedMetricKey);
+    const remainder = 1 - constrained;
+    const previousOtherSum = otherKeys.reduce((sum, metricKey) => sum + Math.max(0, Number(previous[metricKey]) || 0), 0);
+
+    if (otherKeys.length === 0) {
+        state.overallScoreWeights = { [changedMetricKey]: 1 };
+        return;
+    }
+
+    if (previousOtherSum > 0) {
+        otherKeys.forEach((metricKey) => {
+            const oldWeight = Math.max(0, Number(previous[metricKey]) || 0);
+            next[metricKey] = (oldWeight / previousOtherSum) * remainder;
+        });
+    } else {
+        const equalWeight = remainder / otherKeys.length;
+        otherKeys.forEach((metricKey) => {
+            next[metricKey] = equalWeight;
+        });
+    }
+
+    const total = overallScoreMetricKeys.reduce((sum, metricKey) => sum + (Number(next[metricKey]) || 0), 0);
+    const correctionKey = otherKeys[0] || changedMetricKey;
+    next[correctionKey] = (Number(next[correctionKey]) || 0) + (1 - total);
+
+    const normalizedTotal = overallScoreMetricKeys.reduce((sum, metricKey) => sum + (Number(next[metricKey]) || 0), 0);
+    if (normalizedTotal > 0) {
+        overallScoreMetricKeys.forEach((metricKey) => {
+            next[metricKey] = Math.max(0, (Number(next[metricKey]) || 0) / normalizedTotal);
+        });
+    }
+
+    state.overallScoreWeights = next;
+}
+
+function clearOverallScoreRerenderTimer() {
+    if (state.overallScoreRerenderTimerId !== null) {
+        window.clearTimeout(state.overallScoreRerenderTimerId);
+        state.overallScoreRerenderTimerId = null;
+    }
+}
+
+function scheduleOverallScoreRerender(delayMs = 80) {
+    clearOverallScoreRerenderTimer();
+    state.overallScoreRerenderTimerId = window.setTimeout(() => {
+        state.overallScoreRerenderTimerId = null;
+        rerenderForOverallScoreChange({ refreshOverview: true });
+    }, delayMs);
+}
+
+function rerenderForOverallScoreChange({ refreshOverview = false } = {}) {
+    if (refreshOverview) {
+        renderOverviewPanel();
+    }
+    renderConstituencyList();
+    renderTileGrid(state.gridRows, state.winnerLookup, state.provincesByAcronym);
+}
+
+function syncOverallScoreControlValues(container = overviewPanel) {
+    if (!container) {
+        return;
+    }
+
+    const controls = container.querySelector(".overall-score-controls");
+    if (!controls) {
+        return;
+    }
+
+    overallScoreMetricKeys.forEach((metricKey) => {
+        const weightValue = Number(state.overallScoreWeights[metricKey]) || 0;
+        const row = controls.querySelector(`.overall-score-row[data-metric-key='${metricKey}']`);
+        if (!row) {
+            return;
+        }
+
+        const valueLabel = row.querySelector(".overall-score-value");
+        if (valueLabel) {
+            valueLabel.textContent = `${(weightValue * 100).toFixed(0)}%`;
+        }
+
+        const slider = row.querySelector(".overall-score-slider");
+        if (slider) {
+            slider.value = String(Math.round(weightValue * 100));
+        }
+    });
+}
+
+function renderOverallScoreControls(container) {
+    const controls = document.createElement("div");
+    controls.className = "overall-score-controls";
+
+    // const subtitle = document.createElement("p");
+    // subtitle.className = "overall-score-subtitle";
+    // subtitle.textContent = "ปรับค่าน้ำหนักขององค์ประกอบให้รวมกันเท่ากับ 100%";
+    // controls.appendChild(subtitle);
+
+    overallScoreMetricKeys.forEach((metricKey) => {
+        const row = document.createElement("div");
+        row.className = "overall-score-row";
+        row.dataset.metricKey = metricKey;
+
+        const header = document.createElement("div");
+        header.className = "overall-score-row-header";
+
+        const label = document.createElement("span");
+        label.className = "overall-score-label";
+        label.textContent = metricKey === "turnout"
+            ? "สัดส่วนผู้ออกมาใช้สิทธิ์ต่างจากปกติ"
+            : getMetricLabel(metricKey);
+
+        const weightValue = Number(state.overallScoreWeights[metricKey]) || 0;
+        const valueLabel = document.createElement("span");
+        valueLabel.className = "overall-score-value";
+        valueLabel.textContent = `${(weightValue * 100).toFixed(0)}%`;
+
+        header.append(label, valueLabel);
+
+        const slider = document.createElement("input");
+        slider.className = "overall-score-slider";
+        slider.type = "range";
+        slider.min = "0";
+        slider.max = "100";
+        slider.step = "1";
+        slider.value = String(Math.round(weightValue * 100));
+        slider.addEventListener("input", (event) => {
+            const sliderValue = Number(event.target.value) / 100;
+            updateOverallScoreWeights(metricKey, sliderValue);
+            syncOverallScoreControlValues(container);
+            rerenderForOverallScoreChange({ refreshOverview: false });
+        });
+
+        const commitUpdate = () => {
+            clearOverallScoreRerenderTimer();
+            rerenderForOverallScoreChange({ refreshOverview: true });
+        };
+
+        slider.addEventListener("change", commitUpdate);
+        slider.addEventListener("pointerup", commitUpdate);
+
+        row.append(header, slider);
+        controls.appendChild(row);
+    });
+
+    container.appendChild(controls);
 }
 
 const textMeasureCanvas = document.createElement("canvas");
@@ -1393,6 +1669,14 @@ function renderBallotDifferenceScatter(container) {
         .on("click", (_, entry) => {
             openPopup(entry.record);
         });
+
+    plotWrap.addEventListener("mouseleave", () => {
+        pointSelection.classed("is-hovered", false);
+        hideOverviewTooltip(tooltip);
+        if (!hoveredMapTile) {
+            clearOverviewLinkedHighlight();
+        }
+    });
 }
 
 function renderMetricBeeswarm(container, metricKey) {
@@ -1505,6 +1789,14 @@ function renderMetricBeeswarm(container, metricKey) {
         .on("click", (_, node) => {
             openPopup(node.record);
         });
+
+    plotWrap.addEventListener("mouseleave", () => {
+        pointSelection.classed("is-hovered", false);
+        hideOverviewTooltip(tooltip);
+        if (!hoveredMapTile) {
+            clearOverviewLinkedHighlight();
+        }
+    });
 }
 
 function isDashboardSectionInView() {
@@ -1542,6 +1834,13 @@ function renderOverviewPanel() {
 
     if (state.selectedMetric === "ballot_difference") {
         renderBallotDifferenceScatter(overviewPanel);
+        applyOverviewLinkedHighlight(hoveredMapTile?.dataset.recordKey);
+        return;
+    }
+
+    if (state.selectedMetric === "overall_score") {
+        renderOverallScoreControls(overviewPanel);
+        renderMetricBeeswarm(overviewPanel, state.selectedMetric);
         applyOverviewLinkedHighlight(hoveredMapTile?.dataset.recordKey);
         return;
     }
@@ -2142,6 +2441,8 @@ async function loadData() {
         state.recordByKey = new Map(
             constituencyRecords.map((record) => [`${record.provinceCode}-${record.district}`, record])
         );
+        state.overallScoreTurnoutMean = computeMetricMean(constituencyRecords, "turnout");
+        state.overallScoreDomains = computeOverallScoreDomains(constituencyRecords, state.overallScoreTurnoutMean);
 
         renderBenfordFilter();
         renderAll();
