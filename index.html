@@ -83,9 +83,214 @@
                     </div>
                     <div class="chart3-right">
                         <!-- Placeholder for Chart 4 and 5 -->
-                        <div class="chart3-placeholder">
-                            <p>Placeholder for Chart 4 and 5</p>
+                        <div id="chart4Container" class="chart4-container" style="width:100%; min-height:360px; position:relative;">
+                            <div id="chart4" style="width:100%; height:360px;"></div>
+                            <div id="chart4Tooltip" style="position:absolute; top:0; left:0; transform:translate(12px, 12px); pointer-events:none; background:rgba(0,0,0,0.8); color:#fff; border-radius:6px; padding:0.55rem 0.75rem; font-size:0.85rem; line-height:1.4; display:none; box-shadow:0 8px 20px rgba(0,0,0,0.2); max-width:260px; z-index:2;"></div>
                         </div>
+                        <script>
+                            window.addEventListener("load", () => {
+                                const chartRoot = document.getElementById("chart4");
+                                const tooltip = document.getElementById("chart4Tooltip");
+                                if (!chartRoot || !tooltip || typeof d3 === "undefined") {
+                                    return;
+                                }
+
+                                const parseNumber = (value) => {
+                                    if (value == null) return 0;
+                                    return Number(String(value).replace(/[^\d-]/g, "")) || 0;
+                                };
+
+                                const buildWaterfallData = ({ voters_came, good_votes, invalid_votes, no_votes }) => {
+                                    const balance = voters_came - (good_votes + invalid_votes + no_votes);
+
+                                    const entries = [
+                                        {
+                                            key: "voters_came",
+                                            label: "จำนวนบัตรทั้งหมด",
+                                            value: voters_came,
+                                            color: "#5b5eff",
+                                            tooltip: `จำนวนบัตรทั้งหมด: ${voters_came.toLocaleString("th-TH")}`,
+                                        },
+                                        {
+                                            key: "good_votes",
+                                            label: "บัตรดี",
+                                            value: good_votes,
+                                            color: "#4caf50",
+                                            tooltip: `บัตรดี: ${good_votes.toLocaleString("th-TH")}`,
+                                        },
+                                        {
+                                            key: "invalid_votes",
+                                            label: "บัตรเสีย",
+                                            value: invalid_votes,
+                                            color: "#f44336",
+                                            tooltip: `บัตรเสีย: ${invalid_votes.toLocaleString("th-TH")}`,
+                                        },
+                                        {
+                                            key: "no_votes",
+                                            label: "ไม่ประสงค์ออกคะแนน",
+                                            value: no_votes,
+                                            color: "#9e9e9e",
+                                            tooltip: `ไม่ประสงค์ออกคะแนน: ${no_votes.toLocaleString("th-TH")}`,
+                                        },
+                                        {
+                                            key: "balance",
+                                            label: "ส่วนต่าง",
+                                            value: balance,
+                                            color: "#9c27b0",
+                                            tooltip: balance > 0
+                                                ? `Missing Ballots: ${balance.toLocaleString("th-TH")} ballots missing from the system`
+                                                : `Ghost Ballots: ${Math.abs(balance).toLocaleString("th-TH")} excess ballots`,
+                                        },
+                                    ];
+
+                                    let cumulative = 0;
+                                    return entries.map((entry, index) => {
+                                        if (index === 0) {
+                                            const value = entry.value;
+                                            cumulative = value;
+                                            return {
+                                                ...entry,
+                                                start: 0,
+                                                end: value,
+                                            };
+                                        }
+
+                                        if (entry.key === "balance") {
+                                            return {
+                                                ...entry,
+                                                start: 0,
+                                                end: entry.value,
+                                            };
+                                        }
+
+                                        const start = cumulative;
+                                        const end = cumulative - entry.value;
+                                        cumulative = end;
+                                        return {
+                                            ...entry,
+                                            start,
+                                            end,
+                                        };
+                                    });
+                                };
+
+                                const render = ({ voters_come, good_votes, invalid_votes, no_votes }) => {
+                                    chartRoot.innerHTML = "";
+                                    const width = chartRoot.clientWidth;
+                                    const height = chartRoot.clientHeight;
+                                    const margin = { top: 20, right: 14, bottom: 60, left: 58 };
+                                    const innerWidth = Math.max(320, width - margin.left - margin.right);
+                                    const innerHeight = Math.max(240, height - margin.top - margin.bottom);
+
+                                    const data = buildWaterfallData({
+                                        voters_came: voters_come,
+                                        good_votes,
+                                        invalid_votes,
+                                        no_votes,
+                                    });
+
+                                    const yDomain = [
+                                        d3.min(data, (d) => Math.min(d.start, d.end, 0)),
+                                        d3.max(data, (d) => Math.max(d.start, d.end, 0)),
+                                    ];
+
+                                    const xScale = d3.scaleBand()
+                                        .domain(data.map((d) => d.label))
+                                        .range([0, innerWidth])
+                                        .padding(0.24);
+
+                                    const yScale = d3.scaleLinear()
+                                        .domain(yDomain)
+                                        .nice()
+                                        .range([innerHeight, 0]);
+
+                                    const svg = d3.select(chartRoot)
+                                        .append("svg")
+                                        .attr("width", width)
+                                        .attr("height", height)
+                                        .attr("viewBox", `0 0 ${width} ${height}`);
+
+                                    const chart = svg.append("g")
+                                        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+                                    const axisLeft = d3.axisLeft(yScale)
+                                        .ticks(5)
+                                        .tickFormat((value) => d3.format(",d")(value));
+
+                                    chart.append("g")
+                                        .attr("class", "chart4-axis-y")
+                                        .call(axisLeft)
+                                        .selectAll("line")
+                                        .attr("stroke", "#d7d9df");
+
+                                    chart.append("g")
+                                        .attr("transform", `translate(0,${innerHeight})`)
+                                        .call(d3.axisBottom(xScale).tickSizeOuter(0))
+                                        .selectAll("text")
+                                        .style("text-anchor", "end")
+                                        .attr("dx", "-0.2em")
+                                        .attr("dy", "0.25em")
+                                        .attr("transform", "rotate(-35)");
+
+                                    chart.selectAll("rect.chart4-bar")
+                                        .data(data)
+                                        .join("rect")
+                                        .attr("class", "chart4-bar")
+                                        .attr("x", (d) => xScale(d.label) || 0)
+                                        .attr("width", xScale.bandwidth())
+                                        .attr("y", (d) => yScale(Math.max(d.start, d.end)))
+                                        .attr("height", (d) => Math.max(1, Math.abs(yScale(d.start) - yScale(d.end))))
+                                        .attr("fill", (d) => d.color)
+                                        .attr("rx", 4)
+                                        .on("mouseenter", (event, d) => {
+                                            tooltip.innerHTML = `<strong>${d.label}</strong><br>${d.tooltip}`;
+                                            tooltip.style.display = "block";
+                                            const [x, y] = d3.pointer(event, chartRoot);
+                                            tooltip.style.left = `${x + 12}px`;
+                                            tooltip.style.top = `${y + 12}px`;
+                                        })
+                                        .on("mousemove", (event) => {
+                                            const [x, y] = d3.pointer(event, chartRoot);
+                                            tooltip.style.left = `${x + 12}px`;
+                                            tooltip.style.top = `${y + 12}px`;
+                                        })
+                                        .on("mouseleave", () => {
+                                            tooltip.style.display = "none";
+                                        });
+
+                                    chart.selectAll("text.chart4-value")
+                                        .data(data)
+                                        .join("text")
+                                        .attr("class", "chart4-value")
+                                        .attr("x", (d) => (xScale(d.label) || 0) + xScale.bandwidth() / 2)
+                                        .attr("y", (d) => yScale(Math.max(d.start, d.end)) - 8)
+                                        .attr("text-anchor", "middle")
+                                        .attr("fill", "#222")
+                                        .attr("font-size", "0.78rem")
+                                        .text((d) => d3.format(",d")(d.value));
+                                };
+
+                                fetch("src/chart4.csv")
+                                    .then((response) => response.ok ? response.text() : Promise.reject(response.statusText))
+                                    .then((text) => {
+                                        const rows = d3.csvParse(text);
+                                        if (!rows.length) {
+                                            return;
+                                        }
+                                        const row = rows[0];
+                                        render({
+                                            voters_come: parseNumber(row.voters_come),
+                                            good_votes: parseNumber(row.good_votes),
+                                            invalid_votes: parseNumber(row.invalid_votes),
+                                            no_votes: parseNumber(row.no_votes),
+                                        });
+                                    })
+                                    .catch((error) => {
+                                        console.error("Chart 4 load error:", error);
+                                        chartRoot.textContent = "ไม่สามารถโหลดกราฟได้ขณะนี้";
+                                    });
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
