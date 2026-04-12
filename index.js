@@ -1,4 +1,5 @@
 const party_consti_url = "src/party_consti1.csv";
+const partylist1_url = "src/partylist1.csv";
 const tile_grid_url = "src/tile_grid.csv";
 const province_encoding_url = "src/province_encoding.csv";
 const region_mapping_url = "src/region_mapping.csv";
@@ -92,6 +93,8 @@ const state = {
     },
     mapInteractionBound: false,
     overallScoreRerenderTimerId: null,
+    cursorX: 0,
+    cursorY: 0,
 };
 
 let hoveredMapTile = null;
@@ -584,7 +587,319 @@ function setHoveredTile(tile) {
     hoveredMapTile = tile;
     hoveredMapTile.classList.add("is-hovered");
     updateHoveredTileTooltipPosition();
+    populateMapTooltip(tile.dataset.recordKey);
     applyOverviewLinkedHighlight(tile.dataset.recordKey);
+}
+
+function populateMapTooltip(recordKey) {
+    if (!tileHoverTooltip || !recordKey) {
+        clearHoveredTile();
+        return;
+    }
+
+    const record = state.recordByKey.get(recordKey);
+    if (!record || record.isMissingData) {
+        tileHoverTooltip.innerHTML = "";
+        tileHoverTooltip.classList.remove("visible");
+        return;
+    }
+
+    const provinceName = record.provinceName || "—";
+    const constituency = record.district || "—";
+
+    // Get voter turnout data from rawRow
+    const constiVotersCame = firstAvailableNumber(record.rawRow, ["consti_voters_came"]);
+    const partyListVoterCame = firstAvailableNumber(record.rawRow, ["party_list_voter_came"]);
+    
+    // Get metrics from rawRow CSV columns
+    const ballotDifference = firstAvailableNumber(record.rawRow, ["2diff_came"]);
+    const constiTurnout = firstAvailableNumber(record.rawRow, ["3consti_pct_came"]);
+    
+    // Safe calculation of ghost ballots - prevents NaN errors
+    const ghost_consti = Number(record.rawRow["5consti_ghost"]) || 0;
+    const ghost_party = Number(record.rawRow["5partylist_ghost"]) || 0;
+    const total_ghost = ghost_consti + ghost_party;
+
+    // Format tooltip content
+    const tooltip = document.createElement("div");
+
+    // Header with province and district
+    const header = document.createElement("div");
+    header.className = "tooltip-header";
+    header.innerHTML = `<b>จังหวัด ${provinceName} เขต ${constituency}</b>`;
+    tooltip.appendChild(header);
+
+    // Voter Turnout Section
+    const voterSection = document.createElement("div");
+    voterSection.className = "tooltip-section";
+
+    const constiVotersRow = document.createElement("div");
+    constiVotersRow.className = "metric-row";
+    constiVotersRow.innerHTML = `
+        <span class="metric-label">ผู้มาใช้สิทธิ์ ส.ส.เขต:</span>
+        <span class="metric-value">${Number.isFinite(constiVotersCame) ? `${Number(constiVotersCame).toLocaleString()} คน` : "—"}</span>
+    `;
+    voterSection.appendChild(constiVotersRow);
+
+    const partyListVotersRow = document.createElement("div");
+    partyListVotersRow.className = "metric-row";
+    partyListVotersRow.innerHTML = `
+        <span class="metric-label">ผู้มาใช้สิทธิ์ บัญชีรายชื่อ:</span>
+        <span class="metric-value">${Number.isFinite(partyListVoterCame) ? `${Number(partyListVoterCame).toLocaleString()} คน` : "—"}</span>
+    `;
+    voterSection.appendChild(partyListVotersRow);
+
+    tooltip.appendChild(voterSection);
+
+    // Ballot Metrics Section
+    const metricsSection = document.createElement("div");
+    metricsSection.className = "tooltip-section";
+
+    const ballotDiffRow = document.createElement("div");
+    ballotDiffRow.className = "metric-row";
+    ballotDiffRow.innerHTML = `
+        <span class="metric-label">ผลต่างของจำนวนบัตรเลือกตั้ง:</span>
+        <span class="metric-value">${Number.isFinite(ballotDifference) ? `${Number(ballotDifference).toLocaleString()} ใบ` : "—"}</span>
+    `;
+    metricsSection.appendChild(ballotDiffRow);
+
+    const constiTurnoutRow = document.createElement("div");
+    constiTurnoutRow.className = "metric-row";
+    constiTurnoutRow.innerHTML = `
+        <span class="metric-label">สัดส่วนผู้ออกมาใช้สิทธิ์:</span>
+        <span class="metric-value">${Number.isFinite(constiTurnout) ? `${Number(constiTurnout).toFixed(2)}%` : "—"}</span>
+    `;
+    metricsSection.appendChild(constiTurnoutRow);
+
+    // Always display ghost ballots with safe calculation
+    const ghostRow = document.createElement("div");
+    ghostRow.className = "metric-row";
+    ghostRow.innerHTML = `
+        <span class="metric-label">บัตรผี / บัตรหาย:</span>
+        <span class="metric-value">${total_ghost > 0 ? `${total_ghost.toLocaleString()} ใบ` : `${total_ghost.toLocaleString()} ใบ`}</span>
+    `;
+    metricsSection.appendChild(ghostRow);
+
+    tooltip.appendChild(metricsSection);
+
+    tileHoverTooltip.innerHTML = "";
+    tileHoverTooltip.appendChild(tooltip);
+    
+    // Show tooltip at current cursor position
+    updateTooltipPosition(state.cursorX, state.cursorY);
+}
+
+function updateTooltipPosition(pageX, pageY) {
+    if (!tileHoverTooltip || !hoveredMapTile) {
+        return;
+    }
+
+    // Position with 15px offset from cursor, above and to the right
+    const offsetX = 15;
+    const offsetY = 15;
+    tileHoverTooltip.style.left = `${pageX + offsetX}px`;
+    tileHoverTooltip.style.top = `${pageY - offsetY}px`;
+    tileHoverTooltip.classList.add("visible");
+}
+
+function getPartyNumber(provinceCode, constituency, partyName) {
+    if (!state.partylistByProvinceConstituencyParty) {
+        return "—";
+    }
+    const key = `${provinceCode}|${constituency}|${partyName}`;
+    return state.partylistByProvinceConstituencyParty.get(key) || "—";
+}
+
+function showDistrictDetails(provinceName, constituency) {
+    if (!provinceName || constituency === undefined) {
+        console.error("showDistrictDetails: Missing provinceName or constituency");
+        return;
+    }
+
+    // Find the matching record in state.records
+    const record = state.records.find(r => 
+        r.provinceName === provinceName && String(r.district) === String(constituency)
+    );
+
+    if (!record || !record.rawRow) {
+        console.error("showDistrictDetails: Record not found for", provinceName, "เขต", constituency);
+        return;
+    }
+
+    const row = record.rawRow;
+    const popup = document.getElementById("map-click-popup");
+    
+    if (!popup) {
+        console.error("map-click-popup element not found in DOM");
+        return;
+    }
+
+    // Extract all required fields
+    const province_name = row.province_name || record.provinceName || "—";
+    const constituency_num = row.constituency || record.district || "—";
+    const constituency_winner_candidate = row.constituency_winner_candidate || "—";
+    const constituency_winner_party = row.constituency_winner_party || "—";
+    const consti_voters_came = Number(row.consti_voters_came || 0);
+    const party_list_voter_came = Number(row.party_list_voter_came || 0);
+    const ballot_difference = Number(row["2diff_came"] || 0);
+    const consti_pct_came = Number(row["3consti_pct_came"] || 0);
+    const party_list_pct_came = Number(row["3party_list_pct_came"] || 0);
+    const consti_ghost = Number(row["5consti_ghost"] || 0);
+    const partylist_ghost = Number(row["5partylist_ghost"] || 0);
+
+    // Get party number by cross-referencing partylist1.csv data
+    const winner_party_number = getPartyNumber(record.provinceCode, constituency_num, constituency_winner_party);
+
+    // Build the popup HTML with close button
+    const detailHTML = `
+        <button onclick="document.getElementById('map-click-popup').style.display='none'" style="float:right; cursor:pointer; background:red; color:white; border:none; border-radius:3px; padding:2px 6px;">X</button>
+        <h3 style="clear:both;">จังหวัด ${province_name} เขต ${constituency_num}</h3>
+        <div style="margin-bottom: 10px;">
+            <strong>ผู้ชนะ:</strong> ${constituency_winner_candidate}<br>
+            <strong>พรรค:</strong> ${constituency_winner_party} (เบอร์ ${winner_party_number})
+        </div>
+        <hr>
+        <ul style="list-style-type: none; padding: 0; line-height: 1.6;">
+            <li><strong>ผู้มาใช้สิทธิ์ ส.ส.เขต:</strong> ${consti_voters_came.toLocaleString()} คน</li>
+            <li><strong>ผู้มาใช้สิทธิ์ บัญชีรายชื่อ:</strong> ${party_list_voter_came.toLocaleString()} คน</li>
+            <li><strong>ผลต่างของจำนวนบัตรเลือกตั้ง:</strong> ${ballot_difference.toLocaleString()} ใบ</li>
+            <li><strong>สัดส่วนผู้ออกมาใช้สิทธิ์แบบเขต:</strong> ${consti_pct_came.toFixed(2)}%</li>
+            <li><strong>สัดส่วนผู้ออกมาใช้สิทธิ์แบบบัญชีรายชื่อ:</strong> ${party_list_pct_came.toFixed(2)}%</li>
+            <li><strong>บัตรผี / บัตรหายแบบเขต:</strong> ${consti_ghost.toLocaleString()} ใบ</li>
+            <li><strong>บัตรผี / บัตรหายแบบบัญชีรายชื่อ:</strong> ${partylist_ghost.toLocaleString()} ใบ</li>
+        </ul>
+    `;
+
+    // Update the popup content
+    popup.innerHTML = detailHTML;
+
+    // Show the popup centered on screen
+    popup.style.display = 'block';
+    console.log("✅ District details popup displayed for:", province_name, "เขต", constituency_num);
+}
+
+function displayDetailPanel(record, event) {
+    // Wrapper function for map click handler
+    // Delegates to the reusable showDistrictDetails function
+    if (!record || !record.rawRow) {
+        console.error("displayDetailPanel: Invalid record passed");
+        return;
+    }
+    const provinceName = record.provinceName || record.rawRow.province_name || "—";
+    const constituency = record.district || record.rawRow.constituency || "—";
+    showDistrictDetails(provinceName, constituency);
+}
+
+function populateDetailPanel(recordKey) {
+    if (!recordKey || !state.recordByKey) {
+        console.error("❌ populateDetailPanel: Invalid recordKey or state.recordByKey missing");
+        return;
+    }
+
+    const record = state.recordByKey.get(recordKey);
+    if (!record) {
+        console.error("❌ populateDetailPanel: Record not found for key:", recordKey);
+        const detailPanel = document.getElementById("detailPanel");
+        if (detailPanel) {
+            detailPanel.innerHTML = `<p style="color: red;">ข้อมูลไม่พบ: ${recordKey}</p>`;
+            detailPanel.classList.add("visible");
+        }
+        return;
+    }
+
+    if (record.isMissingData) {
+        console.warn("⚠️ Record marked as missing data");
+        const detailPanel = document.getElementById("detailPanel");
+        if (detailPanel) {
+            detailPanel.innerHTML = `<p style="color: #ff9800;">⚠️ ข้อมูลไม่สมบูรณ์</p>`;
+            detailPanel.classList.add("visible");
+        }
+        return;
+    }
+
+    const rawRow = record.rawRow || {};
+    const provinceName = record.provinceName || rawRow.province_name || "—";
+    const constituency = record.district || rawRow.constituency || "—";
+    const winnerCandidate = rawRow.constituency_winner_candidate || "—";
+    const winnerParty = rawRow.constituency_winner_party || "—";
+    const winnerPartyNumber = getPartyNumber(record.provinceCode, record.district, winnerParty);
+
+    // Extract metrics with safe number conversion
+    const constiVotersCame = Number(rawRow.consti_voters_came) || 0;
+    const partyListVoterCame = Number(rawRow.party_list_voter_came) || 0;
+    const ballotDifference = Number(rawRow["2diff_came"]) || 0;
+    const constiTurnout = Number(rawRow["3consti_pct_came"]) || 0;
+    const partyListTurnout = Number(rawRow["3party_list_pct_came"]) || 0;
+    const constiGhost = Number(rawRow["5consti_ghost"]) || 0;
+    const partyListGhost = Number(rawRow["5partylist_ghost"]) || 0;
+
+    console.log("✅ Successfully populated data for:", provinceName, "เขต", constituency);
+
+    // Build detail panel HTML
+    const panelHTML = `
+        <div class="detail-panel-close-row">
+            <div class="detail-panel-header">
+                <h3>จังหวัด ${provinceName} เขต ${constituency}</h3>
+            </div>
+            <button class="detail-panel-close-btn" type="button" title="Close">✕</button>
+        </div>
+
+        <div class="detail-panel-winner">
+            <div style="margin-bottom: 8px;"><strong>ผู้ชนะ:</strong> ${winnerCandidate}</div>
+            <div><strong>พรรค:</strong> ${winnerParty} ${winnerPartyNumber !== "—" ? `(เบอร์ ${winnerPartyNumber})` : ""}</div>
+        </div>
+
+        <table class="detail-panel-metrics">
+            <tbody>
+                <tr>
+                    <td><strong>ผู้มาใช้สิทธิ์ ส.ส.เขต:</strong></td>
+                    <td style="text-align: right;">${constiVotersCame.toLocaleString()} คน</td>
+                </tr>
+                <tr>
+                    <td><strong>ผู้มาใช้สิทธิ์ บัญชีรายชื่อ:</strong></td>
+                    <td style="text-align: right;">${partyListVoterCame.toLocaleString()} คน</td>
+                </tr>
+                <tr>
+                    <td><strong>ผลต่างของจำนวนบัตร:</strong></td>
+                    <td style="text-align: right;">${ballotDifference.toLocaleString()} ใบ</td>
+                </tr>
+                <tr><td colspan="2"><hr style="margin: 8px 0; border: none; border-top: 1px solid #dce4ef;"></td></tr>
+                <tr>
+                    <td><strong>สัดส่วนผู้มาใช้สิทธิ์ (เขต):</strong></td>
+                    <td style="text-align: right;">${constiTurnout.toFixed(2)}%</td>
+                </tr>
+                <tr>
+                    <td><strong>สัดส่วนผู้มาใช้สิทธิ์ (บัญชี):</strong></td>
+                    <td style="text-align: right;">${partyListTurnout.toFixed(2)}%</td>
+                </tr>
+                <tr>
+                    <td><strong>บัตรผี/หาย (เขต):</strong></td>
+                    <td style="text-align: right;">${constiGhost.toLocaleString()} ใบ</td>
+                </tr>
+                <tr>
+                    <td><strong>บัตรผี/หาย (บัญชี):</strong></td>
+                    <td style="text-align: right;">${partyListGhost.toLocaleString()} ใบ</td>
+                </tr>
+            </tbody>
+        </table>
+    `;
+
+    const detailPanel = document.getElementById("detailPanel");
+    if (detailPanel) {
+        detailPanel.innerHTML = panelHTML;
+        detailPanel.classList.add("visible");
+
+        // Add close button handler
+        const closeBtn = detailPanel.querySelector(".detail-panel-close-btn");
+        if (closeBtn) {
+            closeBtn.addEventListener("click", () => {
+                console.log("Detail panel closed by user");
+                detailPanel.classList.remove("visible");
+            });
+        }
+    } else {
+        console.error("❌ detailPanel element not found in DOM!");
+    }
 }
 
 function bindMapInteractions() {
@@ -657,7 +972,45 @@ function bindMapInteractions() {
         if (Date.now() < state.mapView.suppressClickUntil) {
             event.preventDefault();
             event.stopPropagation();
+            return;
         }
+
+        // Find the clicked tile
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        
+        const tile = target.closest(".tile[data-map-tile='constituency']");
+        if (!tile || !tileGridMap.contains(tile)) return;
+
+        // Get the record key and find matching data
+        let recordKey = tile.getAttribute("data-record-key");
+        
+        // Fallback: construct key from dataset if needed
+        if (!recordKey) {
+            const provinceCode = tile.dataset.provinceCode;
+            const district = tile.dataset.district;
+            if (provinceCode && district) {
+                recordKey = `${provinceCode}-${district}`;
+            }
+        }
+
+        if (!recordKey) {
+            console.warn("No recordKey found for tile");
+            return;
+        }
+
+        // Get the record from state
+        const record = state.recordByKey?.get(recordKey);
+        if (!record) {
+            console.warn("Record not found for key:", recordKey);
+            return;
+        }
+
+        // Display the floating popup at the click location
+        displayDetailPanel(record, event);
+        
+        event.preventDefault();
+        event.stopPropagation();
     }, true);
 
     tileGridMap.addEventListener("pointerdown", (event) => {
@@ -700,6 +1053,14 @@ function bindMapInteractions() {
         state.mapView.translateX += deltaX;
         state.mapView.translateY += deltaY;
         applyMapTransform();
+    });
+
+    tileGridMap.addEventListener("mousemove", (event) => {
+        state.cursorX = event.pageX;
+        state.cursorY = event.pageY;
+        if (hoveredMapTile && !state.mapView.dragActive) {
+            updateTooltipPosition(event.pageX, event.pageY);
+        }
     });
 
     const endDrag = (event) => {
@@ -1850,11 +2211,12 @@ function renderOverviewPanel() {
 }
 
 function openPopup(record) {
+    // Called when user selects a district from search panel
+    // Shows the same detailed popup as map clicks
     if (!record) {
         return;
     }
-    popupSubtitle.textContent = `${record.provinceName} เขต ${record.district}`;
-    detailPopup.hidden = false;
+    showDistrictDetails(record.provinceName, record.district);
 }
 
 function closePopup() {
@@ -2302,6 +2664,7 @@ function buildConstituencyRecords(gridRows, winnerLookup, provinceLookup) {
                 regionLabel,
                 isMissingData: !winner,
                 type: "constituency",
+                rawRow: winner || {},
             });
         });
     });
@@ -2412,8 +2775,9 @@ function bindEvents() {
 
 async function loadData() {
     try {
-        const [winnerCsv, tileGridCsv, provinceCsv, regionCsv, benfordData] = await Promise.all([
+        const [winnerCsv, partylistCsv, tileGridCsv, provinceCsv, regionCsv, benfordData] = await Promise.all([
             fetchText(party_consti_url),
+            fetchText(partylist1_url),
             fetchText(tile_grid_url),
             fetchText(province_encoding_url),
             fetchText(region_mapping_url),
@@ -2421,9 +2785,25 @@ async function loadData() {
         ]);
 
         const winnerRows = toObjects(winnerCsv);
+        const partylistRows = toObjects(partylistCsv);
         const gridRows = parseCsv(tileGridCsv).filter((row) => row.length > 0);
         const provinceRows = toObjects(provinceCsv);
         const regionRows = toObjects(regionCsv);
+
+        // Build party lookup map: province_code|constituency|party_name -> party_number
+        state.partylistByProvinceConstituencyParty = new Map();
+        partylistRows.forEach((row) => {
+            const provinceCode = String(row["รหัสจังหวัด"] || row["province_code"] || "").trim();
+            const constituency = String(row["เขต"] || row["constituency"] || "").trim();
+            const partyName = String(row["party_name_clean"] || "").trim();
+            const partyNumber = String(row["หมายเลข_clean"] || row["party_number"] || "").trim();
+            if (provinceCode && constituency && partyName && partyNumber) {
+                const key = `${provinceCode}|${constituency}|${partyName}`;
+                if (!state.partylistByProvinceConstituencyParty.has(key)) {
+                    state.partylistByProvinceConstituencyParty.set(key, partyNumber);
+                }
+            }
+        });
 
         state.winnerLookup = buildWinnerLookup(winnerRows);
         state.provincesByAcronym = buildProvinceLookup(provinceRows);
