@@ -2457,7 +2457,6 @@ function initApp() {
     bindEvents();
     initLandingRotator();
     loadData();
-    initializeChart3();
 }
 
 document.addEventListener("DOMContentLoaded", initApp);
