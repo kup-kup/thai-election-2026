@@ -97,6 +97,11 @@
                             </div>
                             <div id="chart4" style="width:100%; height:440px; position:relative;"></div>
                             <div id="chart4Tooltip" style="position:absolute; top:0; left:0; transform:translate(12px, 12px); pointer-events:none; background:rgba(0,0,0,0.8); color:#fff; border-radius:6px; padding:0.55rem 0.75rem; font-size:0.95rem; line-height:1.4; display:none; box-shadow:0 8px 20px rgba(0,0,0,0.2); max-width:280px; z-index:2;"></div>
+                            <div id="chart5Container" style="width:100%; height:440px; position:relative;">
+                                <div id="chart5" style="width:100%; height:100%; position:relative;"></div>
+                                <div id="chart5Tooltip" style="position:absolute; top:0; left:0; transform:translate(12px, 12px); pointer-events:none; background:rgba(0,0,0,0.8); color:#fff; border-radius:6px; padding:0.55rem 0.75rem; font-size:0.95rem; line-height:1.4; display:none; box-shadow:0 8px 20px rgba(0,0,0,0.2); max-width:280px; z-index:2;"></div>
+                                <div id="chart5Note" style="position:absolute; left:12px; bottom:12px; color:#4c5c74; font-size:0.95rem; line-height:1.4;"></div>
+                            </div>
                         </div>
                         <script>
                             window.addEventListener("load", () => {
@@ -121,6 +126,7 @@
                                 ];
 
                                 let allRows = [];
+                                let chart5Rows = [];
                                 let selectedTrack = DEFAULT_TRACK;
                                 let selectedRowKey = DEFAULT_SELECTION_KEY;
 
@@ -142,6 +148,141 @@
                                 };
 
                                 const rowKey = (row) => `${row.province_name}|${row.constituency}`;
+
+                                const getChart5Row = (selectedRow) => {
+                                    if (!selectedRow) return null;
+                                    return chart5Rows.find((row) =>
+                                        row.vote_track === selectedTrack &&
+                                        row.province_name === selectedRow.province_name &&
+                                        row.constituency === selectedRow.constituency
+                                    );
+                                };
+
+                                const renderChart5 = (selectedRow) => {
+                                    const chart5Root = document.getElementById("chart5");
+                                    const chart5Tooltip = document.getElementById("chart5Tooltip");
+                                    const chart5Note = document.getElementById("chart5Note");
+                                    if (!chart5Root || !chart5Tooltip || !chart5Note) return;
+
+                                    chart5Root.innerHTML = "";
+                                    chart5Tooltip.style.display = "none";
+                                    chart5Note.textContent = "";
+
+                                    if (!chart5Rows.length) {
+                                        chart5Root.textContent = "กำลังโหลดข้อมูลคนมาใช้สิทธิ์...";
+                                        return;
+                                    }
+
+                                    const row = getChart5Row(selectedRow);
+                                    if (!row) {
+                                        chart5Root.textContent = "ไม่พบข้อมูลคนมาใช้สิทธิ์สำหรับการเลือกนี้";
+                                        return;
+                                    }
+
+                                    const turnoutPct = Number(row.turnout_pct);
+                                    const votersCame = Number(row.voters_came);
+                                    const eligibleVoters = Number(row.eligible_voters);
+                                    const referencePct = selectedTrack === "party_list" ? 71.37 : 71.42;
+                                    const lineTooltipText = "เฉลี่ยคนมาใช้สิทธิ์ทั้งประเทศ: 71.42%";
+
+                                    const width = chart5Root.clientWidth;
+                                    const height = chart5Root.clientHeight;
+                                    const margin = { top: 24, right: 16, bottom: 36, left: 92 };
+                                    const innerWidth = Math.max(320, width - margin.left - margin.right);
+                                    const innerHeight = Math.max(120, height - margin.top - margin.bottom);
+
+                                    const xScale = d3.scaleLinear()
+                                        .domain([0, 120])
+                                        .range([0, innerWidth]);
+
+                                    const svg = d3.select(chart5Root)
+                                        .append("svg")
+                                        .attr("width", width)
+                                        .attr("height", height)
+                                        .attr("viewBox", `0 0 ${width} ${height}`);
+
+                                    const chart = svg.append("g")
+                                        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+                                    const barHeight = Math.max(24, innerHeight * 0.34);
+                                    const barY = (innerHeight - barHeight) / 2;
+                                    const innerBarHeight = Math.max(10, barHeight * 0.4);
+                                    const innerBarY = barY + (barHeight - innerBarHeight) / 2;
+
+                                    chart.append("rect")
+                                        .attr("x", 0)
+                                        .attr("y", barY)
+                                        .attr("width", xScale(80))
+                                        .attr("height", barHeight)
+                                        .attr("fill", "#3B82F6")
+                                        .attr("rx", 10);
+
+                                    chart.append("rect")
+                                        .attr("x", xScale(80))
+                                        .attr("y", barY)
+                                        .attr("width", xScale(20))
+                                        .attr("height", barHeight)
+                                        .attr("fill", "#FBBF24")
+                                        .attr("rx", 10);
+
+                                    chart.append("rect")
+                                        .attr("x", xScale(100))
+                                        .attr("y", barY)
+                                        .attr("width", xScale(20))
+                                        .attr("height", barHeight)
+                                        .attr("fill", "#EF4444")
+                                        .attr("rx", 10);
+
+                                    chart.append("rect")
+                                        .attr("x", 0)
+                                        .attr("y", innerBarY)
+                                        .attr("width", Math.max(2, xScale(Math.min(120, turnoutPct))))
+                                        .attr("height", innerBarHeight)
+                                        .attr("fill", "#111111")
+                                        .attr("rx", 6);
+
+                                    chart.append("g")
+                                        .attr("transform", `translate(0,${innerHeight})`)
+                                        .call(d3.axisBottom(xScale).ticks(7).tickFormat((value) => `${value}%`))
+                                        .selectAll("text")
+                                        .attr("fill", "#4c5c74")
+                                        .attr("font-size", "11px");
+
+                                    chart.append("line")
+                                        .attr("x1", xScale(referencePct))
+                                        .attr("x2", xScale(referencePct))
+                                        .attr("y1", 0)
+                                        .attr("y2", innerHeight)
+                                        .attr("stroke", "#ff5fa1")
+                                        .attr("stroke-width", 3)
+                                        .attr("stroke-linecap", "round")
+                                        .on("mouseenter", (event) => {
+                                            chart5Tooltip.innerHTML = lineTooltipText;
+                                            chart5Tooltip.style.display = "block";
+                                            const [x, y] = d3.pointer(event, chart5Root);
+                                            chart5Tooltip.style.left = `${x + 12}px`;
+                                            chart5Tooltip.style.top = `${y + 12}px`;
+                                        })
+                                        .on("mousemove", (event) => {
+                                            const [x, y] = d3.pointer(event, chart5Root);
+                                            chart5Tooltip.style.left = `${x + 12}px`;
+                                            chart5Tooltip.style.top = `${y + 12}px`;
+                                        })
+                                        .on("mouseleave", () => {
+                                            chart5Tooltip.style.display = "none";
+                                        });
+
+                                    chart.append("text")
+                                        .attr("x", -18)
+                                        .attr("y", innerHeight / 2)
+                                        .attr("text-anchor", "end")
+                                        .attr("dominant-baseline", "middle")
+                                        .attr("fill", "#1b1f23")
+                                        .attr("font-size", "12px")
+                                        .text("% คนมาใช้สิทธิ์เทียบกับคนมีสิทธิ์");
+
+                                    chart5Note.textContent = `คนมาใช้สิทธิ์ ${formatNumber(votersCame)} / ${formatNumber(eligibleVoters)} คน คิดเป็น ${turnoutPct.toFixed(2)}%`;
+                                };
 
                                 const buildWaterfallData = (row) => {
                                     const values = barDefinitions.map((def) => ({
@@ -337,8 +478,10 @@
                                     const row = getSelectedRow();
                                     if (row) {
                                         renderChart(row);
+                                        renderChart5(row);
                                     } else {
                                         chartRoot.innerHTML = "ไม่พบข้อมูลสำหรับการเลือกนี้";
+                                        renderChart5(null);
                                     }
                                 };
 
@@ -364,16 +507,19 @@
                                     renderSelectedRow();
                                 });
 
-                                fetch(CSV_URL)
-                                    .then((response) => response.ok ? response.text() : Promise.reject(response.statusText))
-                                    .then((text) => {
-                                        allRows = d3.csvParse(text);
+                                Promise.all([
+                                    fetch(CSV_URL).then((response) => response.ok ? response.text() : Promise.reject(response.statusText)),
+                                    fetch("src/chart5_data.csv").then((response) => response.ok ? response.text() : Promise.reject(response.statusText)),
+                                ])
+                                    .then(([waterfallText, chart5Text]) => {
+                                        allRows = d3.csvParse(waterfallText);
+                                        chart5Rows = d3.csvParse(chart5Text);
                                         setActiveTrackButton();
                                         updateDropdownOptions();
                                         renderSelectedRow();
                                     })
                                     .catch((error) => {
-                                        console.error("Chart 4 load error:", error);
+                                        console.error("Chart 4 or Chart 5 load error:", error);
                                         chartRoot.textContent = "ไม่สามารถโหลดกราฟได้ขณะนี้";
                                     });
                             });
