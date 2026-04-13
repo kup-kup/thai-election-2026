@@ -519,8 +519,8 @@ function initializeChart4() {
         }
 
         const margin = { top: 22, right: 14, bottom: 88, left: 58 };
-        const innerWidth = Math.max(320, width - margin.left - margin.right);
-        const innerHeight = Math.max(260, height - margin.top - margin.bottom);
+        const innerWidth = Math.max(1, width - margin.left - margin.right);
+        const innerHeight = Math.max(1, height - margin.top - margin.bottom);
 
         const data = buildWaterfallData(row);
         const yDomain = [

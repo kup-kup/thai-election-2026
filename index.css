@@ -858,34 +858,43 @@ body {
 	min-height: 0;
 }
 
-.popup-chart-header {
-	margin-bottom: 6px;
-}
-
 .chart3-container {
-	display: flex;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 12px;
 	margin-top: 8px;
 	height: 100%;
 	min-height: 0;
 	flex: 1 1 auto;
+	align-items: stretch;
+}
+
+.chart3-left,
+.chart3-right,
+.chart3-placeholder {
+	background: var(--panel);
+	border: 1px solid var(--border);
+	border-radius: 14px;
+	box-shadow: var(--shadow);
+	padding: 12px;
+	min-height: 0;
 }
 
 .chart3-left,
 .chart3-right {
-	flex: 1 1 50%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
-.chart3-left {
-	background: var(--panel);
-	border: 1px solid var(--border);
-	border-radius: 14px;
-	box-shadow: var(--shadow);
-	padding: 10px 12px;
-	min-height: 0;
+.chart3-placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--subtle);
+	font-size: 1rem;
+	font-weight: 700;
+	text-align: center;
 }
 
 #chart3 {
@@ -895,32 +904,16 @@ body {
 
 .chart3-right {
 	background: var(--panel);
-	border: 1px solid var(--border);
-	border-radius: 14px;
-	box-shadow: var(--shadow);
-	padding: 10px 12px;
-	min-height: 0;
 }
 
 #chart4Container {
 	width: 100%;
 	height: 100%;
-	min-height: 460px;
+	min-height: 0;
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-}
-
-#chart4Subtitle {
-	width: 100%;
-	text-align: center;
-	color: #6b7280;
-	font-size: 13px;
-	font-weight: 400;
-	padding: 0.25rem 0 0;
-	white-space: nowrap;
-	overflow-x: auto;
 }
 
 #chart4Controls {
@@ -931,6 +924,12 @@ body {
 	flex-wrap: wrap;
 	padding: 0.25rem 0 0;
 	background: #fff;
+}
+
+@media (max-width: 980px) {
+	.chart3-container {
+		grid-template-columns: 1fr;
+	}
 }
 
 .chart4-toggle-group {
@@ -959,10 +958,17 @@ body {
 
 #chart4 {
 	width: 100%;
-	height: 440px;
+	height: 100%;
 	position: relative;
 	flex: 1 1 auto;
-	min-height: 320px;
+	min-height: 0;
+	min-width: 0;
+}
+
+#chart4 svg {
+	width: 100%;
+	height: 100%;
+	display: block;
 }
 
 #chart4Tooltip {
