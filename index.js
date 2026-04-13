@@ -324,7 +324,6 @@ async function initializeChart3() {
             }
         });
         
-        console.log('Chart 3 initialized successfully');
     } catch (error) {
         console.error('Error initializing Chart 3:', error);
     }
