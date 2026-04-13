@@ -563,18 +563,37 @@ function initializeChart4() {
             .attr("x", -innerHeight / 2)
             .attr("y", -42)
             .attr("fill", "#1b1f23")
-            .attr("font-size", "12px")
+            .attr("font-size", "16px")
             .attr("font-weight", 400)
             .text("จำนวนบัตร (ใบ)");
 
         chart.append("g")
             .attr("transform", `translate(0,${innerHeight})`)
-            .call(d3.axisBottom(xScale).tickSizeOuter(0))
+            .call(d3.axisBottom(xScale)
+                .tickSizeOuter(0)
+                .tickFormat((value) => ({
+                    "จำนวนบัตรทั้งหมด": "ทั้งหมด",
+                    "บัตรดี": "ดี",
+                    "บัตรเสีย": "เสีย",
+                    "ไม่ประสงค์ออกเสียง": "งดออกเสียง",
+                }[value] || value)))
             .selectAll("text")
-            .style("text-anchor", "end")
-            .attr("dx", "-0.2em")
-            .attr("dy", "0.25em")
-            .attr("transform", "rotate(-35)");
+            .style("text-anchor", "middle")
+            .attr("transform", "rotate(0)")
+            .attr("dy", "1.5em")
+            .attr("dx", "0")
+            .style("font-size", null)
+            .style("font-weight", null)
+            .style("fill", null);
+
+        chart.append("text")
+            .attr("x", innerWidth / 2)
+            .attr("y", innerHeight + margin.bottom - 10)
+            .style("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("font-weight", "bold")
+            .style("fill", "#000000")
+            .text("ลักษณะของบัตรเลือกตั้ง");
 
         chart.append("line")
             .attr("x1", 0)
