@@ -3,7 +3,6 @@ const tile_grid_url = "src/tile_grid.csv";
 const province_encoding_url = "src/province_encoding.csv";
 const region_mapping_url = "src/region_mapping.csv";
 const benford_url = "src/benford.json";
-const chart3_url = "src/chart3.csv";
 const partylist1_url = "src/partylist1.csv";
 
 const chart3PartyNumbers = [1, 2, 3, 4, 5, 7, 8];
@@ -136,62 +135,6 @@ function applyOverviewLinkedHighlight(recordKey) {
     if (target.parentNode) {
         target.parentNode.appendChild(target);
     }
-}
-
-// CSV Parsing utility that handles quoted values
-function parseCSV(csvText) {
-    const lines = csvText.trim().split('\n');
-    if (lines.length < 1) return [];
-    
-    // Parse header line
-    const headerLine = lines[0].replace(/\r/g, '').trim();
-    const headers = parseCSVLine(headerLine);
-    
-    const data = [];
-    for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].replace(/\r/g, '').trim();
-        if (!line) continue;
-        
-        const values = parseCSVLine(line);
-        if (values.length === headers.length) {
-            const row = {};
-            headers.forEach((header, index) => {
-                row[header] = values[index];
-            });
-            data.push(row);
-        }
-    }
-    
-    return data;
-}
-
-// Helper to parse a CSV line handling quoted values
-function parseCSVLine(line) {
-    const result = [];
-    let current = '';
-    let insideQuotes = false;
-    
-    for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-        const nextChar = line[i + 1];
-        
-        if (char === '"') {
-            if (insideQuotes && nextChar === '"') {
-                current += '"';
-                i++;
-            } else {
-                insideQuotes = !insideQuotes;
-            }
-        } else if (char === ',' && !insideQuotes) {
-            result.push(current.trim().replace(/^"|"$/g, ''));
-            current = '';
-        } else {
-            current += char;
-        }
-    }
-    
-    result.push(current.trim().replace(/^"|"$/g, ''));
-    return result;
 }
 
 // Fetch and initialize Chart 3
