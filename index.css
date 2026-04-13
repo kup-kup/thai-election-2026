@@ -850,19 +850,25 @@ body {
 	display: none;
 }
 
-/* Chart 3 Styles */
-.chart3-section .section-inner {
+/* Popup Chart Layout */
+.popup-chart-content {
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-start;
+	flex: 1 1 auto;
+	min-height: 0;
+}
+
+.popup-chart-header {
+	margin-bottom: 6px;
 }
 
 .chart3-container {
 	display: flex;
 	gap: 12px;
-	margin-top: 10px;
-	height: calc(100% - 90px);
-	min-height: 460px;
+	margin-top: 8px;
+	height: 100%;
+	min-height: 0;
+	flex: 1 1 auto;
 }
 
 .chart3-left,
@@ -879,7 +885,7 @@ body {
 	border-radius: 14px;
 	box-shadow: var(--shadow);
 	padding: 10px 12px;
-	min-height: 460px;
+	min-height: 0;
 }
 
 #chart3 {
@@ -893,7 +899,106 @@ body {
 	border-radius: 14px;
 	box-shadow: var(--shadow);
 	padding: 10px 12px;
+	min-height: 0;
+}
+
+#chart4Container {
+	width: 100%;
+	height: 100%;
 	min-height: 460px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+#chart4Subtitle {
+	width: 100%;
+	text-align: center;
+	color: #6b7280;
+	font-size: 13px;
+	font-weight: 400;
+	padding: 0.25rem 0 0;
+	white-space: nowrap;
+	overflow-x: auto;
+}
+
+#chart4Controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+	padding: 0.25rem 0 0;
+	background: #fff;
+}
+
+.chart4-toggle-group {
+	display: inline-flex;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	overflow: hidden;
+	background: #fff;
+}
+
+.chart4-toggle-button {
+	border: none;
+	background: #fff;
+	color: #666;
+	padding: 0.72rem 1rem;
+	cursor: pointer;
+	font-size: 0.95rem;
+	line-height: 1;
+	font-family: inherit;
+}
+
+.chart4-toggle-button.is-active {
+	color: #000;
+	font-weight: 700;
+}
+
+.chart4-search-wrap {
+	display: flex;
+	justify-content: flex-end;
+	width: 220px;
+	min-width: 220px;
+}
+
+#chart4Input {
+	width: 210px;
+	padding: 0.72rem 0.9rem;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	background: #fff;
+	color: #000;
+	font-size: 0.95rem;
+	font-family: inherit;
+}
+
+#chart4 {
+	width: 100%;
+	height: 440px;
+	position: relative;
+	flex: 1 1 auto;
+	min-height: 320px;
+}
+
+#chart4Tooltip {
+	position: absolute;
+	top: 0;
+	left: 0;
+	transform: translate(12px, 12px);
+	pointer-events: none;
+	background: rgba(0, 0, 0, 0.8);
+	color: #fff;
+	border-radius: 6px;
+	padding: 0.55rem 0.75rem;
+	font-size: 0.95rem;
+	line-height: 1.4;
+	display: none;
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+	max-width: 280px;
+	z-index: 2;
 }
 
 .chart3-placeholder {
@@ -941,12 +1046,16 @@ body {
 
 .detail-popup-card {
 	position: relative;
-	min-width: min(560px, 92vw);
+	width: min(90vw, 1400px);
+	height: min(90vh, 980px);
 	background: #fff;
 	border-radius: 14px;
 	padding: 16px;
 	box-shadow: 0 20px 44px rgba(0, 0, 0, 0.2);
 	border: 1px solid var(--border);
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 }
 
 .popup-close {
@@ -963,6 +1072,8 @@ body {
 
 .popup-subtitle {
 	color: var(--subtle);
+	margin-top: 0;
+	margin-bottom: 6px;
 }
 
 .sr-only {

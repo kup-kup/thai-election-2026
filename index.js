@@ -96,6 +96,8 @@ const state = {
 
 let hoveredMapTile = null;
 let chart3Instance = null;
+let chart4Initialized = false;
+let renderChart4CurrentSelection = null;
 
 function isOverviewLinkedHighlightMetric(metricKey = state.selectedMetric) {
     return metricKey === "ballot_difference" || metricKey === "turnout" || metricKey === "discrepancy" || metricKey === "overall_score";
@@ -189,6 +191,10 @@ function parseCSVLine(line) {
 // Fetch and initialize Chart 3
 async function initializeChart3() {
     try {
+        if (!chart3Canvas) {
+            return;
+        }
+
         const response = await fetch(chart3_url);
         if (!response.ok) throw new Error(`Failed to fetch ${chart3_url}`);
         
@@ -327,6 +333,294 @@ async function initializeChart3() {
     } catch (error) {
         console.error('Error initializing Chart 3:', error);
     }
+}
+
+function initializeChart4() {
+    if (chart4Initialized) {
+        return;
+    }
+
+    const chartRoot = document.getElementById("chart4");
+    const tooltip = document.getElementById("chart4Tooltip");
+    const toggleConstituency = document.getElementById("chart4ToggleConstituency");
+    const togglePartyList = document.getElementById("chart4TogglePartyList");
+    const dropdown = document.getElementById("chart4Input");
+    const dropdownOptions = document.getElementById("chart4Options");
+
+    if (!chartRoot || !tooltip || !toggleConstituency || !togglePartyList || !dropdown || !dropdownOptions || typeof d3 === "undefined") {
+        return;
+    }
+
+    chart4Initialized = true;
+
+    const CSV_URL = "src/waterfall_long.csv";
+    const DEFAULT_TRACK = "constituency";
+    const DEFAULT_SELECTION_KEY = "กรุงเทพมหานคร|1";
+    const barDefinitions = [
+        { key: "voters_came", label: "จำนวนบัตรทั้งหมด", color: "#5b5eff" },
+        { key: "good_votes", label: "บัตรดี", color: "#4caf50" },
+        { key: "invalid_votes", label: "บัตรเสีย", color: "#f44336" },
+        { key: "no_votes", label: "ไม่ประสงค์ออกเสียง", color: "#9e9e9e" },
+    ];
+
+    let allRows = [];
+    let selectedTrack = DEFAULT_TRACK;
+    let selectedRowKey = DEFAULT_SELECTION_KEY;
+
+    const parseChart4Number = (value) => {
+        if (value == null) {
+            return 0;
+        }
+        const parsed = Number(String(value).replace(/[^\d-]/g, ""));
+        return Number.isFinite(parsed) ? parsed : 0;
+    };
+
+    const formatChart4Number = (value) => Number(value).toLocaleString("th-TH");
+
+    const getBalanceTooltip = (balance) => {
+        const formatted = formatChart4Number(Math.abs(balance));
+        return balance > 0
+            ? `มีบัตรหายไปจากระบบ ${formatted} ใบ`
+            : `มีคนมาใช้สิทธิเกิน ${formatted} ใบ`;
+    };
+
+    const rowKey = (row) => `${row.province_name}|${row.constituency}`;
+
+    const buildWaterfallData = (row) => {
+        const values = barDefinitions.map((definition) => ({
+            ...definition,
+            value: parseChart4Number(row[definition.key]),
+            tooltip: `${definition.label}: ${formatChart4Number(parseChart4Number(row[definition.key]))}`,
+        }));
+
+        const votersCame = values[0].value;
+        const goodVotes = values[1].value;
+        const invalidVotes = values[2].value;
+        const noVotes = values[3].value;
+        const balance = votersCame - (goodVotes + invalidVotes + noVotes);
+
+        const data = [];
+        let cumulative = 0;
+        values.forEach((entry, index) => {
+            const start = index === 0 ? 0 : cumulative;
+            const end = index === 0 ? entry.value : cumulative - entry.value;
+            cumulative = end;
+            data.push({
+                ...entry,
+                start,
+                end,
+            });
+        });
+
+        if (balance !== 0) {
+            data.push({
+                key: "balance",
+                label: "ส่วนต่าง",
+                color: "#9c27b0",
+                value: balance,
+                start: 0,
+                end: balance,
+                tooltip: getBalanceTooltip(balance),
+            });
+        }
+
+        return data;
+    };
+
+    const setActiveTrackButton = () => {
+        toggleConstituency.classList.toggle("is-active", selectedTrack === "constituency");
+        togglePartyList.classList.toggle("is-active", selectedTrack === "party_list");
+    };
+
+    const optionKeyMap = new Map();
+    const selectedLabel = { value: "" };
+
+    const updateDropdownOptions = () => {
+        const filteredRows = allRows.filter((row) => row.vote_track === selectedTrack);
+        dropdownOptions.innerHTML = "";
+        optionKeyMap.clear();
+
+        filteredRows.forEach((row) => {
+            const label = `${row.province_name} เขต ${row.constituency}`;
+            optionKeyMap.set(label, rowKey(row));
+            const option = document.createElement("option");
+            option.value = label;
+            dropdownOptions.appendChild(option);
+        });
+
+        if (!filteredRows.length) {
+            selectedRowKey = "";
+            selectedLabel.value = "";
+            dropdown.value = "";
+            return;
+        }
+
+        const matchingDefault = filteredRows.some((row) => rowKey(row) === DEFAULT_SELECTION_KEY);
+        if (filteredRows.some((row) => rowKey(row) === selectedRowKey)) {
+            const row = filteredRows.find((candidate) => rowKey(candidate) === selectedRowKey);
+            selectedLabel.value = `${row.province_name} เขต ${row.constituency}`;
+        } else if (selectedTrack === "constituency" && matchingDefault) {
+            selectedRowKey = DEFAULT_SELECTION_KEY;
+            const row = filteredRows.find((candidate) => rowKey(candidate) === DEFAULT_SELECTION_KEY);
+            selectedLabel.value = `${row.province_name} เขต ${row.constituency}`;
+        } else {
+            selectedRowKey = rowKey(filteredRows[0]);
+            selectedLabel.value = `${filteredRows[0].province_name} เขต ${filteredRows[0].constituency}`;
+        }
+
+        dropdown.value = selectedLabel.value;
+    };
+
+    const getSelectedRow = () => allRows.find((row) => rowKey(row) === selectedRowKey && row.vote_track === selectedTrack);
+
+    const renderChart = (row) => {
+        chartRoot.innerHTML = "";
+        tooltip.style.display = "none";
+
+        const width = chartRoot.clientWidth;
+        const height = chartRoot.clientHeight;
+        if (width <= 0 || height <= 0) {
+            return;
+        }
+
+        const margin = { top: 22, right: 14, bottom: 88, left: 58 };
+        const innerWidth = Math.max(320, width - margin.left - margin.right);
+        const innerHeight = Math.max(260, height - margin.top - margin.bottom);
+
+        const data = buildWaterfallData(row);
+        const yDomain = [
+            d3.min(data, (entry) => Math.min(entry.start, entry.end, 0)),
+            d3.max(data, (entry) => Math.max(entry.start, entry.end, 0)),
+        ];
+
+        const xScale = d3.scaleBand()
+            .domain(data.map((entry) => entry.label))
+            .range([0, innerWidth])
+            .padding(0.30);
+
+        const yScale = d3.scaleLinear()
+            .domain(yDomain)
+            .nice()
+            .range([innerHeight, 0]);
+
+        const svg = d3.select(chartRoot)
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("viewBox", `0 0 ${width} ${height}`);
+
+        const chart = svg.append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        const yAxis = d3.axisLeft(yScale)
+            .ticks(5)
+            .tickFormat((value) => d3.format(",d")(value));
+
+        chart.append("g")
+            .attr("class", "chart4-axis-y")
+            .call(yAxis)
+            .selectAll("line")
+            .attr("stroke", "#d7d9df");
+
+        chart.append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -innerHeight / 2)
+            .attr("y", -42)
+            .attr("fill", "#1b1f23")
+            .attr("font-size", "12px")
+            .attr("font-weight", 400)
+            .text("จำนวนบัตร (ใบ)");
+
+        chart.append("g")
+            .attr("transform", `translate(0,${innerHeight})`)
+            .call(d3.axisBottom(xScale).tickSizeOuter(0))
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-0.2em")
+            .attr("dy", "0.25em")
+            .attr("transform", "rotate(-35)");
+
+        chart.append("line")
+            .attr("x1", 0)
+            .attr("x2", innerWidth)
+            .attr("y1", yScale(0))
+            .attr("y2", yScale(0))
+            .attr("stroke", "#c8cad0")
+            .attr("stroke-width", 1);
+
+        chart.selectAll("rect.chart4-bar")
+            .data(data)
+            .join("rect")
+            .attr("class", "chart4-bar")
+            .attr("x", (entry) => xScale(entry.label) || 0)
+            .attr("width", xScale.bandwidth())
+            .attr("y", (entry) => yScale(Math.max(entry.start, entry.end)))
+            .attr("height", (entry) => Math.max(1, Math.abs(yScale(entry.start) - yScale(entry.end))))
+            .attr("fill", (entry) => entry.color)
+            .attr("rx", 4)
+            .on("mouseenter", (event, entry) => {
+                tooltip.innerHTML = entry.tooltip;
+                tooltip.style.display = "block";
+                const [x, y] = d3.pointer(event, chartRoot);
+                tooltip.style.left = `${x + 12}px`;
+                tooltip.style.top = `${y + 12}px`;
+            })
+            .on("mousemove", (event) => {
+                const [x, y] = d3.pointer(event, chartRoot);
+                tooltip.style.left = `${x + 12}px`;
+                tooltip.style.top = `${y + 12}px`;
+            })
+            .on("mouseleave", () => {
+                tooltip.style.display = "none";
+            });
+    };
+
+    const renderSelectedRow = () => {
+        const row = getSelectedRow();
+        if (row) {
+            renderChart(row);
+        } else {
+            chartRoot.innerHTML = "ไม่พบข้อมูลสำหรับการเลือกนี้";
+        }
+    };
+
+    const changeTrack = (track) => {
+        selectedTrack = track;
+        setActiveTrackButton();
+        updateDropdownOptions();
+        renderSelectedRow();
+    };
+
+    toggleConstituency.addEventListener("click", () => changeTrack("constituency"));
+    togglePartyList.addEventListener("click", () => changeTrack("party_list"));
+    dropdown.addEventListener("input", (event) => {
+        const value = event.target.value;
+        if (optionKeyMap.has(value)) {
+            selectedRowKey = optionKeyMap.get(value);
+            selectedLabel.value = value;
+            renderSelectedRow();
+        }
+    });
+
+    window.addEventListener("resize", () => {
+        renderSelectedRow();
+    });
+
+    fetch(CSV_URL)
+        .then((response) => (response.ok ? response.text() : Promise.reject(response.statusText)))
+        .then((text) => {
+            allRows = d3.csvParse(text);
+            setActiveTrackButton();
+            updateDropdownOptions();
+            renderSelectedRow();
+        })
+        .catch((error) => {
+            console.error("Chart 4 load error:", error);
+            chartRoot.textContent = "ไม่สามารถโหลดกราฟได้ขณะนี้";
+        });
+
+    renderChart4CurrentSelection = renderSelectedRow;
 }
 
 function getMapSvg() {
@@ -1854,6 +2148,16 @@ function openPopup(record) {
     }
     popupSubtitle.textContent = `${record.provinceName} เขต ${record.district}`;
     detailPopup.hidden = false;
+
+    if (chart3Instance) {
+        chart3Instance.resize();
+    }
+
+    if (typeof renderChart4CurrentSelection === "function") {
+        window.requestAnimationFrame(() => {
+            renderChart4CurrentSelection();
+        });
+    }
 }
 
 function closePopup() {
@@ -2457,6 +2761,7 @@ function initApp() {
     initLandingRotator();
     loadData();
     initializeChart3();
+    initializeChart4();
 }
 
 document.addEventListener("DOMContentLoaded", initApp);
