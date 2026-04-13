@@ -4,6 +4,9 @@ const province_encoding_url = "src/province_encoding.csv";
 const region_mapping_url = "src/region_mapping.csv";
 const benford_url = "src/benford.json";
 const chart3_url = "src/chart3.csv";
+const partylist1_url = "src/partylist1.csv";
+
+const chart3PartyNumbers = [1, 2, 3, 4, 5, 7, 8];
 
 const BENFORD_THEORETICAL_PERCENT = {
     1: 30.1,
@@ -60,8 +63,10 @@ const state = {
     gridRows: [],
     provincesByAcronym: new Map(),
     provinceThaiNameByAcronym: new Map(),
+    provinceThaiNameByCode: new Map(),
     regionByProvinceCode: new Map(),
     regionLabels: new Map(),
+    chart3ByConstituency: new Map(),
     overallScoreWeights: {
         ballot_difference: 1 / 3,
         turnout: 1 / 3,
@@ -98,6 +103,7 @@ let hoveredMapTile = null;
 let chart3Instance = null;
 let chart4Initialized = false;
 let renderChart4CurrentSelection = null;
+let chart3NoDataOverlay = null;
 
 function isOverviewLinkedHighlightMetric(metricKey = state.selectedMetric) {
     return metricKey === "ballot_difference" || metricKey === "turnout" || metricKey === "discrepancy" || metricKey === "overall_score";
@@ -195,33 +201,9 @@ async function initializeChart3() {
             return;
         }
 
-        const response = await fetch(chart3_url);
-        if (!response.ok) throw new Error(`Failed to fetch ${chart3_url}`);
-        
-        const csvText = await response.text();
-        const chartData = parseCSV(csvText);
-        
-        // Filter data for parties 1, 2, 3, 4, 5, 7, 8
-        const partyNumbers = ['1', '2', '3', '4', '5', '7', '8'];
-        const barData = [];
-        const labels = [];
-        
-        partyNumbers.forEach(num => {
-            const row = chartData.find(r => r['หมายเลข'] === num);
-            if (row) {
-                labels.push(num);
-                const voteStr = row['คะแนน'].replace(/,/g, '');
-                barData.push(parseInt(voteStr) || 0);
-            }
-        });
-        
-        // Find average row
-        const averageRow = chartData.find(r => r['party_name'] === 'ค่าเฉลี่ยพรคคเล็ก10+');
-        const averageVoteStr = averageRow ? averageRow['คะแนน'].replace(/,/g, '') : '0';
-        const averageVotes = parseInt(averageVoteStr) || 0;
-        
-        // Create line dataset array (horizontal line)
-        const lineData = labels.map(() => averageVotes);
+        const labels = chart3PartyNumbers.map((value) => String(value));
+        const barData = labels.map(() => 0);
+        const lineData = labels.map(() => null);
         
         // Initialize Chart.js
         const ctx = chart3Canvas.getContext('2d');
@@ -329,10 +311,84 @@ async function initializeChart3() {
                 }
             }
         });
-        
+
     } catch (error) {
         console.error('Error initializing Chart 3:', error);
     }
+}
+
+function ensureChart3NoDataOverlay() {
+    if (!chart3Canvas) {
+        return null;
+    }
+
+    const container = chart3Canvas.parentElement;
+    if (!container) {
+        return null;
+    }
+
+    if (!chart3NoDataOverlay) {
+        container.style.position = "relative";
+
+        chart3NoDataOverlay = document.createElement("div");
+        chart3NoDataOverlay.style.position = "absolute";
+        chart3NoDataOverlay.style.inset = "0";
+        chart3NoDataOverlay.style.display = "none";
+        chart3NoDataOverlay.style.alignItems = "center";
+        chart3NoDataOverlay.style.justifyContent = "center";
+        chart3NoDataOverlay.style.background = "rgba(255, 255, 255, 0.86)";
+        chart3NoDataOverlay.style.color = "#4c5c74";
+        chart3NoDataOverlay.style.fontSize = "1rem";
+        chart3NoDataOverlay.style.fontWeight = "700";
+        chart3NoDataOverlay.style.borderRadius = "12px";
+        chart3NoDataOverlay.style.zIndex = "2";
+        container.appendChild(chart3NoDataOverlay);
+    }
+
+    return chart3NoDataOverlay;
+}
+
+function setChart3NoDataOverlayVisible(visible, text = "ไม่พบข้อมูล") {
+    const overlay = ensureChart3NoDataOverlay();
+    if (!overlay) {
+        return;
+    }
+
+    overlay.textContent = text;
+    overlay.style.display = visible ? "flex" : "none";
+}
+
+function updateChart3ForRecord(record) {
+    if (!chart3Instance) {
+        return;
+    }
+
+    const emptyBarData = chart3PartyNumbers.map(() => 0);
+    const emptyLineData = chart3PartyNumbers.map(() => null);
+
+    if (!record) {
+        chart3Instance.data.datasets[0].data = emptyBarData;
+        chart3Instance.data.datasets[1].data = emptyLineData;
+        chart3Instance.update();
+        setChart3NoDataOverlayVisible(true, "ไม่พบข้อมูล");
+        return;
+    }
+
+    const key = `${record.provinceCode}-${record.district}`;
+    const payload = state.chart3ByConstituency.get(key);
+
+    if (!payload) {
+        chart3Instance.data.datasets[0].data = emptyBarData;
+        chart3Instance.data.datasets[1].data = emptyLineData;
+        chart3Instance.update();
+        setChart3NoDataOverlayVisible(true, "ไม่พบข้อมูล");
+        return;
+    }
+
+    chart3Instance.data.datasets[0].data = [...payload.barData];
+    chart3Instance.data.datasets[1].data = chart3PartyNumbers.map(() => payload.averageVotes10Plus);
+    chart3Instance.update();
+    setChart3NoDataOverlayVisible(false);
 }
 
 function initializeChart4() {
@@ -344,10 +400,8 @@ function initializeChart4() {
     const tooltip = document.getElementById("chart4Tooltip");
     const toggleConstituency = document.getElementById("chart4ToggleConstituency");
     const togglePartyList = document.getElementById("chart4TogglePartyList");
-    const dropdown = document.getElementById("chart4Input");
-    const dropdownOptions = document.getElementById("chart4Options");
 
-    if (!chartRoot || !tooltip || !toggleConstituency || !togglePartyList || !dropdown || !dropdownOptions || typeof d3 === "undefined") {
+    if (!chartRoot || !tooltip || !toggleConstituency || !togglePartyList || typeof d3 === "undefined") {
         return;
     }
 
@@ -366,6 +420,7 @@ function initializeChart4() {
     let allRows = [];
     let selectedTrack = DEFAULT_TRACK;
     let selectedRowKey = DEFAULT_SELECTION_KEY;
+    let selectedRecord = null;
 
     const parseChart4Number = (value) => {
         if (value == null) {
@@ -385,6 +440,58 @@ function initializeChart4() {
     };
 
     const rowKey = (row) => `${row.province_name}|${row.constituency}`;
+    const normalizeChart4Text = (value) => String(value || "").trim().toLowerCase();
+
+    const findMatchingRowForRecord = (record, track = selectedTrack) => {
+        if (!record) {
+            return null;
+        }
+
+        const district = Number(record.district);
+        if (!Number.isInteger(district)) {
+            return null;
+        }
+
+        const provinceName = normalizeChart4Text(record.provinceName);
+        const directMatch = allRows.find((row) => {
+            if (row.vote_track !== track) {
+                return false;
+            }
+            return Number(row.constituency) === district && normalizeChart4Text(row.province_name) === provinceName;
+        });
+        if (directMatch) {
+            return directMatch;
+        }
+
+        const provinceCode = Number(record.provinceCode);
+        const fallbackProvinceThaiName = state.provinceThaiNameByCode.get(provinceCode);
+        const fallbackProvinceName = normalizeChart4Text(fallbackProvinceThaiName);
+        if (!fallbackProvinceName) {
+            return null;
+        }
+
+        return allRows.find((row) => {
+            if (row.vote_track !== track) {
+                return false;
+            }
+            return Number(row.constituency) === district && normalizeChart4Text(row.province_name) === fallbackProvinceName;
+        }) || null;
+    };
+
+    const setSelectedRowFromRecord = (record) => {
+        if (!record) {
+            return false;
+        }
+
+        selectedRecord = record;
+        const matchingRow = findMatchingRowForRecord(record, selectedTrack);
+        if (!matchingRow) {
+            return false;
+        }
+
+        selectedRowKey = rowKey(matchingRow);
+        return true;
+    };
 
     const buildWaterfallData = (row) => {
         const values = barDefinitions.map((definition) => ({
@@ -432,43 +539,28 @@ function initializeChart4() {
         togglePartyList.classList.toggle("is-active", selectedTrack === "party_list");
     };
 
-    const optionKeyMap = new Map();
-    const selectedLabel = { value: "" };
-
-    const updateDropdownOptions = () => {
+    const ensureSelectedRowKey = () => {
         const filteredRows = allRows.filter((row) => row.vote_track === selectedTrack);
-        dropdownOptions.innerHTML = "";
-        optionKeyMap.clear();
-
-        filteredRows.forEach((row) => {
-            const label = `${row.province_name} เขต ${row.constituency}`;
-            optionKeyMap.set(label, rowKey(row));
-            const option = document.createElement("option");
-            option.value = label;
-            dropdownOptions.appendChild(option);
-        });
-
         if (!filteredRows.length) {
             selectedRowKey = "";
-            selectedLabel.value = "";
-            dropdown.value = "";
+            return;
+        }
+
+        if (filteredRows.some((row) => rowKey(row) === selectedRowKey)) {
+            return;
+        }
+
+        if (selectedRecord && setSelectedRowFromRecord(selectedRecord)) {
             return;
         }
 
         const matchingDefault = filteredRows.some((row) => rowKey(row) === DEFAULT_SELECTION_KEY);
-        if (filteredRows.some((row) => rowKey(row) === selectedRowKey)) {
-            const row = filteredRows.find((candidate) => rowKey(candidate) === selectedRowKey);
-            selectedLabel.value = `${row.province_name} เขต ${row.constituency}`;
-        } else if (selectedTrack === "constituency" && matchingDefault) {
+        if (selectedTrack === "constituency" && matchingDefault) {
             selectedRowKey = DEFAULT_SELECTION_KEY;
-            const row = filteredRows.find((candidate) => rowKey(candidate) === DEFAULT_SELECTION_KEY);
-            selectedLabel.value = `${row.province_name} เขต ${row.constituency}`;
-        } else {
-            selectedRowKey = rowKey(filteredRows[0]);
-            selectedLabel.value = `${filteredRows[0].province_name} เขต ${filteredRows[0].constituency}`;
+            return;
         }
 
-        dropdown.value = selectedLabel.value;
+        selectedRowKey = rowKey(filteredRows[0]);
     };
 
     const getSelectedRow = () => allRows.find((row) => rowKey(row) === selectedRowKey && row.vote_track === selectedTrack);
@@ -588,20 +680,12 @@ function initializeChart4() {
     const changeTrack = (track) => {
         selectedTrack = track;
         setActiveTrackButton();
-        updateDropdownOptions();
+        ensureSelectedRowKey();
         renderSelectedRow();
     };
 
     toggleConstituency.addEventListener("click", () => changeTrack("constituency"));
     togglePartyList.addEventListener("click", () => changeTrack("party_list"));
-    dropdown.addEventListener("input", (event) => {
-        const value = event.target.value;
-        if (optionKeyMap.has(value)) {
-            selectedRowKey = optionKeyMap.get(value);
-            selectedLabel.value = value;
-            renderSelectedRow();
-        }
-    });
 
     window.addEventListener("resize", () => {
         renderSelectedRow();
@@ -612,7 +696,7 @@ function initializeChart4() {
         .then((text) => {
             allRows = d3.csvParse(text);
             setActiveTrackButton();
-            updateDropdownOptions();
+            ensureSelectedRowKey();
             renderSelectedRow();
         })
         .catch((error) => {
@@ -620,7 +704,14 @@ function initializeChart4() {
             chartRoot.textContent = "ไม่สามารถโหลดกราฟได้ขณะนี้";
         });
 
-    renderChart4CurrentSelection = renderSelectedRow;
+    renderChart4CurrentSelection = (record) => {
+        if (record) {
+            setSelectedRowFromRecord(record);
+        } else {
+            ensureSelectedRowKey();
+        }
+        renderSelectedRow();
+    };
 }
 
 function getMapSvg() {
@@ -1178,6 +1269,18 @@ function buildProvinceThaiNameLookup(provinceRows) {
         const thaiName = (row.name_th || "").trim();
         if (acronym && thaiName) {
             lookup.set(acronym, thaiName);
+        }
+    });
+    return lookup;
+}
+
+function buildProvinceThaiNameByCodeLookup(provinceRows) {
+    const lookup = new Map();
+    provinceRows.forEach((row) => {
+        const code = Number(row.code);
+        const thaiName = (row.name_th || "").trim();
+        if (Number.isInteger(code) && thaiName) {
+            lookup.set(code, thaiName);
         }
     });
     return lookup;
@@ -2150,12 +2253,13 @@ function openPopup(record) {
     detailPopup.hidden = false;
 
     if (chart3Instance) {
+        updateChart3ForRecord(record);
         chart3Instance.resize();
     }
 
     if (typeof renderChart4CurrentSelection === "function") {
         window.requestAnimationFrame(() => {
-            renderChart4CurrentSelection();
+            renderChart4CurrentSelection(record);
         });
     }
 }
@@ -2656,6 +2760,51 @@ function buildPartyListRecords(partyListCsv) {
     return records;
 }
 
+function buildChart3ConstituencyLookup(partyListRows) {
+    const grouped = new Map();
+    const partyNumberSet = new Set(chart3PartyNumbers);
+
+    partyListRows.forEach((row) => {
+        const provinceCode = Number(row["รหัสจังหวัด"]);
+        const district = Number(row["เขต"]);
+        const partyNumber = Number(row["หมายเลข_clean"]);
+        const votes = parseNumber(row["คะแนน"]);
+
+        if (!Number.isInteger(provinceCode) || !Number.isInteger(district) || !Number.isInteger(partyNumber) || votes === null) {
+            return;
+        }
+
+        const key = `${provinceCode}-${district}`;
+        if (!grouped.has(key)) {
+            grouped.set(key, {
+                barsByPartyNumber: new Map(),
+                sum10Plus: 0,
+                count10Plus: 0,
+            });
+        }
+
+        const entry = grouped.get(key);
+        if (partyNumberSet.has(partyNumber)) {
+            entry.barsByPartyNumber.set(partyNumber, votes);
+        }
+
+        if (partyNumber >= 10) {
+            entry.sum10Plus += votes;
+            entry.count10Plus += 1;
+        }
+    });
+
+    const lookup = new Map();
+    grouped.forEach((entry, key) => {
+        lookup.set(key, {
+            barData: chart3PartyNumbers.map((partyNumber) => entry.barsByPartyNumber.get(partyNumber) || 0),
+            averageVotes10Plus: entry.count10Plus > 0 ? (entry.sum10Plus / entry.count10Plus) : null,
+        });
+    });
+
+    return lookup;
+}
+
 function renderAll() {
     renderMetricSelector();
     renderRegionFilter();
@@ -2715,24 +2864,28 @@ function bindEvents() {
 
 async function loadData() {
     try {
-        const [winnerCsv, tileGridCsv, provinceCsv, regionCsv, benfordData] = await Promise.all([
+        const [winnerCsv, tileGridCsv, provinceCsv, regionCsv, benfordData, partyListCsv] = await Promise.all([
             fetchText(party_consti_url),
             fetchText(tile_grid_url),
             fetchText(province_encoding_url),
             fetchText(region_mapping_url),
             fetchJson(benford_url),
+            fetchText(partylist1_url),
         ]);
 
         const winnerRows = toObjects(winnerCsv);
         const gridRows = parseCsv(tileGridCsv).filter((row) => row.length > 0);
         const provinceRows = toObjects(provinceCsv);
         const regionRows = toObjects(regionCsv);
+        const partyListRows = toObjects(partyListCsv);
 
         state.winnerLookup = buildWinnerLookup(winnerRows);
         state.provincesByAcronym = buildProvinceLookup(provinceRows);
         state.provinceThaiNameByAcronym = buildProvinceThaiNameLookup(provinceRows);
+        state.provinceThaiNameByCode = buildProvinceThaiNameByCodeLookup(provinceRows);
         state.gridRows = gridRows;
         state.benfordData = benfordData;
+        state.chart3ByConstituency = buildChart3ConstituencyLookup(partyListRows);
 
         const regionBundle = buildRegionLookup(regionRows);
         state.regionByProvinceCode = regionBundle.lookup;
