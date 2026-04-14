@@ -468,8 +468,8 @@ function initializeChart4() {
                 label: "ส่วนต่าง",
                 color: "#9c27b0",
                 value: balance,
-                start: 0,
-                end: balance,
+                start: balance > 0 ? 0 : balance,
+                end: balance > 0 ? balance : 0,
                 tooltip: getBalanceTooltip(balance),
             });
         }
