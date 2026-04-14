@@ -1,4 +1,4 @@
-const party_consti_url = "src/party_consti2.csv";
+const party_consti_url = "src/party_consti3.csv";
 const tile_grid_url = "src/tile_grid.csv";
 const province_encoding_url = "src/province_encoding.csv";
 const region_mapping_url = "src/region_mapping.csv";
