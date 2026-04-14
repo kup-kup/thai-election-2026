@@ -125,5 +125,6 @@ Constituency-level aggregated comparison between constituency and party-list bal
 - Parsing should always be null-safe.
 - If province or district join fails, UI should keep tile/list entry visible but gray.
 
-## Citation
-Data source: [Chanon Ngernthongdee's GitHub repository](https://github.com/killernay/election-69-OCR-result) (originally from Thai Election Commission)
+## Attributions
+- Data source: [Chanon Ngernthongdee's GitHub repository](https://github.com/killernay/election-69-OCR-result) (originally from Thai Election Commission)
+- Icon: <a href="https://www.flaticon.com/free-icons/election" title="election icons">Election icons created by Octopocto - Flaticon</a>

@@ -6,6 +6,7 @@
     <meta name="description" content="Thai Election 2026">
     <title>Thai Election 2026</title>
     <link rel="stylesheet" href="index.css">
+    <link rel="icon" href="assets/icon.png" type="image/png">
 </head>
 <body>
     <main class="story-scroll">
@@ -13,15 +14,38 @@
             <div class="section-inner landing-inner">
                 <h1 class="landing-title">การเลือกตั้ง '69 โกงจริงหรือไม่</h1>
                 <p id="landingRotator" class="landing-rotator">ข่าวลือมากมาย</p>
-                <a class="scroll-hint" href="#benfordSection">เลื่อนลงเพื่อสำรวจ</a>
+                <div class="scroll-hint-stack">
+                    <a class="scroll-hint" href="#benfordSection">
+                        <img
+                            class="scroll-hint-preview"
+                            src="assets/benfordSection.png"
+                            alt="เช็ค Benford's Law"
+                            loading="lazy"
+                        >
+                        <span class="scroll-hint-label">เช็ค Benford's Law</span>
+                    </a>
+                    <a class="scroll-hint" href="#dashboardSection">
+                        <img
+                            class="scroll-hint-preview"
+                            src="assets/dashboardSection.png"
+                            alt="ภาพตัวอย่างส่วนแดชบอร์ด"
+                            loading="lazy"
+                        >
+                        <span class="scroll-hint-label">ข้อมูลรายเขต</span>
+                    </a>
+                </div>
             </div>
         </section>
 
         <section id="benfordSection" class="story-section benford-section">
             <div class="section-inner">
                 <header class="section-header">
-                    <h2>Benford's Law Check</h2>
-                    <p>เปรียบเทียบความถี่เลขหลักแรกของผลคะแนนกับค่าที่คาดหวัง</p>
+                    <h2>เช็ค Benford's Law</h2>
+                    <p>
+                        หลักนำหน้าของจำนวนโหวตในแต่ละเขตควรเป็นไปตาม Benford's Law แต่ละพรรคเป็นแบบนั้นหรือไม่?
+                        <br>
+                        (หากจำนวนเขตที่มีพรรคนั้น ๆ น้อย เป็นเรื่องปกติที่ค่าห่างจาก Benford's Law เป็นเรื่องปกติ)
+                    </p>
                 </header>
 
                 <div class="benford-toolbar">
@@ -75,33 +99,84 @@
     <div id="detailPopup" class="detail-popup" hidden>
         <div class="detail-popup-backdrop" data-close-popup="true"></div>
         <div class="detail-popup-card" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
-            <button id="popupClose" class="popup-close" type="button">✕</button>
-            <h2 id="popupTitle">รายละเอียดเขตเลือกตั้ง</h2>
-            <p id="popupSubtitle" class="popup-subtitle">-</p>
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <h2 id="popupTitle" style="margin-top: 0; margin-bottom: 0;">-</h2>
+                <button id="popupClose" class="popup-close" type="button">✕</button>
+            </div>
             <div class="popup-chart-content">
-                <div class="chart3-container">
-                    <div class="chart3-left">
-                        <canvas id="chart3"></canvas>
-                    </div>
-                    <div class="chart3-right">
-                        <div id="chart4Container" class="chart4-container">
-                            <div id="chart4Controls">
-                                <div class="chart4-toggle-group">
-                                    <button id="chart4ToggleConstituency" type="button" class="chart4-toggle-button is-active">เขต</button>
-                                    <button id="chart4TogglePartyList" type="button" class="chart4-toggle-button">บัญชีรายชื่อ</button>
+                <div class="popup-layout">
+                    <div class="popup-main-area">
+                        <div class="popup-metrics-panel">
+                            <div class="popup-summary-card">
+                                <div id="popupSummaryRows" class="popup-summary-rows"></div>
+                            </div>
+                            <div class="popup-metric-card">
+                                <div class="popup-metric-header">
+                                    <h3>สัดส่วนผู้ออกมาใช้สิทธิ์</h3>
+                                </div>
+                                <div id="popupBeeswarmTurnout" class="popup-metric-plot"></div>
+                            </div>
+                        </div>
+
+                        <div class="popup-charts-panel">
+                            <div class="popup-chart-card popup-chart3-card">
+                                <div class="popup-chart-header">
+                                    <div class="popup-chart-title-row">
+                                        <h3 class="popup-chart-title">คะแนนบัญชีรายชื่อพรรคเล็กเทียบกับพรรคที่ชนะ</h3>
+                                        <span class="popup-help-trigger" aria-hidden="true">
+                                            ?
+                                            <span class="popup-help-tooltip">
+                                                คะแนนสูงผิดปกติของพรรคเล็กหมายเลขน้อย ๆ อาจบ่งชี้ถึงการซื้อเสียง 
+                                                เนื่องจากผู้ซื้อเสียงมักบอกให้ผู้มีสิทธิเลือกตั้ง โหวตเลือกเลขเดียวกันทั้งแบบเขตและบัญชีรายชื่อ
+                                                เพื่อให้ง่ายต่อการตรวจสอบและนับคะแนน
+
+                                                <br><br>
+                                                ไม่แสดงพรรคหมายเลข 6 และ 9 เนื่องจากเป็นพรรคใหญ่
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="popup-chart-legend">
+                                        <span class="popup-chart-legend-line"></span>
+                                        <span>ค่าเฉลี่ยคะแนนพรรคเล็ก (หมายเลข 10+)</span>
+                                    </div>
+                                    <div class="popup-chart-legend">
+                                        <span class="popup-chart-legend-winner"></span>
+                                        <span>หมายเลขผู้ชนะ ส.ส. เขต</span>
+                                    </div>
+                                </div>
+                                <div class="popup-chart-body">
+                                    <div id="chart3" role="img" aria-label="Small party votes and average"></div>
                                 </div>
                             </div>
-                            <div id="chart4"></div>
-                            <div id="chart4Tooltip"></div>
+                            <div class="popup-chart-card popup-chart4-card">
+                                <div class="popup-chart-header">
+                                    <h3 class="popup-chart-title">เช็คบัตรผี / บัตรหาย</h3>
+                                </div>
+                                <div class="popup-chart-body">
+                                    <div id="chart4Container" class="chart4-container">
+                                        <div id="chart4"></div>
+                                        <div id="chart4Tooltip"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="chart3-placeholder">[Chart 3 — To be added]</div>
+
+                    <aside class="popup-election-panel">
+                        <div class="popup-election-header">
+                            <h3>ผลการเลือกตั้ง</h3>
+                            <div class="chart4-toggle-group" role="group" aria-label="Election vote track">
+                                <button id="toggleConstituency" type="button" class="chart4-toggle-button is-active">เขต</button>
+                                <button id="togglePartyList" type="button" class="chart4-toggle-button">บัญชีรายชื่อ</button>
+                            </div>
+                        </div>
+                        <div id="popupElectionResultList" class="popup-election-result-list"></div>
+                    </aside>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="index.js"></script>
 </body>
