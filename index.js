@@ -2567,7 +2567,7 @@ function renderOverviewPanel() {
         ? "สรุปจำนวนเขตที่ชนะ"
         : `${getMetricLabel(state.selectedMetric)}`;
 
-    const metricsWithTooltips = ["ballot_difference", "turnout", "discrepancy"];
+    const metricsWithTooltips = ["ballot_difference", "turnout", "discrepancy", "overall_score"];
     const hasTooltip = metricsWithTooltips.includes(state.selectedMetric);
 
     if (hasTooltip) {
