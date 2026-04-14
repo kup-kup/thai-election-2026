@@ -2567,20 +2567,51 @@ function renderOverviewPanel() {
         ? "สรุปจำนวนเขตที่ชนะ"
         : `${getMetricLabel(state.selectedMetric)}`;
 
-    if (state.selectedMetric === "overall_score") {
+    const metricsWithTooltips = ["ballot_difference", "turnout", "discrepancy"];
+    const hasTooltip = metricsWithTooltips.includes(state.selectedMetric);
+
+    if (hasTooltip) {
         const titleRow = document.createElement("div");
         titleRow.className = "overview-title-row";
 
         const helpTrigger = document.createElement("span");
-        helpTrigger.className = "overview-help-trigger";
+        helpTrigger.className = "info-icon";
         helpTrigger.setAttribute("aria-hidden", "true");
         helpTrigger.textContent = "?";
+        helpTrigger.style.marginLeft = "8px";
 
-        const helpTooltip = document.createElement("span");
-        helpTooltip.className = "overview-help-tooltip";
-        helpTooltip.textContent = "รวมผลต่างของจำนวนบัตรเลือกตั้ง สัดส่วนผู้ออกมาใช้สิทธิ์ และบัตรผี / บัตรหาย มาอยู่ในค่าเดียว สามารถปรับได้ว่าอยากให้ค่าอะไรมากกว่ากัน";
+        const tooltipId = {
+            "ballot_difference": "tooltip-ballot-difference",
+            "turnout": "tooltip-turnout",
+            "discrepancy": "tooltip-discrepancy",
+            "overall_score": "tooltip-overall-score"
+        }[state.selectedMetric];
 
-        helpTrigger.appendChild(helpTooltip);
+        if (tooltipId && document.getElementById(tooltipId)) {
+            const tooltip = document.getElementById(tooltipId);
+            
+            helpTrigger.addEventListener("mouseenter", () => {
+                tooltip.style.display = "block";
+                positionMetricTooltip(helpTrigger, tooltip);
+            });
+            
+            helpTrigger.addEventListener("mouseleave", () => {
+                setTimeout(() => {
+                    if (!tooltip.matches(":hover")) {
+                        tooltip.style.display = "none";
+                    }
+                }, 100);
+            });
+            
+            tooltip.addEventListener("mouseenter", () => {
+                tooltip.style.display = "block";
+            });
+            
+            tooltip.addEventListener("mouseleave", () => {
+                tooltip.style.display = "none";
+            });
+        }
+
         titleRow.append(title, helpTrigger);
         overviewPanel.appendChild(titleRow);
     } else {
@@ -2632,6 +2663,43 @@ function openPopup(record) {
 
 function closePopup() {
     detailPopup.hidden = true;
+}
+
+function positionBenfordTooltip() {
+    const benfordInfoIcon = document.getElementById("benford-info-icon");
+    const benfordInfoTooltip = document.getElementById("benford-info-tooltip");
+    
+    if (!benfordInfoIcon || !benfordInfoTooltip) return;
+
+    const iconRect = benfordInfoIcon.getBoundingClientRect();
+    const tooltipRect = benfordInfoTooltip.getBoundingClientRect();
+    
+    // Default position: below and to the right of icon
+    let top = iconRect.bottom + 12;
+    let left = iconRect.left;
+    
+    // Check if tooltip would overflow right side of screen
+    if (left + tooltipRect.width > window.innerWidth) {
+        left = window.innerWidth - tooltipRect.width - 16;
+    }
+    
+    // Check if tooltip would overflow bottom of screen
+    if (top + tooltipRect.height > window.innerHeight) {
+        top = iconRect.top - tooltipRect.height - 12;
+    }
+    
+    // Ensure tooltip doesn't go above screen
+    if (top < 0) {
+        top = 8;
+    }
+    
+    // Ensure tooltip doesn't go to the left of screen
+    if (left < 0) {
+        left = 8;
+    }
+    
+    benfordInfoTooltip.style.top = `${top}px`;
+    benfordInfoTooltip.style.left = `${left}px`;
 }
 
 function renderConstituencyList() {
@@ -2710,6 +2778,38 @@ function renderMetricSelector() {
 
         metricSelector.appendChild(row);
     }
+}
+
+function positionMetricTooltip(icon, tooltip) {
+    const iconRect = icon.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+    
+    // Default position: below and to the right of icon
+    let top = iconRect.bottom + 12;
+    let left = iconRect.left;
+    
+    // Check if tooltip would overflow right side of screen
+    if (left + tooltipRect.width > window.innerWidth) {
+        left = window.innerWidth - tooltipRect.width - 16;
+    }
+    
+    // Check if tooltip would overflow bottom of screen
+    if (top + tooltipRect.height > window.innerHeight) {
+        top = iconRect.top - tooltipRect.height - 12;
+    }
+    
+    // Ensure tooltip doesn't go above screen
+    if (top < 0) {
+        top = 8;
+    }
+    
+    // Ensure tooltip doesn't go to the left of screen
+    if (left < 0) {
+        left = 8;
+    }
+    
+    tooltip.style.top = `${top}px`;
+    tooltip.style.left = `${left}px`;
 }
 
 function renderRegionFilter() {
@@ -3222,6 +3322,47 @@ function bindEvents() {
         state.selectedPartyForBenford = event.target.value;
         renderBenfordChart();
     });
+
+    // Benford Info Icon Tooltip - Hover Interaction
+    const benfordInfoIcon = document.getElementById("benford-info-icon");
+    const benfordInfoTooltip = document.getElementById("benford-info-tooltip");
+
+    if (benfordInfoIcon && benfordInfoTooltip) {
+        // Show tooltip on mouseenter
+        benfordInfoIcon.addEventListener("mouseenter", () => {
+            benfordInfoTooltip.style.display = "block";
+            benfordInfoTooltip.setAttribute("aria-hidden", "false");
+            positionBenfordTooltip();
+        });
+
+        // Hide tooltip on mouseleave (with delay to allow moving to tooltip)
+        benfordInfoIcon.addEventListener("mouseleave", () => {
+            setTimeout(() => {
+                if (!benfordInfoTooltip.matches(":hover")) {
+                    benfordInfoTooltip.style.display = "none";
+                    benfordInfoTooltip.setAttribute("aria-hidden", "true");
+                }
+            }, 100);
+        });
+
+        // Keep tooltip visible when hovering over it
+        benfordInfoTooltip.addEventListener("mouseenter", () => {
+            benfordInfoTooltip.style.display = "block";
+        });
+
+        // Hide tooltip when leaving it
+        benfordInfoTooltip.addEventListener("mouseleave", () => {
+            benfordInfoTooltip.style.display = "none";
+            benfordInfoTooltip.setAttribute("aria-hidden", "true");
+        });
+
+        // Reposition on window resize
+        window.addEventListener("resize", () => {
+            if (benfordInfoTooltip.style.display === "block") {
+                positionBenfordTooltip();
+            }
+        });
+    }
 
     if (mapResetButton) {
         mapResetButton.addEventListener("click", () => {

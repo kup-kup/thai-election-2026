@@ -40,13 +40,37 @@
         <section id="benfordSection" class="story-section benford-section">
             <div class="section-inner">
                 <header class="section-header">
-                    <h2>เช็ค Benford's Law</h2>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <h2>เช็ค Benford's Law</h2>
+                        <button id="benford-info-icon" class="benford-info-icon" aria-label="Information about Benford's Law" title="Information about Benford's Law">?</button>
+                    </div>
                     <p>
                         หลักนำหน้าของจำนวนโหวตในแต่ละเขตควรเป็นไปตาม Benford's Law แต่ละพรรคเป็นแบบนั้นหรือไม่?
                         <br>
                         (หากจำนวนเขตที่มีพรรคนั้น ๆ น้อย เป็นเรื่องปกติที่ค่าห่างจาก Benford's Law เป็นเรื่องปกติ)
                     </p>
                 </header>
+
+                <div id="benford-info-tooltip" class="benford-info-tooltip" role="tooltip" aria-hidden="true">
+                    <div class="tooltip-content" style="font-size: 14px; line-height: 1.6; color: #333; text-align: left;">
+                        <h4 style="font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 0;">การตรวจสอบความผิดปกติด้วยกฎ Benford's Law</h4>
+                        
+                        <p style="margin-bottom: 10px; margin-top: 0;"><strong>หลักการทำงาน:</strong><br>
+                        Benford's Law (กฎเลขนำหน้า) เป็นหลักการทางสถิติที่ใช้ตรวจสอบความน่าเชื่อถือของข้อมูล โดยระบุว่าในชุดข้อมูลที่เกิดขึ้นตามธรรมชาติ (เช่น คะแนนเสียงเลือกตั้ง) ตัวเลขนำหน้ามักจะเป็นเลข 1 มากที่สุด (ประมาณ 30%) และสัดส่วนจะลดหลั่นลงไปเรื่อยๆ จนถึงเลข 9</p>
+                        
+                        <p style="margin-bottom: 5px; margin-top: 0;"><strong>วิธีอ่านกราฟ:</strong></p>
+                        <ul style="padding-left: 20px; margin-bottom: 10px; margin-top: 0;">
+                            <li><strong>แถบสีเทา (พื้นหลัง):</strong> การกระจายตัวของตัวเลขตามทฤษฎี Benford's Law (ค่าที่ควรจะเป็น)</li>
+                            <li><strong>แถบสีน้ำเงิน (ด้านหน้า):</strong> สัดส่วนเลขนำหน้าของคะแนนโหวตที่เกิดขึ้นจริง</li>
+                        </ul>
+                        
+                        <p style="margin-bottom: 5px; margin-top: 0;"><strong>การวิเคราะห์ความผิดปกติ:</strong></p>
+                        <ul style="padding-left: 20px; margin-top: 0; margin-bottom: 0;">
+                            <li><strong>ปกติ:</strong> แถบสีน้ำเงินมีความสูงสอดคล้องกับแนวโน้มของแถบสีเทา (เลข 1 สูงสุด และค่อยๆ ลดลง)</li>
+                            <li><strong>ผิดปกติ (ข้อควรระวัง):</strong> หากพบว่าแถบสีน้ำเงินของเลขนำหน้าตัวใดตัวหนึ่ง (เช่น เลข 7, 8 หรือ 9) พุ่งสูงผิดปกติจนทิ้งห่างจากแถบสีเทา หรือสูงกว่าเลข 1 อาจเป็นสัญญาณทางสถิติที่บ่งชี้ถึง <strong>"การแทรกแซงข้อมูล"</strong> หรือ <strong>"การป้อนตัวเลขที่มนุษย์สร้างขึ้นเอง"</strong> ซึ่งควรได้รับการตรวจสอบเพิ่มเติม</li>
+                        </ul>
+                    </div>
+                </div>
 
                 <div class="benford-toolbar">
                     <label for="benfordPartyFilter">พรรค</label>
@@ -59,6 +83,49 @@
                 </div>
             </div>
         </section>
+
+        <!-- Metric Chart Tooltips -->
+        <div id="tooltip-ballot-difference" class="metric-tooltip" role="tooltip" aria-hidden="true">
+            <div class="tooltip-content" style="font-size: 13px; line-height: 1.6; color: #333; text-align: left;">
+                <p style="margin-bottom: 8px;"><strong>หลักการทำงาน:</strong><br>
+                ในระบบเลือกตังแบบบัตร 2 ใบ ผู้มาใช้สิทธิ์ 1 คนจะได้รับบัตร 2 ใบ (ส.ส. เขต และ บัญชีรายชื่อ) ดังนั้นจำนวนบัตรทังสองประเภทที่นับได้ในแต่ละเขตควรมีจำนวนเท่ากันหรือใกล้เมินกันมากที่สุด</p>
+                <p style="margin-bottom: 5px;"><strong>วิธีอ่านกราฟ:</strong><br>
+                กราฟแสดงการกระจายตัวของ “ส่วนต่าง” ระหว่างบัตร 2 ประเภท จุด 1 จุดแทน 1 เขตเลือกตัง แกนแนวตังคือจำนวนบัตรที่แตกต่างกัน</p>
+                <p style="margin-bottom: 5px;"><strong>การวิเคราะห์ความผิดปกติ:</strong></p>
+                <ul style="padding-left: 20px; margin-top: 0;">
+                    <li><strong>ปกติ:</strong> จุดส่วนใหญ่จะกระจุกตัวหนาแน่นในด้านล่างสุดของกราฟ (ค่าส่วนต่างใกล้เมิน 0)</li>
+                    <li><strong>ผิดปกติ (ข้อควรระวัง):</strong> หากมีจุดที่ลอยแยกตัวขึ้นไปด้านบนสูงกว่ากลื่มปกติอย่างชัดเชน แสดงว่าเขตนั้นมีจำนวนบัตรสองประเภทไม่เท่ากันอย่างผิดสังเกต อาจเกิดจากการแทรกแซงหรือข้อผิดพลาดในการนับ</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="tooltip-turnout" class="metric-tooltip" role="tooltip" aria-hidden="true">
+            <div class="tooltip-content" style="font-size: 13px; line-height: 1.6; color: #333; text-align: left;">
+                <p style="margin-bottom: 8px;"><strong>หลักการทำงาน:</strong><br>
+                สัดส่วนของผู้ที่ออกมาใช้สิทธิ์ (Turnout) เทียบกับผู้มีสิทธิ์เลือกตังทั้งหมดในเขตนั้น ตามธรรมชาติการออกมาใช้สิทธิ์ของประชาชนในพื้นที่ต่างๆ มักจะเกาะกลุ่มกันอยู่ท่ีค่าเฉลี่ยระดับหนึ่งในทิศทางเดียวกัน</p>
+                <p style="margin-bottom: 5px;"><strong>วิธีอ่านกราฟ:</strong><br>
+                กราฟแสดงการกระจายตัวของเปอร์เซ็นต์ผู้มาใช้สิทธิ์ จุด 1 จุดแทน 1 เขตเลือกตัง แกนแนวตังคือเปอร์เซ็นต์การมาใช้สิทธิ์</p>
+                <p style="margin-bottom: 5px;"><strong>การวิเคราะห์ความผิดปกติ:</strong></p>
+                <ul style="padding-left: 20px; margin-top: 0;">
+                    <li><strong>ปกติ:</strong> จุดส่วนใหญ่จะกระาหกูลตัวหนาแน่นตรงกลางเป็นรูปกระเบาะ (ตามค่าเฉลี่ยระดับประเทศ)</li>
+                    <li><strong>ผิดปกติ (ข้อควรระวัง):</strong> หากมีจุดที่พุ่งแยกตัวขึ้นไปสูงผิดปกติ (เช่น เข้าใกล้ 100%) อาจเป็นสัญญาณบ่งชี้ถึงผลิตรความพยายามกันด์คนมาลงคะแนน หรือการสวมสิทธิ์แทนผู้ที่ไม่ได้มาโหวต</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="tooltip-discrepancy" class="metric-tooltip" role="tooltip" aria-hidden="true">
+            <div class="tooltip-content" style="font-size: 13px; line-height: 1.6; color: #333; text-align: left;">
+                <p style="margin-bottom: 8px;"><strong>หลักการทำงาน:</strong><br>
+                ตามหลักการนับคะแนน จำนวนผู้มาใช้สิทธิ์ทั้งหมด จะต้องลงตัวและเท่ากันหรือคลู่ของ (บัตรดี + บัตรเสีย + ไม่ประสงค์ลงคะแนน) เสมอ หากตัวเลขไม่ตรงกัน แสดงว่ามีบัตรเกินมา (บัตรผี) หรือบัตรหายไปจากระบบ</p>
+                <p style="margin-bottom: 5px;"><strong>วิธีอ่านกราฟ:</strong><br>
+                กราฟแสดงส่วนต่างของจำนวนบัตรที่คำนวณไม่ลงตัว จุด 1 จุดแทน 1 เขตเลือกตัง แกนแนวตังคือจำนวณปริศณที่หายไปหรือเกินมา</p>
+                <p style="margin-bottom: 5px;"><strong>การวิเคราะห์ความผิดปกติ:</strong></p>
+                <ul style="padding-left: 20px; margin-top: 0;">
+                    <li><strong>ปกติ:</strong> จุดส่วนใหญ่จะนอนทับเรียงกินอยู่ล่างสุดที่เส้น 0 (แสดงว่าคำนวณลงตัวพอดิ)</li>
+                    <li><strong>ผิดปกติ (ข้อควรระวัง):</strong> หากมีจุดลอยขึ้นไปด้านบน แสดงว่าเขตนั้นมีบัตรผีหรือบัตรหาย ยิ่งจุดอยู่สูงยิ่งจำนวนบัตรปริศณ์ที่เยอะผิดปกติ ซึ่งกระทบต่อความโปร่งใสโดยตรง</li>
+                </ul>
+            </div>
+        </div>
 
         <section id="dashboardSection" class="story-section dashboard-section">
             <div class="section-inner dashboard-layout">

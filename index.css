@@ -600,6 +600,97 @@ body {
 	background: #ffffff;
 }
 
+/* Benford Info Icon */
+.benford-info-icon {
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background: #E5E7EB;
+	color: #333;
+	font-size: 14px;
+	font-weight: 400;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 80ms ease-out;
+	margin-left: 8px;
+}
+
+.benford-info-icon:hover {
+	background: #d1d5db;
+}
+
+.benford-info-icon:active {
+	background: #bfdbfe;
+}
+
+/* Benford Info Tooltip */
+.benford-info-tooltip {
+	position: fixed;
+	display: none;
+	min-width: 280px;
+	max-width: 450px;
+	background: var(--panel);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 15px;
+	box-shadow: var(--shadow), 0 12px 32px rgba(0, 0, 0, 0.12);
+	z-index: 150;
+	top: 0;
+	left: 0;
+	max-height: 80vh;
+	overflow-y: auto;
+}
+
+/* Info Icon - Generic Style */
+.info-icon {
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background: #E8EAED;
+	color: #333;
+	font-size: 14px;
+	font-weight: 400;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 80ms ease-out;
+	margin-left: 8px;
+	position: relative;
+}
+
+.info-icon:hover {
+	background: #d1d5db;
+}
+
+.info-icon:active {
+	background: #bfdbfe;
+}
+
+/* Metric Tooltips */
+.metric-tooltip {
+	position: fixed;
+	display: none;
+	min-width: 300px;
+	max-width: 400px;
+	background: var(--panel);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 15px;
+	box-shadow: var(--shadow), 0 12px 32px rgba(0, 0, 0, 0.12);
+	z-index: 150;
+	top: 0;
+	left: 0;
+	max-height: 80vh;
+	overflow-y: auto;
+}
+
 .overview-panel {
 	position: relative;
 	flex: 1 1 auto;
